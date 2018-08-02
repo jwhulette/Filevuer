@@ -1,0 +1,4 @@
+tests/_reports
+.phpunit.result.cache
+vendor
+src/node_modules

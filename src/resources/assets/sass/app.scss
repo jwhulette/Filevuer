@@ -1,0 +1,173 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700,900');
+// Variables
+@import "variables";
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+// Boostrap-vue
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+// Alertifyjs
+@import '~alertifyjs/build/css/alertify.css';
+// Site
+a {
+    cursor: pointer;
+}
+
+.large-font {
+    font-size: 1.2rem;
+}
+
+.connection-type {
+    display: inline-block;
+    width: 7rem;
+}
+
+.font-color {
+    color: #3368FF;
+}
+
+.file-wrapper {
+    height: 95vh;
+}
+
+.connecting {
+    font-size: 18px;
+    text-align: center;
+    font-weight: 700;
+    padding: 20px 0;
+}
+
+.browser {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.toolbar {
+    margin: 5px 0;
+}
+
+table .th-1,
+.th-2 {
+    width: 50px;
+}
+
+table .th-4,
+.th-5 {
+    width: 100px;
+}
+
+table .th-1 {
+    width: 50px;
+}
+
+/* editor */
+
+.col-editor {
+    left: 100%;
+    height: 100%;
+    width: 50%;
+    position: fixed !important;
+    top: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.2s ease-out;
+    transition-property: visibility, opacity, left;
+    z-index: $zindex-modal;
+}
+
+.editor-visible .col {
+    position: relative;
+    width: 50%;
+}
+
+.editor-visible .col-browser {
+    width: 50%;
+    left: 0;
+}
+
+.editor-visible .col-editor {
+    visibility: visible;
+    opacity: 1;
+    left: 50%;
+}
+
+#editor {
+    position: relative;
+    width: 100%;
+    z-index: 500;
+    height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+#statusbar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 54px;
+    width: 100%;
+    z-index: 600;
+    padding: 10px;
+}
+
+#hide {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, 0);
+    z-index: 2000;
+}
+#hide > button {
+    border-color: #000000;
+}
+
+@media screen and (max-width: 880px) {
+    #hide {
+        transform: translate(10%, 0);
+    }
+}
+
+/* editor */
+
+.alertify-notifier .ajs-message {
+    color: #ffffff;
+    font-size: 16px;
+    text-align: center;
+}
+
+.connection-name {
+    margin: .5em 0;
+    font-weight: 700;
+}
+
+.logout-button {
+    margin: .5em 0;
+}
+
+.logout-button .btn {
+    position: relative;
+    right: 9px;
+}
+
+/* Upload.vue */
+
+.zip-checkbox {
+    margin-top: 3em;
+    text-align: center;
+}
+
+#fv-fileUpload__BV_file_control_ {
+    overflow: hidden;
+    line-height: 1.7rem;
+}
+
+#loading-overlay {
+    position: fixed;
+    cursor: wait;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100%;
+    z-index: 10000;
+    background: rgba(255, 255, 255, 0.3);
+}
