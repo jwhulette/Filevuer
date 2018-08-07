@@ -53,7 +53,7 @@ class FilevuerController extends Controller implements SessionInterface
 
     private function development()
     {
-        if (App::environment('local')) {
+        if (\App::environment('dev')) {
             // Used for development
             \Artisan::call('vendor:publish', [
             '--tag' => 'filevuer',
