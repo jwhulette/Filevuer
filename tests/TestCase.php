@@ -25,6 +25,7 @@ abstract class TestCase extends BaseTestCase
     {
         $app->config->set('filevuer.connections', $this->dummyConnections());
         $app->config->set('view.paths', [__DIR__ . '/../src/resources/views']);
+        $app->config->set('routes', \jwhulette\filevuer\Filevuer::routes());
     }
 
     protected function getSessionValues()

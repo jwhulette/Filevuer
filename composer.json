@@ -1,5 +1,5 @@
 {
-    "name": "jwhulette/Filevuer",
+    "name": "jwhulette/filevuer",
     "description": "A remote FTP & S3 file manager using VueJS",
     "keywords": [
         "Laravel",
@@ -8,18 +8,18 @@
     ],
     "homepage": "https://github.com/jwhulette/Filevuer", 
     "license": "MIT",
-    "type": "library",
+    "type": "Package",
     "authors": [{
         "name": "Wes Hulette",
         "email": "jwhulette@gmail.com"
     }],
-    "minimum-stability": "dev",
     "require": {
         "php": ">=7.1.0",
-        "aws/aws-sdk-php": "^3.0@dev",
-        "league/flysystem": "^1.1",
+        "illuminate/support": ">=5.5",
+        "aws/aws-sdk-php": "^3.0",
+        "league/flysystem": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "maennchen/zipstream-php": "dev-master"
+        "maennchen/zipstream-php": "^0.5"
     },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "dev-master",
@@ -46,8 +46,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "jwhulette\\filevuer\\FileVuerServiceProvider"
-            ]
+                "Jwhulette\\Filevuer\\FilevuerServiceProvider"
+            ],
+            "aliases": {
+            }
         }
     }
 }

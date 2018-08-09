@@ -21,7 +21,16 @@ This is a simple FTP/S3 filebrowser Laravel package based on the work done by [O
 - The index file is copied to views/vendor/filevuer.
 
         - The index file can be adjusted to intergrate into your current layout.
-        - You can use restrict access to the route by placing Route::any('/filevuer')->middleware('auth'); in your routes/web.php file
+
+- You can use restrict access to the route by placing:
+
+```PHP
+Route::group(['middleware' => 'auth'], function () {
+    jwhulette\filevuer\Filevuer::routes();
+});
+```
+
+    in your routes/web.php file
 
 - This is my first Laravel plugin so I'm sure I have make some mistakes. Please let me know if you come across any issues.
 
@@ -32,6 +41,7 @@ Install using composer
 ``` bash
 composer require jwhulette/filevuer
 ```
+
 
 Publish the assets and configuration
 
