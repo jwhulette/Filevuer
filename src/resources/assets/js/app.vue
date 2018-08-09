@@ -26,6 +26,8 @@
     import Browser from "./components/Browser.vue";
     import Modals from "./components/modals/Index.vue";
     import LoadingOverlay from "./components/layout/LoadingOverlay.vue";
+    import * as types from './store/types';
+    import store from './store';
     import {
         mapState
     } from "vuex";
@@ -37,7 +39,7 @@
             Browser,
             Modals,
             LoadingOverlay
-        },        
+        },
         props: {
             loggedIn: {
                 default: false,
@@ -55,6 +57,7 @@
         data () {
             return {
                 loggedInState: this.loggedIn,
+                interval: null,
             }
         },
         computed: {
@@ -64,15 +67,27 @@
                 connectionName: state => state.connectionName
             })
         },
+        mounted () {
+            /**
+             * Poll to check if the user uas a valid session,
+             * if not reload the page.
+             */
+            this.interval = setInterval(function () {
+                store.dispatch(types.POLL_CONNECTION)
+            }.bind(this), 3600000);
+        },
+        beforeDestroy: function () {
+            clearInterval(this.interval);
+        },
+        updated () {
+            if (this.connectionName) {
+                document.title = 'Filevuer: ' + this.connectionName;
+            }
+        },
         methods: {
             setLogIn: function (loggedInState) {
                 this.loggedInState = loggedInState;
-            },
-        },
-        updated() {
-            if(this.connectionName) {
-                document.title = 'Filevuer: ' + this.connectionName;
             }
-        }
+        },
     };
 </script>

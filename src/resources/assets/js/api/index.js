@@ -5,6 +5,15 @@ let basePath = '/filevuer'
 
 const removeSlashes = (str) => str.replace(/^\/|\/$/g, '')
 
+export function poll () {
+    return http({
+      url: basePath + '/poll',
+      method: 'get',
+    }).then(response => {
+      return response.data
+    })
+}
+
 export function setConnection (selected) {
   return http({
     url: basePath,

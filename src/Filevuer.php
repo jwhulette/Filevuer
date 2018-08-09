@@ -19,6 +19,8 @@ class Filevuer
             ], function () use ($namespace) {
                 Route::get('/', $namespace . 'FilevuerController@index')->name('filevuer.index');
 
+                Route::get('/poll', $namespace . 'FilevuerController@poll')->name('filevuer.poll');
+
                 Route::get('/logout', $namespace . 'FilevuerController@logout')->name('filevuer.logout');
 
                 Route::post('/', $namespace . 'FilevuerController@connect')->name('filevuer.hash');
