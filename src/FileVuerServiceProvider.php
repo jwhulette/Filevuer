@@ -40,6 +40,7 @@ class FilevuerServiceProvider extends ServiceProvider
         ], 'filevuer');
 
         $this->loadViewsFrom(__DIR__.'/resources/views', 'filevuer');
+        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
     }
 
     /**
