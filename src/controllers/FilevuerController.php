@@ -51,14 +51,19 @@ class FilevuerController extends Controller implements SessionInterface
         ]);
     }
 
+    /**
+     * When developing the applicaton
+     * copy the updated files over on page refresh
+     *
+     * @return void
+     */
     private function development()
     {
         if (\App::environment('local')) {
-            // Used for development
             \Artisan::call('vendor:publish', [
-            '--tag' => 'filevuer',
-            '--force' => 1
-        ]);
+                '--tag' => 'filevuer',
+                '--force' => 1
+            ]);
         }
     }
 
