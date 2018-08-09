@@ -1,4 +1,5 @@
 // Actions
+export const POLL_CONNECTION = 'POLL_CONNECTION'
 export const SET_CONNECTION = 'SET_CONNECTION'
 export const CREATE_NEW = 'CREATE_NEW'
 export const FETCH_FILES = 'FETCH_FILES'

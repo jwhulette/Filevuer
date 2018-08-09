@@ -42,7 +42,7 @@ export default {
     },
     mounted: function () {
         if(this.selected !== '') {
-            this.$store.commit(types.SET_CONNCTION_NAME, this.selected);
+            store.commit(types.SET_CONNCTION_NAME, this.selected);
         }
     }
 }

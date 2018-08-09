@@ -41,24 +41,26 @@ class FilevuerController extends Controller implements SessionInterface
     public function index()
     {
         $this->development();
-        $config = $this->configurationService->getConnectionDisplayList();
-        $loggedIn = session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false';
-
         return view('filevuer::index', [
-            'connections' => $config->toJson(),
-            'loggedIn'    => $loggedIn,
+            'connections' => $this->configurationService->getConnectionDisplayList()->toJson(),
+            'loggedIn'    => session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false',
             'selected'    => session()->get(SessionInterface::FILEVUER_CONNECTION_NAME, '')
         ]);
     }
 
+    /**
+     * When developing the applicaton
+     * copy the updated files over on page refresh
+     *
+     * @return void
+     */
     private function development()
     {
         if (\App::environment('local')) {
-            // Used for development
             \Artisan::call('vendor:publish', [
-            '--tag' => 'filevuer',
-            '--force' => 1
-        ]);
+                '--tag' => 'filevuer',
+                '--force' => 1
+            ]);
         }
     }
 
@@ -83,11 +85,23 @@ class FilevuerController extends Controller implements SessionInterface
     /**
      * Undocumented function
      *
-     * @return Redirect
+     * @return \Illuminate\Support\Facades\Redirect
      */
     public function logout()
     {
         $this->connectionService->logout();
         return redirect()->route('filevuer.index');
+    }
+
+    /**
+     * Check to see if the user is logged in
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function poll()
+    {
+        return response()->json([
+            'active' => session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)
+        ]);
     }
 }
