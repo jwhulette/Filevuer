@@ -13,7 +13,6 @@
         "name": "Wes Hulette",
         "email": "jwhulette@gmail.com"
     }],
-    "minimum-stability": "dev",
     "require": {
         "php": ">=7.1.0",
         "aws/aws-sdk-php": "^3.0@dev",

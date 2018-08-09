@@ -61,6 +61,7 @@
             ...mapState({
                 isLoading: state => state.isLoading,
                 editorVisible: state => state.editorVisible,
+                connectionName: state => state.connectionName
             })
         },
         methods: {
@@ -68,5 +69,10 @@
                 this.loggedInState = loggedInState;
             },
         },
+        updated() {
+            if(this.connectionName) {
+                document.title = 'Filevuer: ' + this.connectionName;
+            }
+        }
     };
 </script>

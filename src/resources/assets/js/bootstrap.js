@@ -1,4 +1,4 @@
-import 'bootstrap'
+// import 'bootstrap'
 import 'vue-resource'
 /**
  * We'll register a HTTP interceptor to attach the "CSRF" header to each of
@@ -14,7 +14,7 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = require('jquery')
+// window.$ = window.jQuery = require('jquery')
 
 
 

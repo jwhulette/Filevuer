@@ -17,8 +17,15 @@ use jwhulette\filevuer\services\DirectoryServiceInterface;
 use jwhulette\filevuer\services\ConnectionServiceInterface;
 use jwhulette\filevuer\services\ConfigurationServiceInterface;
 
-class FileVuerServiceProvider extends ServiceProvider
+class FilevuerServiceProvider extends ServiceProvider
 {
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
+    
     /**
      * Bootstrap services.
      *
@@ -28,7 +35,7 @@ class FileVuerServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/filevuer.php' => config_path('filevuer.php'),
-            __DIR__ . '/resources/views/index.blade.php' => resource_path('views/vendor/filevuer/index.blade.php'),
+            __DIR__ . '/resources/views' => resource_path('views/vendor/filevuer'),
             __DIR__ . '/public' => public_path('vendor/filevuer')
         ], 'filevuer');
 
