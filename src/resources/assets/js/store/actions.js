@@ -18,9 +18,7 @@ export default {
      * Check to see if there is a valid session, 
      * if not reload the window to log the user out.
      */
-    [types.POLL_CONNECTION]({
-        commit
-    }) {
+    [types.POLL_CONNECTION]() {
         return api.poll().then(response => {
             if(response.active == false) {
                 window.location.reload(true);
@@ -31,7 +29,9 @@ export default {
     [types.SET_CONNECTION]({
         commit
     }, selectedConnection) {
+        commit(types.SET_LOADING, true)
         return api.setConnection(selectedConnection).then(response => {
+            commit(types.SET_LOADING, false)
             if (response === false) {
                 alertify.error('Server login failed!')
                 return false
@@ -57,7 +57,6 @@ export default {
 
     [types.FETCH_CONTENTS]({
         commit,
-        dispatch,
         state
     }, path) {
         commit(types.SET_LOADING, true)
@@ -105,16 +104,10 @@ export default {
         commit,
         state
     }) {
-        let files = state.files.filter(file => file.checked)
+        let files = state.selected
 
         let cleanUp = () => {
-            //   commit(types.TOGGLE_MODAL, 'confirmDelete')
             commit(types.SET_LOADING, false)
-        }
-
-        if (files.length < 1) {
-            cleanUp()
-            return false
         }
 
         commit(types.SET_LOADING, true)
@@ -130,27 +123,22 @@ export default {
     },
 
     [types.DOWNLOAD_SELECTED]({
-        dispatch,
         commit,
         state
     }) {
-        let files = state.files.filter(file => file.checked)
+        let files = state.selected
 
         let cleanUp = () => {
             commit(types.SET_LOADING, false)
         }
 
         commit(types.SET_LOADING, false)
-        if (files.length < 1) {
-            cleanUp()
-            return false
-        }
 
         commit(types.SET_LOADING, true)
 
         api.download(files).then(hash => {
             location.assign(basePath + '/download/' + hash)
-            dispatch(types.TOGGLE_ALL, false)
+            commit(types.SET_SELECTED, false)
             alertify.success('Download started successfully')
             cleanUp()
         }).catch(e => {
@@ -170,7 +158,7 @@ export default {
         path = withPwd(state, path)
 
         api.create(type, path).then(() => {
-            let newtype = type === 'file' ? 'New File' : 'New Folder'
+            let newtype = type === 'file' ? 'New file' : 'New folder'
             alertify.success(newtype + ' created')
             dispatch(types.REFRESH)
         }).catch(e => {
@@ -201,21 +189,13 @@ export default {
         })
     },
 
-    [types.TOGGLE_ALL]({
-        commit,
-        state
-    }, newState) {
-        commit(types.SET_ALL_SELECTED, newState)
-        state.files.forEach(file => {
-            commit(types.TOGGLE_FILE, {
-                file,
-                newState
-            })
-        })
+    [types.SET_SELECTED_FILES]({
+        commit
+    }, selected) {
+        commit(types.SET_SELECTED, selected)
     },
 
     [types.CHANGE_DIRECTORY]({
-        state,
         dispatch
     }, path) {
         dispatch(types.FETCH_FILES, path)
@@ -250,7 +230,7 @@ export default {
         commit
     }, files) {
         commit(types.SET_LOADING, false)
-        commit(types.SET_ALL_SELECTED, false)
+        commit(types.SET_SELECTED, false)
         commit(types.SET_FILELIST, files)
     }
 }

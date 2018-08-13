@@ -8,6 +8,9 @@
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
 // Alertifyjs
 @import '~alertifyjs/build/css/alertify.css';
+// import the styles 
+@import '~vue-good-table/dist/vue-good-table.css';
+
 // Site
 a {
     cursor: pointer;
@@ -46,18 +49,16 @@ a {
     margin: 5px 0;
 }
 
-table .th-1,
-.th-2 {
-    width: 50px;
+.set-pointer {
+    cursor: pointer;
 }
 
-table .th-4,
-.th-5 {
-    width: 100px;
+.filter-bar {
+    padding-bottom: 5px;
 }
 
-table .th-1 {
-    width: 50px;
+#filelist-table {
+    padding-bottom: 20px;
 }
 
 /* editor */

@@ -26,7 +26,7 @@ export function setConnection (selected) {
   })
 }
 
-export function getFiles (path, cb) {
+export function getFiles (path) {
   return http({
     url: basePath + '/directory/?path=' + removeSlashes(path),
     method: 'GET'
@@ -42,7 +42,7 @@ export function getFiles (path, cb) {
   })
 }
 
-export function getContents (path, cb) {
+export function getContents (path) {
   return http({
     url: basePath + '/file/?path=' + removeSlashes(path),
     method: 'GET'
@@ -63,7 +63,7 @@ export function putContents (path, contents) {
     .then(response => response.data)
 }
 
-export function deleteFiles (entries, cb) {
+export function deleteFiles (entries) {
   const files = entries.filter(entry => entry.type === 'file').map(entry => entry.path)
   const directories = entries.filter(entry => entry.type === 'dir').map(entry => entry.path)
 
@@ -85,7 +85,7 @@ export function deleteFiles (entries, cb) {
   ])
 }
 
-export function create (type, path, cb) {
+export function create (type, path) {
   return http({
     url: basePath + '/' + type,
     method: 'post',

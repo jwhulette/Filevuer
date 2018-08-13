@@ -15,13 +15,13 @@
     }],
     "require": {
         "php": ">=7.1.0",
-        "aws/aws-sdk-php": "^3.0",
+        "aws/aws-sdk-php": "^3.64",
         "league/flysystem": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "maennchen/zipstream-php": "^0.5"
+        "maennchen/zipstream-php": "^0.5.2"
     },
     "require-dev": {
-        "codedungeon/phpunit-result-printer": "dev-master",
+        "codedungeon/phpunit-result-printer": "^0.19.13",
         "orchestra/testbench": "~3.6|~3.5",
         "phpunit/php-code-coverage": "^6.0@dev",
         "phpunit/phpunit": "^7.0"
