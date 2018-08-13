@@ -1,6 +1,5 @@
 
 let mix = require('laravel-mix');
-require('laravel-mix-purgecss');
 mix.setPublicPath('./');
 
 /*
@@ -15,5 +14,4 @@ mix.setPublicPath('./');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js/filevuer.js')
-   .sass('resources/assets/sass/app.scss', 'public/css/filevuer.css')
-   .purgeCss();
+   .sass('resources/assets/sass/app.scss', 'public/css/filevuer.css');
