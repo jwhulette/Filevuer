@@ -10,7 +10,7 @@ const state = {
   isLoading: false,
   connectionName: '',
   newFileFolder: 'file',
-  allSelected: false,
+  selected: false,
   editorContents: '',
   editorVisible: false,
   editorContentsChanged: 0, // Updated file change to trigger editor's watch method

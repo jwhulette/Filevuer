@@ -21,7 +21,7 @@
       <div class="col">
         <ol class="breadcrumb">
           <li>
-            <a @click="cd('')">
+            <a @click="cd('/')">
               <font-awesome-icon 
                 icon="home" 
                 size="lg"/> 

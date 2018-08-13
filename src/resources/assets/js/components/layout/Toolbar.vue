@@ -1,80 +1,67 @@
 <template>
   <div class="row">
+
     <div class="col-8 toolbar">
-      <div 
-        class="btn-group" 
-        role="group">
-        <button 
-          type="button" 
-          class="btn btn-primary btn-sm" 
+
+      <b-button-group size="sm">
+
+        <b-button 
+          size="sm"
+          variant="primary"
           @click.prevent="toggleModal('fvUpload')">
           <font-awesome-icon icon="upload" /> &nbsp;Upload
-        </button>
-      </div>
-      <div 
-        class="btn-group" 
-        role="group">
-        <button 
-          :class="{disabled: ! hasSelectedFiles}" 
-          type="button" 
-          class="btn btn-primary  btn-sm" 
+        </b-button>
+
+        <b-button 
+          :class="{disabled: ! hasSelectedFiles}"
+          size="sm" 
+          variant="primary"
           @click.prevent="download">
           <font-awesome-icon icon="download" /> &nbsp;Download
-        </button>
-      </div>
+        </b-button>
 
-      <div 
-        class="btn-group" 
-        role="group">
-        <div class="dropdown">
-          <button 
-            id="dropdownMenuButton" 
-            class="btn btn-success  btn-sm dropdown-toggle" 
-            type="button" 
-            data-toggle="dropdown" 
-            aria-haspopup="true" 
-            aria-expanded="false">
+        <b-dropdown 
+          size="sm"
+          right 
+          variant="success" >
+          <template slot="button-content">
             <font-awesome-icon icon="plus-square" /> &nbsp;Create
-          </button>
-          <div 
-            class="dropdown-menu" 
-            aria-labelledby="dropdownMenuButton">
-            <a 
-              class="dropdown-item" 
-              href="#" 
-              @click.prevent="toggleModal('fvCreate','file')"><font-awesome-icon icon="file-alt" /> &nbsp;Create File</a>
-            <a 
-              class="dropdown-item" 
-              href="#" 
-              @click.prevent="toggleModal('fvCreate','directory')"><font-awesome-icon icon="folder" /> &nbsp;Create Folder</a>
-          </div>
-        </div>
-      </div>
+          </template>
+          <b-dropdown-item
+            variant="success" 
+            @click.prevent="toggleModal('fvCreate','file')">
+            <font-awesome-icon icon="file-alt" /> &nbsp;Create File
+          </b-dropdown-item>
 
-      <div 
-        class="btn-group" 
-        role="group">
-        <button 
-          type="button" 
-          class="btn btn-info  btn-sm" 
+          <b-dropdown-item 
+            variant="success" 
+            @click.prevent="toggleModal('fvCreate','directory')">
+            <font-awesome-icon icon="folder" /> &nbsp;Create Folder
+          </b-dropdown-item>
+
+        </b-dropdown>
+
+        <b-button
+          size="sm"
+          variant="info"
           @click.prevent="refresh">
           <font-awesome-icon icon="sync-alt" /> &nbsp;Refresh
-        </button>
-      </div>
+        </b-button>
+
+      </b-button-group>
+
     </div>
+
     <div class="toolbar col text-right">
-      <div 
-        class="btn-group" 
-        role="group">
-        <button 
-          :class="{disabled: ! hasSelectedFiles}" 
-          type="button" 
-          class="btn btn-danger btn-sm" 
-          @click.prevent="toggleModal('fvDelete')">
-          <font-awesome-icon icon="trash-alt" /> &nbsp;Delete
-        </button>
-      </div>
+      <b-button 
+        :class="{disabled: ! hasSelectedFiles}" 
+        type="button" 
+        class="btn btn-danger btn-sm" 
+        @click.prevent="toggleModal('fvDelete')">
+        <font-awesome-icon icon="trash-alt" /> &nbsp;Delete
+      </b-button>
     </div>
+
   </div>
 </template>
 
@@ -87,7 +74,7 @@
     export default {
         computed: {
             ...mapState({
-                hasSelectedFiles: state => state.files.filter(file => file.checked).length > 0
+                hasSelectedFiles: state => state.selected.length > 0
             })
         },      
         methods: {
