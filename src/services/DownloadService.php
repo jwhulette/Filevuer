@@ -83,14 +83,14 @@ class DownloadService implements DownloadServiceInterface
         $zipFilename = $this->getZipFilename();
         $zipStream = new ZipStream($zipFilename);
 
-        return response()->streamDownload(function () use ($zipStream, $downloads) {
+        return response()->stream(function () use ($zipStream, $downloads) {
             $downloads->each(function ($downloadFile) use ($zipStream) {
                 $this->addFilesToZip($downloadFile, $zipStream);
             });
     
             $zipStream->finish();
-        }, $zipFilename, [
-            "Content-Type" => 'application/octet-stream',
+        }, 200, [
+            "Content-Type" => 'application/octet-stream; filename='.$zipFilename,
         ]);
     }
 
