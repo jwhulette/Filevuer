@@ -90,7 +90,8 @@ class DownloadService implements DownloadServiceInterface
     
             $zipStream->finish();
         }, 200, [
-            "Content-Type" => 'application/octet-stream; filename='.$zipFilename,
+            "Content-Type" => 'application/octet-stream;',
+            'Content-Disposition' => 'attachment; filename='.$zipFilename,
         ]);
     }
 
@@ -149,7 +150,8 @@ class DownloadService implements DownloadServiceInterface
             $stream = $this->fileSystem->cloud()->readStream($downloadFile['path']);
             fpassthru($stream);
         }, 200, [
-            "Content-Type" => 'application/octet-stream; filename='.$downloadFile['basename']
+            "Content-Type" => 'application/octet-stream;',
+            'Content-Disposition' => 'attachment; filename="'.$downloadFile['basename'].'"',
         ]);
     }
 }
