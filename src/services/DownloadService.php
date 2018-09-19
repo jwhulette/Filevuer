@@ -145,11 +145,11 @@ class DownloadService implements DownloadServiceInterface
      */
     public function downloadSingleFile(array $downloadFile): StreamedResponse
     {
-        return response()->streamDownload(function () use ($downloadFile) {
+        return response()->stream(function () use ($downloadFile) {
             $stream = $this->fileSystem->cloud()->readStream($downloadFile['path']);
             fpassthru($stream);
-        }, $downloadFile['basename'], [
-                "Content-Type" => 'application/octet-stream',
+        }, 200, [
+            "Content-Type" => 'application/octet-stream; filename='.$downloadFile['basename']
         ]);
     }
 }
