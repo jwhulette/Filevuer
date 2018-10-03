@@ -143,7 +143,7 @@ class UploadService implements UploadServiceInterface
     public function uploadFile(string $path, UploadedFile $file): void
     {
         $uploadPath = $this->getUploadPath($path, $file->getClientOriginalName());
-        $response   = $this->fileSystem->cloud()->put($uploadPath, $file->getRealPath());
+        $response   = $this->fileSystem->cloud()->put($uploadPath, file_get_contents($file->getRealPath()));
         unlink($file->getRealPath());
         if (!$response) {
             throw new Exception("Error uploading file", 1);
