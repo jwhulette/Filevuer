@@ -6,11 +6,10 @@ namespace jwhulette\filevuer\services;
 use Carbon\Carbon;
 use ZipStream\ZipStream;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Filesystem\FilesystemManager;
 use jwhulette\filevuer\services\SessionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use jwhulette\filevuer\services\DirectoryServiceInterface;
+use jwhulette\filevuer\services\DownloadServiceInterface;
 
 /**
   * Download Service Class
@@ -40,7 +39,9 @@ class DownloadService implements DownloadServiceInterface
     public function setHash(array $paths): string
     {
         $hash = Carbon::now()->getTimestamp();
+
         session()->put(SessionInterface::FILEVUER_DOWNLOAD.$hash, $paths);
+        
         return (string) $hash;
     }
 
@@ -52,6 +53,7 @@ class DownloadService implements DownloadServiceInterface
     public function getHash(string $hash): Collection
     {
         $paths = session(SessionInterface::FILEVUER_DOWNLOAD.$hash);
+        
         session()->forget(SessionInterface::FILEVUER_DOWNLOAD.$hash);
         
         return  collect($paths);
@@ -81,6 +83,7 @@ class DownloadService implements DownloadServiceInterface
     public function downloadZipFile(Collection $downloads): StreamedResponse
     {
         $zipFilename = $this->getZipFilename();
+        
         $zipStream = new ZipStream($zipFilename);
 
         return response()->stream(function () use ($zipStream, $downloads) {
@@ -105,6 +108,7 @@ class DownloadService implements DownloadServiceInterface
     {
         if ($file['type'] == 'dir') {
             $listing = $this->fileSystem->cloud()->listContents($file['path'], true);
+            
             foreach ($listing as $item) {
                 $this->addFileToZip($zipStream, $item, $file['dirname']);
             }
@@ -125,8 +129,11 @@ class DownloadService implements DownloadServiceInterface
         if ($file['type'] == 'dir') {
             return;
         }
+        
         $filePath = substr($file['path'], strlen($rootDir) + 1);
+
         $stream   = $this->fileSystem->cloud()->readStream($file['path']);
+
         $zipStream->addFileFromStream($filePath, $stream);
     }
 
@@ -136,6 +143,7 @@ class DownloadService implements DownloadServiceInterface
     public function getZipFilename(): string
     {
         $connectionName = session(SessionInterface::FILEVUER_CONNECTION_NAME);
+        
         return strtolower($connectionName). '_' . Carbon::now()->getTimestamp() . '.zip';
     }
 

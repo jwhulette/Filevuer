@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace jwhulette\filevuer\Tests\Feature;
 
@@ -10,7 +11,7 @@ use jwhulette\filevuer\services\SessionInterface;
 
 class FileControllerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $filesystem = $this->getMockBuilder(FilesystemManager::class)

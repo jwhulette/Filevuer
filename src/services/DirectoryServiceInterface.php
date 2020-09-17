@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace jwhulette\filevuer\services;
 
@@ -6,7 +7,7 @@ interface DirectoryServiceInterface
 {
     public function listing(?string $path = '/'): array;
 
-    public function delete(array $path): bool;
+    public function delete(?array $path): bool;
 
     public function create(string $path): bool;
     

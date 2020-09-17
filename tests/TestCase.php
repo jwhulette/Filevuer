@@ -8,13 +8,12 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
-    
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             FileVuerServiceProvider::class
@@ -24,7 +23,9 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $app->config->set('filevuer.connections', $this->dummyConnections());
+
         $app->config->set('view.paths', [__DIR__ . '/../src/resources/views']);
+        
         $app->config->set('routes', \jwhulette\filevuer\Filevuer::routes());
     }
 
@@ -91,7 +92,6 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
-
     protected function dummyListing()
     {
         return [
@@ -134,7 +134,6 @@ abstract class TestCase extends BaseTestCase
             ],
         ];
     }
-
 
     protected function dummyListingPreformat()
     {

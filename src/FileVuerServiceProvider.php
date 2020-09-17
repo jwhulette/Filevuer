@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Jwhulette\Filevuer;
 
@@ -24,7 +25,7 @@ class FilevuerServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = false;
+    protected $defer = true;
     
     /**
      * Bootstrap services.
@@ -50,11 +51,17 @@ class FilevuerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['router']->aliasMiddleware('sessionDriver', SessionDriver::class);
+
         $this->app->bind(ConfigurationServiceInterface::class, ConfigurationService::class);
+
         $this->app->bind(ConnectionServiceInterface::class, ConnectionService::class);
+
         $this->app->bind(DirectoryServiceInterface::class, DirectoryService::class);
+
         $this->app->bind(FileServiceInterface::class, FileService::class);
+
         $this->app->bind(DownloadServiceInterface::class, DownloadService::class);
+        
         $this->app->bind(UploadServiceInterface::class, UploadService::class);
     }
 }

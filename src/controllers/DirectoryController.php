@@ -1,8 +1,10 @@
 <?php
+declare(strict_types = 1);
 
 namespace Jwhulette\Filevuer\controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use jwhulette\filevuer\services\DirectoryServiceInterface;
 
@@ -11,10 +13,7 @@ use jwhulette\filevuer\services\DirectoryServiceInterface;
  */
 class DirectoryController extends Controller
 {
-    /**
-     * @var DirectoryServiceInterface
-     */
-    private $directory;
+    private DirectoryServiceInterface $directory;
 
     /**
      * __construct.
@@ -29,11 +28,11 @@ class DirectoryController extends Controller
     /**
      * List directorys.
      *
-     * @param Request $request
+     * @param Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $path = $request->get('path', '/');
 
@@ -45,11 +44,11 @@ class DirectoryController extends Controller
     /**
      * Create directroy.
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
         $path = $request->get('path', '');
 
@@ -61,11 +60,11 @@ class DirectoryController extends Controller
     /**
      * Delete directory.
      *
-     * @param Request $request
+     * @param Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): Response
     {
         $path = $request->input('path', null);
 

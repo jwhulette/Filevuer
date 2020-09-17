@@ -1,17 +1,15 @@
 <?php
+declare(strict_types = 1);
 
 namespace jwhulette\filevuer\Tests\Feature;
 
-use Illuminate\Routing\Controller;
 use jwhulette\filevuer\Tests\TestCase;
-use Illuminate\Contracts\Filesystem\Cloud;
 use Illuminate\Filesystem\FilesystemManager;
 use jwhulette\filevuer\services\SessionInterface;
-use jwhulette\filevuer\services\ConnectionServiceInterface;
 
 class FilevuerControllerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -21,10 +19,18 @@ class FilevuerControllerTest extends TestCase
         $response = $this->get(route('filevuer.index'));
 
         $response->assertOk();
-        $response->assertSee('id="filevuer-main"');
-        $response->assertSee(":connections='{&quot;FTP&quot;:[&quot;FTP1&quot;],&quot;S3&quot;:[&quot;AWSS3&quot;]}'");
-        $response->assertSee(":logged-in='false'");
-        $response->assertSee("selected=''");
+
+        $response->assertSee("filevuer-main");
+
+        $response->assertSee(":connections=");
+
+        $response->assertSee("FTP1");
+
+        $response->assertSee("AWS");
+
+        $response->assertSee("logged-in");
+        
+        $response->assertSee("selected=");
     }
 
     public function testConnectAlreadyLoggedIn()
@@ -33,16 +39,22 @@ class FilevuerControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->setMethods(['cloud', 'files'])
             ->getMock();
-        $filesystem->method('cloud')
-            ->will($this->returnSelf());
-        $filesystem->method('files')
-            ->willReturn([]);
+
+        $filesystem->method('cloud')->will($this->returnSelf());
+
+        $filesystem->method('files')->willReturn([]);
+
         $this->app->instance(FilesystemManager::class, $filesystem);
+
         session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
-        $response = $this->withSession($this->getSessionValues())->post(route('filevuer.index'), ['connection' => 'FTP1']);
+
+        $response = $this->withSession($this->getSessionValues())
+            ->post(route('filevuer.index'), ['connection' => 'FTP1']);
 
         $response->assertOk();
+
         $this->assertEquals('true', $response->getContent());
+        
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
@@ -52,15 +64,19 @@ class FilevuerControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->setMethods(['cloud', 'files'])
             ->getMock();
-        $filesystem->method('cloud')
-            ->will($this->returnSelf());
-        $filesystem->method('files')
-            ->willReturn([]);
+
+        $filesystem->method('cloud')->will($this->returnSelf());
+
+        $filesystem->method('files')->willReturn([]);
+
         $this->app->instance(FilesystemManager::class, $filesystem);
+
         $response = $this->post(route('filevuer.index'), ['connection' => 'FTP1']);
 
         $response->assertOk();
+
         $this->assertEquals('true', $response->getContent());
+        
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
@@ -70,15 +86,19 @@ class FilevuerControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->setMethods(['cloud', 'files'])
             ->getMock();
-        $filesystem->method('cloud')
-            ->will($this->returnSelf());
-        $filesystem->method('files')
-            ->willReturn([]);
+
+        $filesystem->method('cloud')->will($this->returnSelf());
+
+        $filesystem->method('files')->willReturn([]);
+
         $this->app->instance(FilesystemManager::class, $filesystem);
+
         $response = $this->post(route('filevuer.index'), ['connection' => 'AWSS3']);
 
         $response->assertOk();
+
         $this->assertEquals('true', $response->getContent());
+        
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
@@ -87,7 +107,9 @@ class FilevuerControllerTest extends TestCase
         $response = $this->post(route('filevuer.index'), ['connection' => 'FTP1']);
 
         $response->assertOk();
+
         $this->assertEquals('false', $response->getContent());
+        
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
@@ -96,7 +118,9 @@ class FilevuerControllerTest extends TestCase
         $response = $this->post(route('filevuer.index'), ['connection' => 'AWSS3']);
 
         $response->assertOk();
+
         $this->assertEquals('false', $response->getContent());
+        
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
@@ -105,7 +129,9 @@ class FilevuerControllerTest extends TestCase
         $response = $this->post(route('filevuer.index'), ['connection' => 'RACKSPACE']);
 
         $response->assertOk();
+
         $this->assertEquals('false', $response->getContent());
+        
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
@@ -114,11 +140,17 @@ class FilevuerControllerTest extends TestCase
         $response = $this->get(route('filevuer.logout'));
 
         $response->assertStatus(302);
+
         $response->assertRedirect(route('filevuer.index'));
+
         $response->assertSessionMissing(SessionInterface::FILEVUER_DRIVER);
+
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
+
         $response->assertSessionMissing(SessionInterface::FILEVUER_DATA);
+
         $response->assertSessionMissing(SessionInterface::FILEVUER_HOME_DIR);
+        
         $response->assertSessionMissing(SessionInterface::FILEVUER_CONNECTION_NAME);
     }
 }

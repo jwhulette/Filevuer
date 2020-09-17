@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace jwhulette\filevuer\services;
 
 use Exception;
-use Aws\S3\Exception\S3Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Filesystem\FilesystemManager;
 use jwhulette\filevuer\services\SessionInterface;
@@ -27,6 +26,7 @@ class ConnectionService implements ConnectionServiceInterface
     public function __construct(FilesystemManager $fileSystem)
     {
         $this->fileSystem = $fileSystem;
+
         // @codeCoverageIgnoreStart
         if (!extension_loaded('ftp')) {
             throw new Exception('FTP extension is not loaded!');
@@ -47,11 +47,14 @@ class ConnectionService implements ConnectionServiceInterface
             }
 
             session()->put(SessionInterface::FILEVUER_DRIVER, $connection['driver']);
+
             $this->setSessionData($connection);
+
             $this->applyConfiguration();
 
             // Test connection
             $this->fileSystem->cloud()->files('/');
+            
             session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
 
             return true;

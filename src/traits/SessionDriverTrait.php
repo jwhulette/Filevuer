@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace jwhulette\filevuer\Traits;
 
@@ -14,7 +15,9 @@ trait SessionDriverTrait
     public function setSessionData(array $data): void
     {
         session()->put(SessionInterface::FILEVUER_CONNECTION_NAME, $data['name']);
+
         $data = encrypt($data);
+
         session()->put(SessionInterface::FILEVUER_DATA, $data);
     }
 
@@ -26,7 +29,9 @@ trait SessionDriverTrait
     public function applyConfiguration(): void
     {
         $driver = session()->get(SessionInterface::FILEVUER_DRIVER);
+
         $data   = decrypt(session()->get(SessionInterface::FILEVUER_DATA));
+
         $this->setHomeDirectory($data['home_dir']);
 
         switch (strtolower($driver)) {
@@ -41,7 +46,7 @@ trait SessionDriverTrait
                         'bucket' => $data['bucket'],
                     ]
                 ]);
-            break;
+                break;
 
             case 'ftp':
                 config([
@@ -54,7 +59,7 @@ trait SessionDriverTrait
                         'port'     => $data['port'],
                     ]
                 ]);
-            break;
+                break;
         }
     }
 
@@ -66,6 +71,7 @@ trait SessionDriverTrait
     public function setHomeDirectory(?string $homeDirectory): void
     {
         $homeDir = '';
+        
         if (!is_null($homeDirectory)) {
             $homeDir = sprintf('/%s/', trim($homeDirectory, '/'));
         }

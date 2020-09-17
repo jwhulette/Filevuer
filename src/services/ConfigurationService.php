@@ -22,6 +22,7 @@ class ConfigurationService implements ConfigurationServiceInterface
     {
         return $this->getConnectionsList()->map(function ($items) {
             $list = collect();
+
             foreach ($items as $item) {
                 if (!is_null($item['name'])) {
                     $list->push($item['name']);
@@ -43,6 +44,7 @@ class ConfigurationService implements ConfigurationServiceInterface
             foreach ($items as $item) {
                 if ($item['name'] == $name) {
                     $item['driver'] = strtolower($key);
+                    
                     return $item;
                 }
             }

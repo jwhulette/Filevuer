@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace jwhulette\filevuer\Tests\Feature;
 
@@ -9,7 +10,7 @@ use jwhulette\filevuer\services\UploadServiceInterface;
 
 class UploadFileControllerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }

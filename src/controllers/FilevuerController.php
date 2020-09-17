@@ -1,25 +1,21 @@
 <?php
+declare(strict_types = 1);
 
 namespace Jwhulette\Filevuer\controllers;
 
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\RedirectResponse;
 use jwhulette\filevuer\services\SessionInterface;
 use jwhulette\filevuer\services\ConnectionServiceInterface;
 use jwhulette\filevuer\services\ConfigurationServiceInterface;
 
 class FilevuerController extends Controller implements SessionInterface
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
-    protected $configurationService;
-
-    /**
-     * @var ConnectionServiceInterface
-     */
-    protected $connectionService;
+    protected ConfigurationServiceInterface $configurationService;
+    protected ConnectionServiceInterface $connectionService;
 
     /**
      * __construct
@@ -27,9 +23,12 @@ class FilevuerController extends Controller implements SessionInterface
      * @param ConfigurationServiceInterface $configurationService
      * @param ConnectionServiceInterface $connectionService
      */
-    public function __construct(ConfigurationServiceInterface $configurationService, ConnectionServiceInterface $connectionService)
-    {
+    public function __construct(
+        ConfigurationServiceInterface $configurationService,
+        ConnectionServiceInterface $connectionService
+    ) {
         $this->configurationService = $configurationService;
+
         $this->connectionService    = $connectionService;
     }
 
@@ -38,9 +37,10 @@ class FilevuerController extends Controller implements SessionInterface
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         $this->development();
+        
         return view('filevuer::index', [
             'connections' => $this->configurationService->getConnectionDisplayList()->toJson(),
             'loggedIn'    => session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false',
@@ -71,10 +71,12 @@ class FilevuerController extends Controller implements SessionInterface
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function connect(Request $request)
+    public function connect(Request $request): JsonResponse
     {
         $config = $this->configurationService->getSelectedConnection($request->connection);
+
         $result = $this->connectionService->connectToService($config);
+        
         if ($result) {
             session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
         }
@@ -83,13 +85,14 @@ class FilevuerController extends Controller implements SessionInterface
     }
 
     /**
-     * Undocumented function
+     * Logout the user
      *
-     * @return \Illuminate\Support\Facades\Redirect
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function logout()
+    public function logout(): RedirectResponse
     {
         $this->connectionService->logout();
+        
         return redirect()->route('filevuer.index');
     }
 
@@ -98,7 +101,7 @@ class FilevuerController extends Controller implements SessionInterface
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function poll()
+    public function poll(): JsonResponse
     {
         return response()->json([
             'active' => session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)

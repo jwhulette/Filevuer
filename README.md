@@ -1,7 +1,9 @@
 # Filevuer
 
 <!-- [![Latest Version on Packagist][ico-version]][link-packagist] -->
+
 [![Software License][ico-license]](LICENSE.md)
+
 <!-- [![Build Status][ico-travis]][link-travis] -->
 <!-- [![Coverage Status][ico-scrutinizer]][link-scrutinizer] -->
 <!-- [![Quality Score][ico-code-quality]][link-code-quality] -->
@@ -9,18 +11,16 @@
 
 This is a simple FTP/S3 filebrowser Laravel package based on the work done by [OFFLINE-GmbH/Online-FTP-S3](https://github.com/OFFLINE-GmbH/Online-FTP-S3)
 
-- ## Notable Changes
-        - Zip files are streamed from the resource instead of downloading to the server compressing and then serving the file.
-        - Uploaded zip files are opened on the server and then files streamed to the resource
-        - After upload, files are immediately deleted
+-   ## Notable Changes
 
-- The connections are defined in the config/filevuer.php file.
+    -   Zip files are streamed from the resource instead of downloading to the server compressing and then serving the file.
+    -   Uploaded zip files are opened on the server and then files streamed to the resource
+    -   After upload, files are immediately deleted
 
-- Asset files are copied to /public/vendor/filevuer.
-
-- The index file is copied to views/vendor/filevuer.
-
-- You can use restrict access to the route by placing
+-   The connections are defined in the config/filevuer.php file.
+-   Asset files are copied to /public/vendor/filevuer.
+-   The index file is copied to views/vendor/filevuer.
+-   You can use restrict access to the route by placing
 
 ```PHP
 Route::group(['middleware' => 'auth'], function () {
@@ -30,13 +30,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 in your routes/web.php file
 
-- This is my first Laravel plugin so I'm sure I have make some mistakes. Please let me know if you come across any issues.
+-   This is my first Laravel plugin so I'm sure I have make some mistakes. Please let me know if you come across any issues.
 
 ## Installation
 
 Install using composer
 
-``` bash
+```bash
 composer require jwhulette/filevuer
 ```
 
@@ -48,7 +48,7 @@ php artisan vendor:publish --tag=filevuer
 
 Laravel 5.5+:
 
-- If you don't use auto-discovery, add the ServiceProvider to the providers array in config/app.php
+-   If you don't use auto-discovery, add the ServiceProvider to the providers array in config/app.php
 
 ```PHP
 Jwhulette\Filevuer\FilevuerServiceProvider::class
@@ -60,7 +60,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Testing
 
-``` bash
+```bash
 composer test
 ```
 
@@ -74,9 +74,9 @@ If you discover any security related issues, please email jwhulette@gmail.com in
 
 ## Credits
 
-- [Wes Hulette](https://github.com/jwhulette)
+-   [Wes Hulette](https://github.com/jwhulette)
 
-- [OFFLINE GmbH](https://github.com/OFFLINE-GmbH/Online-FTP-S3)
+-   [OFFLINE GmbH](https://github.com/OFFLINE-GmbH/Online-FTP-S3)
 
 <!-- - [All Contributors][link-contributors] -->
 
@@ -90,7 +90,6 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/:vendor/:package_name.svg?style=flat-square
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/:vendor/:package_name.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/:vendor/:package_name.svg?style=flat-square
-
 [link-packagist]: https://packagist.org/packages/:vendor/:package_name
 [link-travis]: https://travis-ci.org/:vendor/:package_name
 [link-scrutinizer]: https://scrutinizer-ci.com/g/:vendor/:package_name/code-structure

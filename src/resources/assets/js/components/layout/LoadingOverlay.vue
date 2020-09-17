@@ -1,7 +1,5 @@
 <template>
-  <div 
-    v-show="visible" 
-    id="loading-overlay"/>
+    <div v-show="visible" id="loading-overlay" />
 </template>
 
 <script>
@@ -9,8 +7,8 @@ export default {
     props: {
         visible: {
             type: Boolean,
-            default: false
-        }
-    }
-}
+            default: false,
+        },
+    },
+};
 </script>

@@ -1,10 +1,12 @@
 <?php
+declare(strict_types = 1);
 
 namespace Jwhulette\Filevuer\controllers;
 
-use App\Helpers\Zipper;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use jwhulette\filevuer\services\DownloadServiceInterface;
 
 /**
@@ -12,7 +14,7 @@ use jwhulette\filevuer\services\DownloadServiceInterface;
  */
 class DownloadController extends Controller
 {
-    private $downloadService;
+    protected DownloadServiceInterface $downloadService;
 
     /**
      *  __construct
@@ -27,13 +29,14 @@ class DownloadController extends Controller
     /**
      * Return an encrypted path request to send to the get response for download
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
-    public function generate(Request $request)
+    public function generate(Request $request): Response
     {
         $hash = $this->downloadService->setHash($request->path);
+        
         return response($hash);
     }
 
@@ -45,7 +48,7 @@ class DownloadController extends Controller
      *
      * @return StreamedResponse
      */
-    public function download($hash)
+    public function download($hash): StreamedResponse
     {
         return $this->downloadService->getDownload($hash);
     }

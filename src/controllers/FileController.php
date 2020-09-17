@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Jwhulette\Filevuer\controllers;
 
@@ -39,8 +40,11 @@ class FileController extends Controller
     public function show(Request $request)
     {
         $path     = $request->get('path', '');
+
         $path     = $this->getFullPath($path);
+
         $contents = $this->fileservice->contents($path);
+
         $isBinary = false === mb_detect_encoding($contents);
 
         if ($isBinary) {
@@ -63,6 +67,7 @@ class FileController extends Controller
     public function create(Request $request)
     {
         $path = $request->get('path', '');
+
         $path = $this->getFullPath($path);
 
         return response([
@@ -80,7 +85,9 @@ class FileController extends Controller
     public function update(Request $request)
     {
         $path     = $request->get('path', '');
+
         $path     = $this->getFullPath($path);
+        
         $contents = $request->get('contents', '');
 
         return [

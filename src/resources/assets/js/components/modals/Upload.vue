@@ -1,57 +1,44 @@
 <template>
+    <div>
+        <b-modal id="fvUpload" ref="fvUpload">
+            <h4 slot="modal-header" class="fv-modal-header">
+                Upload a new file or zipped folder
+            </h4>
+            <div class="row">
+                <div class="col">
+                    <b-form-file
+                        id="fv-fileUpload"
+                        ref="fileinput"
+                        v-model="files"
+                        multiple
+                    />
 
-  <div>
-    <b-modal 
-      id="fvUpload" 
-      ref="fvUpload">
-      <h4 
-        slot="modal-header" 
-        class="fv-modal-header">Upload a new file or zipped folder</h4>
-      <div class="row">
-        <div class="col">
-          <b-form-file 
-            id="fv-fileUpload" 
-            ref="fileinput" 
-            v-model="files" 
-            multiple/>
+                    <div class="checkbox zip-checkbox">
+                        <label>
+                            <input v-model="extract" type="checkbox" /> Extract
+                            ZIP archives on server
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-          <div class="checkbox zip-checkbox">
-            <label>
-              <input 
-                v-model="extract" 
-                type="checkbox"> Extract ZIP archives on server
-            </label>
-          </div>
-        </div>
+            <div slot="modal-ok" size="sm" @click.prevent="confirm()">
+                Upload files/folders
+            </div>
 
-      </div>
-
-      <div 
-        slot="modal-ok" 
-        size="sm" 
-        @click.prevent="confirm()">
-        Upload files/folders
-      </div>
-
-      <div 
-        slot="modal-cancel" 
-        size="sm" 
-        @click.prevent="reset()">
-        Cancel
-      </div>
-    </b-modal>
-  </div>
-
+            <div slot="modal-cancel" size="sm" @click.prevent="reset()">
+                Cancel
+            </div>
+        </b-modal>
+    </div>
 </template>
 
 <script>
-import * as types from "../../store/types";
-import {
-    mapActions,
-} from "vuex";
+import { mapActions } from 'vuex';
+import * as types from '../../store/types';
 
 export default {
-    data () {
+    data() {
         return {
             files: [],
             extract: false,
@@ -59,20 +46,24 @@ export default {
     },
     methods: {
         ...mapActions({
-            upload: types.UPLOAD
+            upload: types.UPLOAD,
         }),
-        confirm () {
-            let files = this.files;
+        confirm() {
+            const { files } = this;
+
             if (files.length < 1) return false;
+
             this.upload({
                 files,
-                extract: this.extract
+                extract: this.extract,
             }).then(() => {
                 this.extract = false;
-                this.reset;
+                this.reset();
             });
+
+            return false;
         },
-        reset () {
+        reset() {
             this.$refs.fileinput.reset();
         },
     },
