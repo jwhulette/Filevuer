@@ -38,7 +38,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --color=always "
+        "test": "vendor/bin/phpunit --color=always"
     },
     "config": {
         "sort-packages": true
