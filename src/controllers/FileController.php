@@ -1,7 +1,8 @@
 <?php
-declare(strict_types = 1);
 
-namespace Jwhulette\Filevuer\controllers;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -87,7 +88,7 @@ class FileController extends Controller
         $path     = $request->get('path', '');
 
         $path     = $this->getFullPath($path);
-        
+
         $contents = $request->get('contents', '');
 
         return [

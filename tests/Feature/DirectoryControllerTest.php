@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace jwhulette\filevuer\Tests\Feature;
 
@@ -14,7 +15,7 @@ class DirectoryControllerTest extends TestCase
 
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'listContents','createDir', 'deleteDir'])
+            ->setMethods(['cloud', 'listContents', 'createDir', 'deleteDir'])
             ->getMock();
 
         $filesystem->method('cloud')
@@ -28,34 +29,35 @@ class DirectoryControllerTest extends TestCase
 
         $filesystem->method('deleteDir')
             ->willReturn(true);
-            
+
         $this->app->instance(FilesystemManager::class, $filesystem);
     }
 
     public function testIndex()
     {
         $response = $this->withSession($this->getSessionValues())
-            ->get(route('filevuer.directory'), [ 'path' => '/']);
-                    
+            ->get(route('filevuer.directory'), ['path' => '/']);
+        dd($response->exception);
+
         $response->assertStatus(200);
-        
+
         $this->assertEquals($response->getContent(), json_encode(['listing' => $this->dummyListing()]));
     }
 
     public function testCreate()
     {
         $response = $this->withSession($this->getSessionValues())
-            ->post(route('filevuer.directory'), [ 'path' => 'dir/subdir']);
+            ->post(route('filevuer.directory'), ['path' => 'dir/subdir']);
 
         $response->assertStatus(201);
-        
+
         $this->assertEquals('{"success":true}', $response->getContent());
     }
 
     public function testDelete()
     {
         $response = $this->withSession($this->getSessionValues())
-            ->delete(route('filevuer.directory'), [ 'path' => ['dir/subdir']]);
+            ->delete(route('filevuer.directory'), ['path' => ['dir/subdir']]);
 
         $response->assertStatus(200);
 

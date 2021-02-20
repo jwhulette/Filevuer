@@ -22,11 +22,9 @@ abstract class TestCase extends BaseTestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        $app->config->set('filevuer.connections', $this->dummyConnections());
+        $app['config']->set('filevuer.connections', $this->dummyConnections());
 
-        $app->config->set('view.paths', [__DIR__ . '/../src/resources/views']);
-        
-        $app->config->set('routes', \jwhulette\filevuer\Filevuer::routes());
+        // $app['config']->set('view.paths', [__DIR__ . '/../resources/views']);
     }
 
     protected function getSessionValues()
@@ -78,7 +76,7 @@ abstract class TestCase extends BaseTestCase
                     'home_dir' => "public_html",
                 ],
             ],
-    
+
             'S3' => [
                 [
                     'name'     => 'AWSS3',

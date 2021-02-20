@@ -1,7 +1,8 @@
 <?php
-declare(strict_types = 1);
 
-namespace Jwhulette\Filevuer\controllers;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -36,7 +37,7 @@ class DownloadController extends Controller
     public function generate(Request $request): Response
     {
         $hash = $this->downloadService->setHash($request->path);
-        
+
         return response($hash);
     }
 

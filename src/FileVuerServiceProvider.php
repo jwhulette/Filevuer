@@ -41,7 +41,7 @@ class FilevuerServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasAssets()
-            ->hasRoute('web');
+            ->hasRoutes('web');
     }
 
     /**

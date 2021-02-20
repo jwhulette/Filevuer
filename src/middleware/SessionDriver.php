@@ -1,7 +1,8 @@
 <?php
-declare(strict_types = 1);
 
-namespace jwhulette\filevuer\middleware;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Middleware;
 
 use Closure;
 use jwhulette\filevuer\services\SessionInterface;
@@ -22,7 +23,7 @@ class SessionDriver
     public function handle($request, Closure $next)
     {
         $loggedIn = session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false';
-        
+
         if ('true' === $loggedIn) {
             $this->applyConfiguration();
         }

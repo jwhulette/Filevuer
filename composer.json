@@ -30,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "jwhulette\\filevuer\\": "src/"
+            "Jwhulette\\Filevuer\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "jwhulette\\filevuer\\Tests\\": "tests/"
+            "Jwhulette\\Filevuer\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -47,7 +47,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "jwhulette\\filevuer\\FileVuerServiceProvider"
+                "Jwhulette\\Filevuer\\FilevuerServiceProvider"
             ]
         }
     }

@@ -1,7 +1,8 @@
 <?php
-declare(strict_types = 1);
 
-namespace Jwhulette\Filevuer\controllers;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class FilevuerController extends Controller implements SessionInterface
     public function index(): View
     {
         $this->development();
-        
+
         return view('filevuer::index', [
             'connections' => $this->configurationService->getConnectionDisplayList()->toJson(),
             'loggedIn'    => session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false',
@@ -76,11 +77,11 @@ class FilevuerController extends Controller implements SessionInterface
         $config = $this->configurationService->getSelectedConnection($request->connection);
 
         $result = $this->connectionService->connectToService($config);
-        
+
         if ($result) {
             session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
         }
-        
+
         return response()->json($result);
     }
 
@@ -92,7 +93,7 @@ class FilevuerController extends Controller implements SessionInterface
     public function logout(): RedirectResponse
     {
         $this->connectionService->logout();
-        
+
         return redirect()->route('filevuer.index');
     }
 

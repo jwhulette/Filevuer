@@ -1,7 +1,8 @@
 <?php
-declare(strict_types = 1);
 
-namespace Jwhulette\Filevuer\controllers;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
