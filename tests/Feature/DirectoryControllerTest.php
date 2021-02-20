@@ -13,6 +13,7 @@ class DirectoryControllerTest extends TestCase
     {
         parent::setUp();
 
+        // Mock our filesystem manager
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
             ->setMethods(['cloud', 'listContents', 'createDir', 'deleteDir'])
@@ -33,18 +34,18 @@ class DirectoryControllerTest extends TestCase
         $this->app->instance(FilesystemManager::class, $filesystem);
     }
 
-    public function testIndex()
+    public function test_directory_index()
     {
         $response = $this->withSession($this->getSessionValues())
             ->get(route('filevuer.directory'), ['path' => '/']);
-        dd($response->exception);
+        dd($response->exception->getMessage());
 
         $response->assertStatus(200);
 
         $this->assertEquals($response->getContent(), json_encode(['listing' => $this->dummyListing()]));
     }
 
-    public function testCreate()
+    public function test_create_directory()
     {
         $response = $this->withSession($this->getSessionValues())
             ->post(route('filevuer.directory'), ['path' => 'dir/subdir']);
@@ -54,7 +55,7 @@ class DirectoryControllerTest extends TestCase
         $this->assertEquals('{"success":true}', $response->getContent());
     }
 
-    public function testDelete()
+    public function test_delete_directory()
     {
         $response = $this->withSession($this->getSessionValues())
             ->delete(route('filevuer.directory'), ['path' => ['dir/subdir']]);
