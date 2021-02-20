@@ -1,9 +1,10 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Jwhulette\Filevuer;
 
-use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPackageTools\Package;
 use jwhulette\filevuer\services\FileService;
 use jwhulette\filevuer\services\UploadService;
 use jwhulette\filevuer\middleware\SessionDriver;
@@ -12,13 +13,14 @@ use jwhulette\filevuer\services\DirectoryService;
 use jwhulette\filevuer\services\ConnectionService;
 use jwhulette\filevuer\services\ConfigurationService;
 use jwhulette\filevuer\services\FileServiceInterface;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 use jwhulette\filevuer\services\UploadServiceInterface;
 use jwhulette\filevuer\services\DownloadServiceInterface;
 use jwhulette\filevuer\services\DirectoryServiceInterface;
 use jwhulette\filevuer\services\ConnectionServiceInterface;
 use jwhulette\filevuer\services\ConfigurationServiceInterface;
 
-class FilevuerServiceProvider extends ServiceProvider
+class FilevuerServiceProvider extends PackageServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -26,29 +28,26 @@ class FilevuerServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $defer = true;
-    
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->publishes([
-            __DIR__ . '/../config/filevuer.php' => config_path('filevuer.php'),
-            __DIR__ . '/resources/views' => resource_path('views/vendor/filevuer'),
-            __DIR__ . '/public' => public_path('vendor/filevuer')
-        ], 'filevuer');
 
-        $this->loadViewsFrom(__DIR__.'/resources/views', 'filevuer');
+    /**
+     * Configure the package
+     *
+     * @param \Spatie\LaravelPackageTools\Package $package
+     */
+    public function configurePackage(Package $package): void
+    {
+        $package
+            ->name('filevuer')
+            ->hasConfigFile()
+            ->hasViews()
+            ->hasAssets()
+            ->hasRoute('web');
     }
 
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function registeringPackage()
     {
         $this->app['router']->aliasMiddleware('sessionDriver', SessionDriver::class);
 
@@ -61,7 +60,7 @@ class FilevuerServiceProvider extends ServiceProvider
         $this->app->bind(FileServiceInterface::class, FileService::class);
 
         $this->app->bind(DownloadServiceInterface::class, DownloadService::class);
-        
+
         $this->app->bind(UploadServiceInterface::class, UploadService::class);
     }
 }
