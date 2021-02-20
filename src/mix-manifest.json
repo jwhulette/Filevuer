@@ -1,4 +1,6 @@
 {
-    "/public/js/filevuer.js": "/public/js/filevuer.js",
-    "/public/css/filevuer.css": "/public/css/filevuer.css"
+    "/public/js/filevuer.js": "/public/js/filevuer.js?id=f453534e2a76b3a5afa7",
+    "/public/js/manifest.js": "/public/js/manifest.js?id=ba8e5a60ecbca92ca8d7",
+    "/public/css/filevuer.css": "/public/css/filevuer.css?id=0b243f69182cab82fd89",
+    "/public/js/vendor.js": "/public/js/vendor.js?id=a54d9a51a393ba7071c4"
 }

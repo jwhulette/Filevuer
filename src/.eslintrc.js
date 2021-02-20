@@ -1,35 +1,25 @@
 module.exports = {
     root: true,
     env: {
-        browser: true,
-    },
-    parserOptions: {
-        parser: 'babel-eslint',
-        sourceType: 'module',
+        node: true,
     },
     extends: [
-        'airbnb-base',
-        'plugin:vue/recommended',
-        'prettier/vue',
-        'plugin:prettier/recommended',
+        "plugin:vue/recommended", // enable recommended rules
+        "@vue/airbnb",
+        "@vue/typescript",
+        "plugin:prettier/recommended",
     ],
     rules: {
-        'comma-dangle': 'off',
-        'class-methods-use-this': 'off',
-        'import/no-unresolved': 'off',
-        'import/extensions': 'off',
-        'implicit-arrow-linebreak': 'off',
-        'import/prefer-default-export': 'off',
-        'vue/component-name-in-template-casing': [
-            'error',
-            'kebab-case',
+        "import/no-extraneous-dependencies": [
+            "error",
             {
-                ignores: [],
+                devDependencies: true,
             },
         ],
-        'prettier/prettier': [
-            'error',
-            { singleQuote: true, endOfLine: 'auto' },
-        ],
+    },
+    parserOptions: {
+        parser: "@typescript-eslint/parser",
+        sourceType: "module",
+        ecmaVersion: 2018,
     },
 };
