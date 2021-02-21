@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Jwhulette\Filevuer\Traits\SessionDriverTrait;
 use Jwhulette\Filevuer\Services\FileServiceInterface;
@@ -16,13 +17,10 @@ class FileController extends Controller
 {
     use SessionDriverTrait;
 
-    /**
-     * @var FileServiceInterface
-     */
-    private $fileservice;
+    private FileServiceInterface $fileservice;
 
     /**
-     * @param FileRepository $fileservice
+     * @param FileServiceInterface $fileservice
      */
     public function __construct(FileServiceInterface $fileservice)
     {
@@ -32,11 +30,11 @@ class FileController extends Controller
     /**
      * Show the files
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request)
+    public function show(Request $request): JsonResponse
     {
         $path     = $request->get('path', '');
 
@@ -50,26 +48,26 @@ class FileController extends Controller
             $contents = base64_encode($contents);
         }
 
-        return [
+        return response()->json([
             'contents' => $contents,
             'download' => $isBinary,
-        ];
+        ], 200);
     }
 
     /**
      * Create a new file
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $path = $request->get('path', '');
 
         $path = $this->getFullPath($path);
 
-        return response([
+        return response()->json([
             'success' => $this->fileservice->create($path),
         ], 201);
     }
@@ -77,11 +75,11 @@ class FileController extends Controller
     /**
      * Update a file
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $path     = $request->get('path', '');
 
@@ -89,24 +87,24 @@ class FileController extends Controller
 
         $contents = $request->get('contents', '');
 
-        return [
+        return response()->json([
             'success' => $this->fileservice->update($path, $contents),
-        ];
+        ], 200);
     }
 
     /**
      * Delete a file
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): JsonResponse
     {
         $path = $request->input('path', null);
 
-        return [
+        return response()->json([
             'success' => $this->fileservice->delete($path),
-        ];
+        ], 200);
     }
 }

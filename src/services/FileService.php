@@ -26,13 +26,13 @@ class FileService implements FileServiceInterface
      *
      * @throws InvalidArgumentException
      *
-     * @return mixed
+     * @return string|null
      */
     public function contents(?string $path = ''): ?string
     {
         $this->checkPath($path);
 
-        return $this->fileSystem->cloud()->read($path);
+        return $this->fileSystem->cloud()->get($path);
     }
 
     /**

@@ -6,6 +6,7 @@ namespace Jwhulette\Filevuer\Services;
 
 use Exception;
 use ZipArchive;
+use RuntimeException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Filesystem\FilesystemManager;
 use Jwhulette\Filevuer\Traits\SessionDriverTrait;

@@ -6,6 +6,7 @@ namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Jwhulette\Filevuer\Services\DirectoryServiceInterface;
 
@@ -27,15 +28,15 @@ class DirectoryController extends Controller
     /**
      * List directorys.
      *
-     * @param Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request): Response
+    public function index(Request $request): JsonResponse
     {
         $path = $request->get('path', '/');
 
-        return response([
+        return response()->json([
             'listing' => $this->directory->listing($path),
         ], 200);
     }
@@ -45,13 +46,13 @@ class DirectoryController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request): Response
+    public function create(Request $request): JsonResponse
     {
         $path = $request->get('path', '');
 
-        return response([
+        return response()->json([
             'success' => $this->directory->create($path),
         ], 201);
     }
@@ -59,17 +60,17 @@ class DirectoryController extends Controller
     /**
      * Delete directory.
      *
-     * @param Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request): JsonResponse
     {
         $path = $request->input('path', null);
 
         $this->directory->delete($path);
 
-        return response([
+        return response()->json([
             'success' => 'Directory deleted',
         ], 200);
     }

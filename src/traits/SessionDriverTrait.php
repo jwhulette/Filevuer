@@ -22,11 +22,6 @@ trait SessionDriverTrait
         session()->put(SessionInterface::FILEVUER_DATA, $data);
     }
 
-    /**
-     * @throws RuntimeException
-     *
-     * @return void
-     */
     public function applyConfiguration(): void
     {
         $driver = session()->get(SessionInterface::FILEVUER_DRIVER);

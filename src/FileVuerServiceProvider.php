@@ -7,7 +7,7 @@ namespace Jwhulette\Filevuer;
 use Spatie\LaravelPackageTools\Package;
 use Jwhulette\Filevuer\Services\FileService;
 use Jwhulette\Filevuer\Services\UploadService;
-use Jwhulette\Filevuer\middleware\SessionDriver;
+use Jwhulette\Filevuer\Middleware\SessionDriver;
 use Jwhulette\Filevuer\Services\DownloadService;
 use Jwhulette\Filevuer\Services\DirectoryService;
 use Jwhulette\Filevuer\Services\ConnectionService;

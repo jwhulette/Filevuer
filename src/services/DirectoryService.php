@@ -39,7 +39,7 @@ class DirectoryService implements DirectoryServiceInterface
     {
         $path     = $this->getFullPath($path);
 
-        $contents = $this->fileSystem->cloud()->listContents($path);
+        $contents = $this->fileSystem->cloud()->directories($path);
 
         $contents = $this->sortForListing($contents);
 
@@ -58,7 +58,7 @@ class DirectoryService implements DirectoryServiceInterface
     public function delete(?array $path): bool
     {
         foreach ($path as $dir) {
-            $this->fileSystem->cloud()->deleteDir($dir);
+            $this->fileSystem->cloud()->deleteDirectory($dir);
         }
 
         return true;
@@ -67,7 +67,7 @@ class DirectoryService implements DirectoryServiceInterface
     /**
      * Creates an empty directory.
      *
-     * @param $path
+     * @param string $path
      *
      * @return bool
      */
@@ -75,13 +75,13 @@ class DirectoryService implements DirectoryServiceInterface
     {
         $path = $this->getFullPath($path);
 
-        return $this->fileSystem->cloud()->createDir($path);
+        return $this->fileSystem->cloud()->makeDirectory($path);
     }
 
     /**
      * Sort the listing by type and filename.
      *
-     * @param $contents
+     * @param array $contents
      *
      * @return array
      */
@@ -105,7 +105,7 @@ class DirectoryService implements DirectoryServiceInterface
     /**
      * Format the filesize human readable.
      *
-     * @param $contents
+     * @param array $contents
      *
      * @return array
      */

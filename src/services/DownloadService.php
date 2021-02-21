@@ -56,9 +56,9 @@ class DownloadService implements DownloadServiceInterface
     }
 
     /**
-     * @param array $paths
+     * @param string $hash
      *
-     * @return StreamedResponse
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function getDownload(string $hash): StreamedResponse
     {
@@ -103,7 +103,7 @@ class DownloadService implements DownloadServiceInterface
     public function addFilesToZip(array $file, ZipStream $zipStream): void
     {
         if ($file['type'] == 'dir') {
-            $listing = $this->fileSystem->cloud()->listContents($file['path'], true);
+            $listing = $this->fileSystem->cloud()->allDirectories($file['path']);
 
             foreach ($listing as $item) {
                 $this->addFileToZip($zipStream, $item, $file['dirname']);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Jwhulette\Filevuer\Services\UploadServiceInterface;
 
@@ -29,24 +30,23 @@ class UploadController extends Controller
     /**
      * Upload a file or folder
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function upload(Request $request)
+    public function upload(Request $request): JsonResponse
     {
         $files = $request->hasFile('files') ? $request->allFiles()['files'] : [];
         if (count($files) < 1) {
-            return response('No files received', 500);
+            return response()->json('No files received', 500);
         }
 
         try {
             $this->uploadService->uploadFiles($request->path, $request->allFiles()['files'], (bool) $request->extract);
         } catch (\Exception $e) {
-            \Log::error($e);
-            return response($e->getMessage(), 500);
+            return response()->json($e->getMessage(), 500);
         }
 
-        return response('OK', 200);
+        return response()->json('OK', 200);
     }
 }
