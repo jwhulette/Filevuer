@@ -1,10 +1,10 @@
 <?php
 
-namespace jwhulette\filevuer\Tests\Unit;
+namespace Jwhulette\Filevuer\Tests\Unit;
 
-use jwhulette\filevuer\Tests\TestCase;
-use jwhulette\filevuer\services\SessionInterface;
-use jwhulette\filevuer\traits\SessionDriverTrait;
+use Jwhulette\Filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Traits\SessionDriverTrait;
 
 class SessionDriverTraitTest extends TestCase
 {
@@ -38,7 +38,7 @@ class SessionDriverTraitTest extends TestCase
         $data = $this->dummyConnections()['FTP'][0];
         $this->setSessionData($data);
         session()->put(SessionInterface::FILEVUER_HOME_DIR, $data['home_dir']);
-        
+
         $this->assertEquals('public_html', session(SessionInterface::FILEVUER_HOME_DIR));
     }
 
@@ -47,7 +47,7 @@ class SessionDriverTraitTest extends TestCase
         $data = $this->dummyConnections()['S3'][0];
         $this->setSessionData($data);
         session()->put(SessionInterface::FILEVUER_HOME_DIR, $data['home_dir']);
-        
+
         $this->assertEquals('/test', session(SessionInterface::FILEVUER_HOME_DIR));
     }
 }

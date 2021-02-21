@@ -1,11 +1,11 @@
 <?php
 
-namespace jwhulette\filevuer\Tests\Unit;
+namespace Jwhulette\Filevuer\Tests\Unit;
 
 use Illuminate\Http\Request;
-use jwhulette\filevuer\Tests\TestCase;
-use jwhulette\filevuer\middleware\SessionDriver;
-use jwhulette\filevuer\services\SessionInterface;
+use Jwhulette\Filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\middleware\SessionDriver;
+use Jwhulette\Filevuer\Services\SessionInterface;
 
 class SessionDriverMiddelwareTest extends TestCase
 {

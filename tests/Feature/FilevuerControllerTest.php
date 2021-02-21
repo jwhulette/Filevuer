@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jwhulette\filevuer\Tests\Feature;
+namespace Jwhulette\Filevuer\Tests\Feature;
 
-use jwhulette\filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\Tests\TestCase;
 use Illuminate\Filesystem\FilesystemManager;
-use jwhulette\filevuer\services\SessionInterface;
+use Jwhulette\Filevuer\Services\SessionInterface;
 
 class FilevuerControllerTest extends TestCase
 {

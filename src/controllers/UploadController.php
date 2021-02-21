@@ -6,7 +6,7 @@ namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use jwhulette\filevuer\services\UploadServiceInterface;
+use Jwhulette\Filevuer\Services\UploadServiceInterface;
 
 /**
  * UploadController Class

@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace jwhulette\filevuer\services;
+namespace Jwhulette\Filevuer\Services;
 
 use Illuminate\Support\Collection;
 
@@ -44,7 +45,7 @@ class ConfigurationService implements ConfigurationServiceInterface
             foreach ($items as $item) {
                 if ($item['name'] == $name) {
                     $item['driver'] = strtolower($key);
-                    
+
                     return $item;
                 }
             }

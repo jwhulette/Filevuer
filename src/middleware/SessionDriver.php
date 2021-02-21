@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jwhulette\Filevuer\Middleware;
 
 use Closure;
-use jwhulette\filevuer\services\SessionInterface;
-use jwhulette\filevuer\traits\SessionDriverTrait;
+use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Traits\SessionDriverTrait;
 
 class SessionDriver
 {

@@ -1,30 +1,31 @@
 <?php
-declare(strict_types = 1);
 
-namespace jwhulette\filevuer\Tests\Feature;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Tests\Feature;
 
 use ZipStream\ZipStream;
 use Illuminate\Support\Str;
-use jwhulette\filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\Tests\TestCase;
 use Illuminate\Filesystem\FilesystemManager;
-use jwhulette\filevuer\services\SessionInterface;
-use jwhulette\filevuer\services\DownloadServiceInterface;
+use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Services\DownloadServiceInterface;
 
 class DownloadControllerTest extends TestCase
 {
     public function testGenerate()
     {
         $response = $this->withSession($this->getSessionValues())
-            ->post(route('filevuer.generate'), [ 'path' => ['/test', '/test2']]);
+            ->post(route('filevuer.generate'), ['path' => ['/test', '/test2']]);
 
-        $response->assertSessionHas(SessionInterface::FILEVUER_DOWNLOAD.$response->getContent());
-        
+        $response->assertSessionHas(SessionInterface::FILEVUER_DOWNLOAD . $response->getContent());
+
         $response->assertStatus(200);
     }
 
     public function testDownloadSingleFile()
     {
-        session()->put(SessionInterface::FILEVUER_DOWNLOAD.'123456', [ [
+        session()->put(SessionInterface::FILEVUER_DOWNLOAD . '123456', [[
             'type'       => 'file',
             'path'       => 'fileA.txt',
             'visibility' => 'public',
@@ -40,7 +41,7 @@ class DownloadControllerTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertEquals('application/octet-stream;', $response->headers->get('Content-Type'));
- 
+
         $this->assertTrue(Str::contains(
             $response->headers->get('Content-Disposition'),
             'attachment; filename='
@@ -53,7 +54,7 @@ class DownloadControllerTest extends TestCase
 
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'listContents','readStream'])
+            ->setMethods(['cloud', 'listContents', 'readStream'])
             ->getMock();
 
         $filesystem->method('cloud')
@@ -75,15 +76,15 @@ class DownloadControllerTest extends TestCase
 
         $service = app()->make(DownloadServiceInterface::class);
 
-        session()->put(SessionInterface::FILEVUER_DOWNLOAD.'123456', $files);
-        
+        session()->put(SessionInterface::FILEVUER_DOWNLOAD . '123456', $files);
+
         $response = $this->withSession($this->getSessionValues())
             ->get(route('filevuer.download', ['hash' => '123456']));
 
         $response->assertStatus(200);
 
         $this->assertEquals('application/octet-stream;', $response->headers->get('Content-Type'));
- 
+
         $this->assertTrue(Str::contains(
             $response->headers->get('Content-Disposition'),
             'attachment; filename='

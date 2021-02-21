@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use jwhulette\filevuer\services\DownloadServiceInterface;
+use Jwhulette\Filevuer\Services\DownloadServiceInterface;
 
 /**
  * DownloadController Class

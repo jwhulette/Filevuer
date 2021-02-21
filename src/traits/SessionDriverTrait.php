@@ -1,9 +1,10 @@
 <?php
-declare(strict_types = 1);
 
-namespace jwhulette\filevuer\Traits;
+declare(strict_types=1);
 
-use jwhulette\filevuer\services\SessionInterface;
+namespace Jwhulette\Filevuer\Traits;
+
+use Jwhulette\Filevuer\Services\SessionInterface;
 
 trait SessionDriverTrait
 {
@@ -71,7 +72,7 @@ trait SessionDriverTrait
     public function setHomeDirectory(?string $homeDirectory): void
     {
         $homeDir = '';
-        
+
         if (!is_null($homeDirectory)) {
             $homeDir = sprintf('/%s/', trim($homeDirectory, '/'));
         }

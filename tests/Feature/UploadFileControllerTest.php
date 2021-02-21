@@ -1,12 +1,13 @@
 <?php
-declare(strict_types = 1);
 
-namespace jwhulette\filevuer\Tests\Feature;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Tests\Feature;
 
 use RuntimeException;
 use Illuminate\Http\UploadedFile;
-use jwhulette\filevuer\Tests\TestCase;
-use jwhulette\filevuer\services\UploadServiceInterface;
+use Jwhulette\Filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\Services\UploadServiceInterface;
 
 class UploadFileControllerTest extends TestCase
 {
@@ -20,7 +21,7 @@ class UploadFileControllerTest extends TestCase
         $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
             'path' => '/test',
             'files' => []
-            ]);
+        ]);
 
         $response->assertStatus(500);
     }
@@ -34,7 +35,7 @@ class UploadFileControllerTest extends TestCase
         $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
             'path'  => '/test',
             'files' => null
-            ]);
+        ]);
 
         $response->assertStatus(500);
     }
@@ -45,13 +46,16 @@ class UploadFileControllerTest extends TestCase
             UploadedFile::fake()->create('document.pdf', 20000),
         ];
         $upload = $this->createMock(UploadServiceInterface::class);
+
         $upload->method('uploadFiles');
+
         $this->app->instance(UploadServiceInterface::class, $upload);
 
         $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
             'path'  => '/test',
             'files' => $files
-            ]);
+        ]);
+        // dd($response->exception->getMessage());
 
         $response->assertStatus(200);
     }
@@ -62,15 +66,17 @@ class UploadFileControllerTest extends TestCase
             UploadedFile::fake()->create('document.pdf', 20000),
         ];
         $upload = $this->createMock(UploadServiceInterface::class);
+
         $upload->method('uploadFiles')
             ->will($this->throwException(new RuntimeException()));
+
         $this->app->instance(UploadServiceInterface::class, $upload);
 
         $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
             'path'    => '/test',
             'files'   => $files,
             'extract' => true,
-            ]);
+        ]);
 
         $response->assertStatus(500);
     }

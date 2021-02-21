@@ -6,8 +6,8 @@ namespace Jwhulette\Filevuer\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use jwhulette\filevuer\Traits\SessionDriverTrait;
-use jwhulette\filevuer\services\FileServiceInterface;
+use Jwhulette\Filevuer\Traits\SessionDriverTrait;
+use Jwhulette\Filevuer\Services\FileServiceInterface;
 
 /**
  * FileController Class

@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\RedirectResponse;
-use jwhulette\filevuer\services\SessionInterface;
-use jwhulette\filevuer\services\ConnectionServiceInterface;
-use jwhulette\filevuer\services\ConfigurationServiceInterface;
+use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Services\ConnectionServiceInterface;
+use Jwhulette\Filevuer\Services\ConfigurationServiceInterface;
 
 class FilevuerController extends Controller implements SessionInterface
 {

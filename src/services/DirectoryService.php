@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
-namespace jwhulette\filevuer\services;
+namespace Jwhulette\Filevuer\Services;
 
 use Illuminate\Filesystem\FilesystemManager;
-use jwhulette\filevuer\Traits\SessionDriverTrait;
-use jwhulette\filevuer\services\DirectoryServiceInterface;
+use Jwhulette\Filevuer\Traits\SessionDriverTrait;
+use Jwhulette\Filevuer\Services\DirectoryServiceInterface;
 
 /**
  * Directory Service Class
@@ -36,7 +37,7 @@ class DirectoryService implements DirectoryServiceInterface
         $this->fileSystem = $fileSystem;
     }
 
-    
+
     /**
      * List the directory contenets
      *
@@ -51,7 +52,7 @@ class DirectoryService implements DirectoryServiceInterface
         $contents = $this->fileSystem->cloud()->listContents($path);
 
         $contents = $this->sortForListing($contents);
-        
+
         $contents = $this->formatFileSize($contents);
 
         return $contents;
@@ -99,7 +100,7 @@ class DirectoryService implements DirectoryServiceInterface
         usort($contents, function ($typeA, $typeB) {
             // Sort by type
             $comparison = strcmp($typeA['type'], $typeB['type']);
-            
+
             if (0 !== $comparison) {
                 return $comparison;
             }
@@ -141,14 +142,14 @@ class DirectoryService implements DirectoryServiceInterface
     {
         if ($size > 0) {
             $size = (int) $size;
-            
+
             $base = log($size) / log(1024);
-            
+
             $suffixes = array(' bytes', ' KB', ' MB', ' GB', ' TB');
 
-            return round(pow(1024, $base - floor($base)), $precision).$suffixes[floor($base)];
+            return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
         }
-            
-        return $size.' bytes';
+
+        return $size . ' bytes';
     }
 }

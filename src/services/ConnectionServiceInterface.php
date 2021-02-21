@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace jwhulette\filevuer\services;
+namespace Jwhulette\Filevuer\Services;
 
 interface ConnectionServiceInterface
 {

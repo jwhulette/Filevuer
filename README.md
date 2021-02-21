@@ -24,7 +24,7 @@ This is a simple FTP/S3 filebrowser Laravel package based on the work done by [O
 
 ```PHP
 Route::group(['middleware' => 'auth'], function () {
-    jwhulette\filevuer\Filevuer::routes();
+    Jwhulette\Filevuer\Filevuer::routes();
 });
 ```
 

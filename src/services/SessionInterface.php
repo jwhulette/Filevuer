@@ -1,14 +1,15 @@
 <?php
-declare(strict_types = 1);
 
-namespace jwhulette\filevuer\services;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Services;
 
 interface SessionInterface
 {
-    const FILEVUER_DRIVER          = 'filevuerDriver';
-    const FILEVUER_LOGGEDIN        = 'filevuerLoggedIn';
-    const FILEVUER_DATA            = 'filevuerData';
-    const FILEVUER_HOME_DIR        = 'filevuerHomeDirectory';
-    const FILEVUER_CONNECTION_NAME = 'filevuerConnectionName';
-    const FILEVUER_DOWNLOAD        = 'filevuerDownload';
+    public const FILEVUER_DRIVER          = 'filevuerDriver';
+    public const FILEVUER_LOGGEDIN        = 'filevuerLoggedIn';
+    public const FILEVUER_DATA            = 'filevuerData';
+    public const FILEVUER_HOME_DIR        = 'filevuerHomeDirectory';
+    public const FILEVUER_CONNECTION_NAME = 'filevuerConnectionName';
+    public const FILEVUER_DOWNLOAD        = 'filevuerDownload';
 }

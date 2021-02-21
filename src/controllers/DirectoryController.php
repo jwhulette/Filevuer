@@ -7,7 +7,7 @@ namespace Jwhulette\Filevuer\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use jwhulette\filevuer\services\DirectoryServiceInterface;
+use Jwhulette\Filevuer\Services\DirectoryServiceInterface;
 
 /**
  * DirectoryController Class

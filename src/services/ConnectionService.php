@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
-namespace jwhulette\filevuer\services;
+namespace Jwhulette\Filevuer\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Filesystem\FilesystemManager;
-use jwhulette\filevuer\services\SessionInterface;
-use jwhulette\filevuer\traits\SessionDriverTrait;
+use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Traits\SessionDriverTrait;
 
 class ConnectionService implements ConnectionServiceInterface
 {
@@ -54,7 +55,7 @@ class ConnectionService implements ConnectionServiceInterface
 
             // Test connection
             $this->fileSystem->cloud()->files('/');
-            
+
             session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
 
             return true;

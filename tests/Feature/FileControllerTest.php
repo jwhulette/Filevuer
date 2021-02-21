@@ -1,13 +1,14 @@
 <?php
-declare(strict_types = 1);
 
-namespace jwhulette\filevuer\Tests\Feature;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Tests\Feature;
 
 use InvalidArgumentException;
-use jwhulette\filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\Tests\TestCase;
 use Illuminate\Contracts\Filesystem\Cloud;
 use Illuminate\Filesystem\FilesystemManager;
-use jwhulette\filevuer\services\SessionInterface;
+use Jwhulette\Filevuer\Services\SessionInterface;
 
 class FileControllerTest extends TestCase
 {
@@ -16,7 +17,7 @@ class FileControllerTest extends TestCase
         parent::setUp();
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'read','put','delete'])
+            ->setMethods(['cloud', 'read', 'put', 'delete'])
             ->getMock();
         $filesystem->method('cloud')
             ->will($this->returnSelf());
@@ -31,7 +32,7 @@ class FileControllerTest extends TestCase
 
     public function testShow()
     {
-        $response = $this->withSession($this->getSessionValues())->get(route('filevuer.file'), [ 'path' => '']);
+        $response = $this->withSession($this->getSessionValues())->get(route('filevuer.file'), ['path' => '']);
 
         $response->assertStatus(200);
         $this->assertEquals(json_encode([
@@ -43,7 +44,7 @@ class FileControllerTest extends TestCase
     public function testShowFailed()
     {
         session()->forget(SessionInterface::FILEVUER_HOME_DIR);
-        $response = $this->put(route('filevuer.file'), [ 'path' => null]);
+        $response = $this->put(route('filevuer.file'), ['path' => null]);
 
         $response->assertStatus(500);
     }
@@ -51,7 +52,7 @@ class FileControllerTest extends TestCase
 
     public function testCreate()
     {
-        $response = $this->withSession($this->getSessionValues())->post(route('filevuer.file'), [ 'path' => '']);
+        $response = $this->withSession($this->getSessionValues())->post(route('filevuer.file'), ['path' => '']);
 
         $response->assertStatus(201);
         $this->assertEquals('{"success":true}', $response->getContent());
@@ -59,7 +60,7 @@ class FileControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $response = $this->withSession($this->getSessionValues())->put(route('filevuer.file'), [ 'path' => '', 'contents' => 'new contents']);
+        $response = $this->withSession($this->getSessionValues())->put(route('filevuer.file'), ['path' => '', 'contents' => 'new contents']);
 
         $response->assertStatus(200);
         $this->assertEquals('{"success":true}', $response->getContent());
@@ -67,7 +68,7 @@ class FileControllerTest extends TestCase
 
     public function testDelete()
     {
-        $response = $this->withSession($this->getSessionValues())->delete(route('filevuer.file'), [ 'path' => ['test.txt']]);
+        $response = $this->withSession($this->getSessionValues())->delete(route('filevuer.file'), ['path' => ['test.txt']]);
 
         $response->assertStatus(200);
         $this->assertEquals('{"success":true}', $response->getContent());

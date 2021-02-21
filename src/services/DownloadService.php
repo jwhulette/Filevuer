@@ -1,19 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
-namespace jwhulette\filevuer\services;
+namespace Jwhulette\Filevuer\Services;
 
 use Carbon\Carbon;
 use ZipStream\ZipStream;
 use Illuminate\Support\Collection;
 use Illuminate\Filesystem\FilesystemManager;
-use jwhulette\filevuer\services\SessionInterface;
+use Jwhulette\Filevuer\Services\SessionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use jwhulette\filevuer\services\DownloadServiceInterface;
+use Jwhulette\Filevuer\Services\DownloadServiceInterface;
 
 /**
-  * Download Service Class
-  */
+ * Download Service Class
+ */
 class DownloadService implements DownloadServiceInterface
 {
     /**
@@ -40,8 +41,8 @@ class DownloadService implements DownloadServiceInterface
     {
         $hash = Carbon::now()->getTimestamp();
 
-        session()->put(SessionInterface::FILEVUER_DOWNLOAD.$hash, $paths);
-        
+        session()->put(SessionInterface::FILEVUER_DOWNLOAD . $hash, $paths);
+
         return (string) $hash;
     }
 
@@ -52,10 +53,10 @@ class DownloadService implements DownloadServiceInterface
      */
     public function getHash(string $hash): Collection
     {
-        $paths = session(SessionInterface::FILEVUER_DOWNLOAD.$hash);
-        
-        session()->forget(SessionInterface::FILEVUER_DOWNLOAD.$hash);
-        
+        $paths = session(SessionInterface::FILEVUER_DOWNLOAD . $hash);
+
+        session()->forget(SessionInterface::FILEVUER_DOWNLOAD . $hash);
+
         return  collect($paths);
     }
 
@@ -71,7 +72,7 @@ class DownloadService implements DownloadServiceInterface
         if ($downloads->count() == 1 && $downloads->pluck('type')->first() == 'file') {
             return $this->downloadSingleFile($downloads->first());
         }
-      
+
         return $this->downloadZipFile($downloads);
     }
 
@@ -83,18 +84,18 @@ class DownloadService implements DownloadServiceInterface
     public function downloadZipFile(Collection $downloads): StreamedResponse
     {
         $zipFilename = $this->getZipFilename();
-        
+
         $zipStream = new ZipStream($zipFilename);
 
         return response()->stream(function () use ($zipStream, $downloads) {
             $downloads->each(function ($downloadFile) use ($zipStream) {
                 $this->addFilesToZip($downloadFile, $zipStream);
             });
-    
+
             $zipStream->finish();
         }, 200, [
             "Content-Type" => 'application/octet-stream;',
-            'Content-Disposition' => 'attachment; filename='.$zipFilename,
+            'Content-Disposition' => 'attachment; filename=' . $zipFilename,
         ]);
     }
 
@@ -108,7 +109,7 @@ class DownloadService implements DownloadServiceInterface
     {
         if ($file['type'] == 'dir') {
             $listing = $this->fileSystem->cloud()->listContents($file['path'], true);
-            
+
             foreach ($listing as $item) {
                 $this->addFileToZip($zipStream, $item, $file['dirname']);
             }
@@ -129,7 +130,7 @@ class DownloadService implements DownloadServiceInterface
         if ($file['type'] == 'dir') {
             return;
         }
-        
+
         $filePath = substr($file['path'], strlen($rootDir) + 1);
 
         $stream   = $this->fileSystem->cloud()->readStream($file['path']);
@@ -143,8 +144,8 @@ class DownloadService implements DownloadServiceInterface
     public function getZipFilename(): string
     {
         $connectionName = session(SessionInterface::FILEVUER_CONNECTION_NAME);
-        
-        return strtolower($connectionName). '_' . Carbon::now()->getTimestamp() . '.zip';
+
+        return strtolower($connectionName) . '_' . Carbon::now()->getTimestamp() . '.zip';
     }
 
     /**
@@ -159,7 +160,7 @@ class DownloadService implements DownloadServiceInterface
             fpassthru($stream);
         }, 200, [
             "Content-Type" => 'application/octet-stream;',
-            'Content-Disposition' => 'attachment; filename="'.$downloadFile['basename'].'"',
+            'Content-Disposition' => 'attachment; filename="' . $downloadFile['basename'] . '"',
         ]);
     }
 }

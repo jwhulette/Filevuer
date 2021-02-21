@@ -1,9 +1,9 @@
 <?php
 
-namespace jwhulette\filevuer\Tests;
+namespace Jwhulette\Filevuer\Tests;
 
-use jwhulette\filevuer\FileVuerServiceProvider;
-use jwhulette\filevuer\services\SessionInterface;
+use Jwhulette\Filevuer\FileVuerServiceProvider;
+use Jwhulette\Filevuer\Services\SessionInterface;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -23,8 +23,6 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('filevuer.connections', $this->dummyConnections());
-
-        // $app['config']->set('view.paths', [__DIR__ . '/../resources/views']);
     }
 
     protected function getSessionValues()

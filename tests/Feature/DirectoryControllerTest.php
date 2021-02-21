@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jwhulette\filevuer\Tests\Feature;
+namespace Jwhulette\Filevuer\Tests\Feature;
 
-use jwhulette\filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\Tests\TestCase;
 use Illuminate\Filesystem\FilesystemManager;
 
 class DirectoryControllerTest extends TestCase
@@ -37,7 +37,7 @@ class DirectoryControllerTest extends TestCase
     public function test_directory_index()
     {
         $response = $this->withSession($this->getSessionValues())
-            ->get(route('filevuer.directory'), ['path' => '/']);
+            ->get(route('filevuer.directory.index'));
 
         $response->assertStatus(200);
 
@@ -47,7 +47,7 @@ class DirectoryControllerTest extends TestCase
     public function test_create_directory()
     {
         $response = $this->withSession($this->getSessionValues())
-            ->post(route('filevuer.directory'), ['path' => 'dir/subdir']);
+            ->post(route('filevuer.directory.create'), ['path' => 'dir/subdir']);
 
         $response->assertStatus(201);
 
@@ -57,7 +57,7 @@ class DirectoryControllerTest extends TestCase
     public function test_delete_directory()
     {
         $response = $this->withSession($this->getSessionValues())
-            ->delete(route('filevuer.directory'), ['path' => ['dir/subdir']]);
+            ->delete(route('filevuer.directory.destroy'), ['path' => ['dir/subdir']]);
 
         $response->assertStatus(200);
 

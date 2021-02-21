@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Jwhulette\Filevuer;
 
 use Spatie\LaravelPackageTools\Package;
-use jwhulette\filevuer\services\FileService;
-use jwhulette\filevuer\services\UploadService;
-use jwhulette\filevuer\middleware\SessionDriver;
-use jwhulette\filevuer\services\DownloadService;
-use jwhulette\filevuer\services\DirectoryService;
-use jwhulette\filevuer\services\ConnectionService;
-use jwhulette\filevuer\services\ConfigurationService;
-use jwhulette\filevuer\services\FileServiceInterface;
+use Jwhulette\Filevuer\Services\FileService;
+use Jwhulette\Filevuer\Services\UploadService;
+use Jwhulette\Filevuer\middleware\SessionDriver;
+use Jwhulette\Filevuer\Services\DownloadService;
+use Jwhulette\Filevuer\Services\DirectoryService;
+use Jwhulette\Filevuer\Services\ConnectionService;
+use Jwhulette\Filevuer\Services\ConfigurationService;
+use Jwhulette\Filevuer\Services\FileServiceInterface;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use jwhulette\filevuer\services\UploadServiceInterface;
-use jwhulette\filevuer\services\DownloadServiceInterface;
-use jwhulette\filevuer\services\DirectoryServiceInterface;
-use jwhulette\filevuer\services\ConnectionServiceInterface;
-use jwhulette\filevuer\services\ConfigurationServiceInterface;
+use Jwhulette\Filevuer\Services\UploadServiceInterface;
+use Jwhulette\Filevuer\Services\DownloadServiceInterface;
+use Jwhulette\Filevuer\Services\DirectoryServiceInterface;
+use Jwhulette\Filevuer\Services\ConnectionServiceInterface;
+use Jwhulette\Filevuer\Services\ConfigurationServiceInterface;
 
 class FilevuerServiceProvider extends PackageServiceProvider
 {

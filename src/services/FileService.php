@@ -1,14 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
-namespace jwhulette\filevuer\services;
+namespace Jwhulette\Filevuer\Services;
 
 use InvalidArgumentException;
 use Illuminate\Filesystem\FilesystemManager;
 
 class FileService implements FileServiceInterface
 {
-    
+
     /**
      * Filesystem
      *
@@ -25,7 +26,7 @@ class FileService implements FileServiceInterface
     {
         $this->fileSystem = $fileSystem;
     }
-    
+
     /**
      * Get file contents from server.
      *

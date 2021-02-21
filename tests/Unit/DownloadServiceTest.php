@@ -1,13 +1,13 @@
 <?php
 
-namespace jwhulette\filevuer\Tests\Unit;
+namespace Jwhulette\Filevuer\Tests\Unit;
 
 use ZipStream\ZipStream;
 use Illuminate\Http\UploadedFile;
-use jwhulette\filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\Tests\TestCase;
 use Illuminate\Filesystem\FilesystemManager;
-use jwhulette\filevuer\services\SessionInterface;
-use jwhulette\filevuer\services\DownloadServiceInterface;
+use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Services\DownloadServiceInterface;
 
 class DownloadServiceTest extends TestCase
 {

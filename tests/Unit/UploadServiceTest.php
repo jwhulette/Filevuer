@@ -1,13 +1,13 @@
 <?php
 
-namespace jwhulette\filevuer\Tests\Unit;
+namespace Jwhulette\Filevuer\Tests\Unit;
 
 use Exception;
 use RuntimeException;
 use Illuminate\Http\UploadedFile;
-use jwhulette\filevuer\Tests\TestCase;
+use Jwhulette\Filevuer\Tests\TestCase;
 use Illuminate\Filesystem\FilesystemManager;
-use jwhulette\filevuer\services\UploadServiceInterface;
+use Jwhulette\Filevuer\Services\UploadServiceInterface;
 
 class UploadServiceTest extends TestCase
 {

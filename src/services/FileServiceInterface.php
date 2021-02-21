@@ -1,7 +1,8 @@
 <?php
-declare(strict_types = 1);
 
-namespace jwhulette\filevuer\services;
+declare(strict_types=1);
+
+namespace Jwhulette\Filevuer\Services;
 
 interface FileServiceInterface
 {
