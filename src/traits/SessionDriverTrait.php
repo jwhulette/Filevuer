@@ -66,8 +66,6 @@ trait SessionDriverTrait
 
     /**
      * @param string $homeDirectory
-     *
-     * @return void
      */
     public function setHomeDirectory(?string $homeDirectory): void
     {

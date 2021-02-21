@@ -15,21 +15,11 @@ class DirectoryService implements DirectoryServiceInterface
 {
     use SessionDriverTrait;
 
-    /**
-     * Filesystem
-     *
-     * @var object
-     */
-    protected $fileSystem;
+    protected FilesystemManager $fileSystem;
+
+    protected ConnectionServiceInterface $connectionService;
 
     /**
-     * @var ConnectionServiceInterface
-     */
-    protected $connectionService;
-
-    /**
-     * __construct
-     *
      * @param FilesystemManager $fileSystem
      */
     public function __construct(FilesystemManager $fileSystem)

@@ -22,9 +22,7 @@ class FileController extends Controller
     private $fileservice;
 
     /**
-     * __construct
-     *
-     * @param FileRepository $file
+     * @param FileRepository $fileservice
      */
     public function __construct(FileServiceInterface $fileservice)
     {

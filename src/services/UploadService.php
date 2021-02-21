@@ -14,14 +14,9 @@ class UploadService implements UploadServiceInterface
 {
     use SessionDriverTrait;
 
-    /**
-     * @var FilesystemManager
-     */
-    protected $fileSystem;
+    protected FilesystemManager $fileSystem;
 
     /**
-     * __construct
-     *
      * @param FilesystemManager $fileSystem
      */
     public function __construct(FilesystemManager $fileSystem)
@@ -130,8 +125,6 @@ class UploadService implements UploadServiceInterface
      * Crate a directory
      *
      * @param string $filename
-     *
-     * @return void
      */
     public function createDirectory(string $path, string $filename): void
     {

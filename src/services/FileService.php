@@ -9,17 +9,9 @@ use Illuminate\Filesystem\FilesystemManager;
 
 class FileService implements FileServiceInterface
 {
+    protected FilesystemManager $fileSystem;
 
     /**
-     * Filesystem
-     *
-     * @var object
-     */
-    protected $fileSystem;
-
-    /**
-     * __construct
-     *
      * @param FilesystemManager $fileSystem
      */
     public function __construct(FilesystemManager $fileSystem)

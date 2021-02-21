@@ -14,14 +14,9 @@ class ConnectionService implements ConnectionServiceInterface
 {
     use SessionDriverTrait;
 
-    /**
-     * @var FilesystemManager
-     */
-    protected $fileSystem;
+    protected FilesystemManager $fileSystem;
 
     /**
-     * __construct
-     *
      * @param FilesystemManager $fileSystem
      */
     public function __construct(FilesystemManager $fileSystem)
@@ -68,10 +63,8 @@ class ConnectionService implements ConnectionServiceInterface
 
     /**
      * Remove session values
-     *
-     * @return void
      */
-    public function logout()
+    public function logout(): void
     {
         session()->forget([
             SessionInterface::FILEVUER_DRIVER,

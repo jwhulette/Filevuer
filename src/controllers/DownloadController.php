@@ -18,8 +18,6 @@ class DownloadController extends Controller
     protected DownloadServiceInterface $downloadService;
 
     /**
-     *  __construct
-     *
      * @param DownloadServiceInterface $downloadService
      */
     public function __construct(DownloadServiceInterface $downloadService)

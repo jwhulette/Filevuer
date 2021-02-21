@@ -17,14 +17,9 @@ use Jwhulette\Filevuer\Services\DownloadServiceInterface;
  */
 class DownloadService implements DownloadServiceInterface
 {
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
+    private FilesystemManager $fileSystem;
 
     /**
-     * __construct
-     *
      * @param FilesystemManager $fileSystem
      */
     public function __construct(FilesystemManager $fileSystem)

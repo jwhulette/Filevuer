@@ -17,8 +17,6 @@ class DirectoryController extends Controller
     private DirectoryServiceInterface $directory;
 
     /**
-     * __construct.
-     *
      * @param DirectoryServiceInterface $directory
      */
     public function __construct(DirectoryServiceInterface $directory)

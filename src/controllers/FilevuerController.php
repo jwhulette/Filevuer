@@ -19,8 +19,6 @@ class FilevuerController extends Controller implements SessionInterface
     protected ConnectionServiceInterface $connectionService;
 
     /**
-     * __construct
-     *
      * @param ConfigurationServiceInterface $configurationService
      * @param ConnectionServiceInterface $connectionService
      */

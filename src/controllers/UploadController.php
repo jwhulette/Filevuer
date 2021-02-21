@@ -19,8 +19,6 @@ class UploadController extends Controller
     protected $uploadService;
 
     /**
-     * __construct
-     *
      * @param UploadServiceInterface $uploadService
      */
     public function __construct(UploadServiceInterface $uploadService)
