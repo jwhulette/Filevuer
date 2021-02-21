@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Filevuer Home</title>
 
-    <link href="{{ mix('vendor/filevuer/css/filevuer.css') }}" rel="stylesheet">
+    <link href="{{ '/vendor/filevuer/css/filevuer.css' }}" rel="stylesheet">
 </head>
 
 <body>
@@ -22,9 +22,9 @@
     }
     </script>
 
-    <script src="{{ mix('vendor/filevuer/js/manifest.js') }}"></script>
-    <script src="{{ mix('vendor/filevuer/js/vendor.js') }}"></script>    
-    <script src="{{ mix('vendor/filevuer/js/filevuer.js') }}"></script>
+    <script src="{{ '/vendor/filevuer/js/manifest.js' }}"></script>
+    <script src="{{ '/vendor/filevuer/js/vendor.js' }}"></script>    
+    <script src="{{ '/vendor/filevuer/js/filevuer.js' }}"></script>
 
 </body>
 

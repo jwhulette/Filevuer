@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 
-mix.setPublicPath('./');
+mix.setPublicPath("../resources/dist");
 
 /*
  |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ mix.setPublicPath('./');
 
 mix.extract(['vue']);
 
-mix.js('resources/assets/js/app.js', 'public/js/filevuer.js')
+mix.js("resources/js/app.js", "js/filevuer.js")
     .vue()
-    .sass('resources/assets/sass/app.scss', 'public/css/filevuer.css')
+    .sass("resources/sass/app.scss", "css/filevuer.css")
     .version();

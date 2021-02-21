@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace jwhulette\filevuer\Tests\Feature;
 
@@ -14,7 +15,7 @@ class FilevuerControllerTest extends TestCase
         parent::setUp();
     }
 
-    public function testIndexDisplayConnections()
+    public function test_index_display_connections()
     {
         $response = $this->get(route('filevuer.index'));
 
@@ -29,7 +30,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSee("AWS");
 
         $response->assertSee("logged-in");
-        
+
         $response->assertSee("selected=");
     }
 
@@ -54,7 +55,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertOk();
 
         $this->assertEquals('true', $response->getContent());
-        
+
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
@@ -76,7 +77,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertOk();
 
         $this->assertEquals('true', $response->getContent());
-        
+
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
@@ -98,7 +99,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertOk();
 
         $this->assertEquals('true', $response->getContent());
-        
+
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
@@ -109,7 +110,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertOk();
 
         $this->assertEquals('false', $response->getContent());
-        
+
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
@@ -120,7 +121,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertOk();
 
         $this->assertEquals('false', $response->getContent());
-        
+
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
@@ -131,7 +132,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertOk();
 
         $this->assertEquals('false', $response->getContent());
-        
+
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
@@ -150,7 +151,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSessionMissing(SessionInterface::FILEVUER_DATA);
 
         $response->assertSessionMissing(SessionInterface::FILEVUER_HOME_DIR);
-        
+
         $response->assertSessionMissing(SessionInterface::FILEVUER_CONNECTION_NAME);
     }
 }

@@ -38,7 +38,6 @@ class DirectoryControllerTest extends TestCase
     {
         $response = $this->withSession($this->getSessionValues())
             ->get(route('filevuer.directory'), ['path' => '/']);
-        dd($response->exception->getMessage());
 
         $response->assertStatus(200);
 
