@@ -34,7 +34,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSee("selected=");
     }
 
-    public function testConnectAlreadyLoggedIn()
+    public function test_connect_already_logged_in()
     {
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
@@ -59,7 +59,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
-    public function testConnectSuccessFTP()
+    public function test_connect_success_ftp()
     {
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
@@ -81,7 +81,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
-    public function testConnectSuccessS3()
+    public function test_connect_success_s3()
     {
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
@@ -103,7 +103,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSessionHas(SessionInterface::FILEVUER_LOGGEDIN, true);
     }
 
-    public function testConnectFailedFTP()
+    public function test_connect_failed_ftp()
     {
         $response = $this->post(route('filevuer.index'), ['connection' => 'FTP1']);
 
@@ -114,7 +114,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
-    public function testConnectFailedS3()
+    public function test_connect_failed_s3()
     {
         $response = $this->post(route('filevuer.index'), ['connection' => 'AWSS3']);
 
@@ -125,7 +125,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
-    public function testConnectFailedUnkownDriver()
+    public function test_connect_failed_unkown_driver()
     {
         $response = $this->post(route('filevuer.index'), ['connection' => 'RACKSPACE']);
 
@@ -136,7 +136,7 @@ class FilevuerControllerTest extends TestCase
         $response->assertSessionMissing(SessionInterface::FILEVUER_LOGGEDIN);
     }
 
-    public function testLogout()
+    public function test_logout()
     {
         $response = $this->get(route('filevuer.logout'));
 

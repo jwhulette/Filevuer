@@ -13,7 +13,7 @@ use Jwhulette\Filevuer\Services\DownloadServiceInterface;
 
 class DownloadControllerTest extends TestCase
 {
-    public function testGenerate()
+    public function test_generate()
     {
         $response = $this->withSession($this->getSessionValues())
             ->post(route('filevuer.generate'), ['path' => ['/test', '/test2']]);
@@ -23,7 +23,7 @@ class DownloadControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testDownloadSingleFile()
+    public function test_download_single_file()
     {
         session()->put(SessionInterface::FILEVUER_DOWNLOAD . '123456', [[
             'type'       => 'file',
@@ -48,7 +48,7 @@ class DownloadControllerTest extends TestCase
         ));
     }
 
-    public function testDownloadMulitFile()
+    public function test_download_mulit_file()
     {
         $files = $this->dummyListing();
 

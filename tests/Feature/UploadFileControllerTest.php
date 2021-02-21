@@ -16,7 +16,7 @@ class UploadFileControllerTest extends TestCase
         parent::setUp();
     }
 
-    public function testUploadNoFiles()
+    public function test_upload_no_files()
     {
         $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
             'path' => '/test',
@@ -26,7 +26,7 @@ class UploadFileControllerTest extends TestCase
         $response->assertStatus(500);
     }
 
-    public function testUploadFailed()
+    public function test_upload_failed()
     {
         $upload = $this->createMock(UploadServiceInterface::class);
         $upload->method('uploadFiles');
@@ -40,7 +40,7 @@ class UploadFileControllerTest extends TestCase
         $response->assertStatus(500);
     }
 
-    public function testUpload()
+    public function test_file_upload()
     {
         $files = [
             UploadedFile::fake()->create('document.pdf', 20000),
@@ -55,12 +55,11 @@ class UploadFileControllerTest extends TestCase
             'path'  => '/test',
             'files' => $files
         ]);
-        // dd($response->exception->getMessage());
 
         $response->assertStatus(200);
     }
 
-    public function testUploadFaildZip()
+    public function test_upload_faild_zip()
     {
         $files = [
             UploadedFile::fake()->create('document.pdf', 20000),
