@@ -2,8 +2,7 @@
 
 namespace Jwhulette\Filevuer\Tests;
 
-use Jwhulette\Filevuer\FileVuerServiceProvider;
-use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\FilevuerServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -16,67 +15,30 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app): array
     {
         return [
-            FileVuerServiceProvider::class
+            FilevuerServiceProvider::class
         ];
     }
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('filevuer.connections', $this->dummyConnections());
+        $app['config']->set('filesystems.disks', $this->dummyConnections());
     }
 
-    protected function getSessionValues()
+    protected function dummyConnections()
     {
         return [
-            SessionInterface::FILEVUER_DRIVER => 'ftp',
-            SessionInterface::FILEVUER_LOGGEDIN => 'true',
-            SessionInterface::FILEVUER_DATA => encrypt([
+            'ftp' => [
+                'driver'   => 'ftp',
                 'name'     => 'FTP1',
                 'host'     => 'ftp.host1.com',
                 'username' => 'ftp1',
                 'password' => 'ftp',
                 'port'     => 21,
                 'home_dir' => "public_html",
-            ]),
-            SessionInterface::FILEVUER_HOME_DIR => 'public_html',
-            SessionInterface::FILEVUER_CONNECTION_NAME => 'FTP1'
-        ];
-    }
-
-    protected function getSessionValuesS3()
-    {
-        return [
-            SessionInterface::FILEVUER_DRIVER => 's3',
-            SessionInterface::FILEVUER_LOGGEDIN => 'true',
-            SessionInterface::FILEVUER_DATA =>                 [
-                'name'     => 'AWSS3',
-                'key'      => 'aul;kjaer',
-                'secret'   => 'alkdfjiei',
-                'bucket'   => 'my-bucket',
-                'region'   => 'us-east-1',
-                'home_dir' => '/test',
             ],
-            SessionInterface::FILEVUER_HOME_DIR => '/test',
-            SessionInterface::FILEVUER_CONNECTION_NAME => 'AWSS3'
-        ];
-    }
-
-    protected function dummyConnections()
-    {
-        return [
-            'FTP' => [
+            's3' => [
                 [
-                    'name'     => 'FTP1',
-                    'host'     => 'ftp.host1.com',
-                    'username' => 'ftp1',
-                    'password' => 'ftp',
-                    'port'     => 21,
-                    'home_dir' => "public_html",
-                ],
-            ],
-
-            'S3' => [
-                [
+                    'driver' => 's3',
                     'name'     => 'AWSS3',
                     'key'      => 'aul;kjaer',
                     'secret'   => 'alkdfjiei',

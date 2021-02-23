@@ -16,6 +16,7 @@ use Jwhulette\Filevuer\Services\ConfigurationServiceInterface;
 class FilevuerController extends Controller implements SessionInterface
 {
     protected ConfigurationServiceInterface $configurationService;
+
     protected ConnectionServiceInterface $connectionService;
 
     /**

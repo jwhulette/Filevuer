@@ -6,10 +6,7 @@ namespace Jwhulette\Filevuer\Services;
 
 interface SessionInterface
 {
-    public const FILEVUER_DRIVER          = 'filevuerDriver';
-    public const FILEVUER_LOGGEDIN        = 'filevuerLoggedIn';
-    public const FILEVUER_DATA            = 'filevuerData';
-    public const FILEVUER_HOME_DIR        = 'filevuerHomeDirectory';
-    public const FILEVUER_CONNECTION_NAME = 'filevuerConnectionName';
-    public const FILEVUER_DOWNLOAD        = 'filevuerDownload';
+    public const FILEVUER_CONNECTION_NAME = 'FILEVUER_CONNECTION_NAME';
+    public const FILEVUER_LOGGEDIN        = 'FILEVUER_LOGGEDIN';
+    public const FILEVUER_DOWNLOAD        = 'FILEVUER_DOWNLOAD';
 }

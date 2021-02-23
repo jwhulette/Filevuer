@@ -10,7 +10,5 @@ interface ConfigurationServiceInterface
 {
     public function getConnectionsList(): Collection;
 
-    public function getConnectionDisplayList(): Collection;
-
-    public function getSelectedConnection(string $name): ?array;
+    public function getSelectedConnection(string $name): string;
 }

@@ -24,7 +24,7 @@ class DownloadServiceTest extends TestCase
 
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'listContents','readStream'])
+            ->setMethods(['cloud', 'listContents', 'readStream'])
             ->getMock();
 
         $filesystem->method('cloud')->will($this->returnSelf());
@@ -42,7 +42,7 @@ class DownloadServiceTest extends TestCase
         $service = app()->make(DownloadServiceInterface::class);
 
         session()->put(SessionInterface::FILEVUER_CONNECTION_NAME, 'testZip');
-        
+
         $service->addFilesToZip($file, $zipStream);
 
         $this->assertTrue(true);

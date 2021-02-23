@@ -5,60 +5,28 @@ declare(strict_types=1);
 namespace Jwhulette\Filevuer\Services;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Support\Facades\Storage;
 use Jwhulette\Filevuer\Services\SessionInterface;
-use Jwhulette\Filevuer\Traits\SessionDriverTrait;
 
 class ConnectionService implements ConnectionServiceInterface
 {
-    use SessionDriverTrait;
-
-    protected FilesystemManager $fileSystem;
-
     /**
-     * @param FilesystemManager $fileSystem
-     */
-    public function __construct(FilesystemManager $fileSystem)
-    {
-        $this->fileSystem = $fileSystem;
-
-        // @codeCoverageIgnoreStart
-        if (!extension_loaded('ftp')) {
-            throw new Exception('FTP extension is not loaded!');
-        }
-        // @codeCoverageIgnoreEnd
-    }
-
-    /**
-     * @param array|null $connection
+     * @param string|null $connection
      *
      * @return bool
      */
-    public function connectToService(?array $connection): bool
+    public function connectToService(?string $connection = null): bool
     {
-        try {
-            if (is_null($connection)) {
-                throw new Exception('Unkown connection driver');
-            }
 
-            session()->put(SessionInterface::FILEVUER_DRIVER, $connection['driver']);
-
-            $this->setSessionData($connection);
-
-            $this->applyConfiguration();
-
-            // Test connection
-            $this->fileSystem->cloud()->files('/');
-
-            session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
-
-            return true;
-        } catch (Exception $error) {
-            Log::error($error->getMessage());
+        if (\is_null($connection)) {
+            throw new Exception('Unkown filesystem disk');
         }
 
-        return false;
+        session()->put(SessionInterface::FILEVUER_CONNECTION_NAME, $connection);
+
+        session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
+
+        return true;
     }
 
     /**
@@ -67,10 +35,7 @@ class ConnectionService implements ConnectionServiceInterface
     public function logout(): void
     {
         session()->forget([
-            SessionInterface::FILEVUER_DRIVER,
             SessionInterface::FILEVUER_LOGGEDIN,
-            SessionInterface::FILEVUER_DATA,
-            SessionInterface::FILEVUER_HOME_DIR,
             SessionInterface::FILEVUER_CONNECTION_NAME,
         ]);
     }

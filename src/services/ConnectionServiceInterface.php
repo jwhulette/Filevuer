@@ -6,7 +6,7 @@ namespace Jwhulette\Filevuer\Services;
 
 interface ConnectionServiceInterface
 {
-    public function connectToService(?array $connection): bool;
+    public function connectToService(?string $connection): bool;
 
     public function logout(): void;
 }

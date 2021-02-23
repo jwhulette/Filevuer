@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Services;
 
+use InvalidArgumentException;
 use Illuminate\Support\Collection;
 
 class ConfigurationService implements ConfigurationServiceInterface
@@ -13,46 +14,26 @@ class ConfigurationService implements ConfigurationServiceInterface
      */
     public function getConnectionsList(): Collection
     {
-        return collect(config('filevuer.connections'));
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getConnectionDisplayList(): Collection
-    {
-        return $this->getConnectionsList()->map(function ($items) {
-            $list = collect();
-
-            foreach ($items as $item) {
-                if (!is_null($item['name'])) {
-                    $list->push($item['name']);
-                }
-            }
-
-            return $list;
-        });
+        return collect(config('filevuer.disks'));
     }
 
     /**
      * @param string $name
      *
-     * @return array|null
+     * @return string
      */
-    public function getSelectedConnection(string $name): ?array
+    public function getSelectedConnection(string $name): string
     {
-        $connections = $this->getConnectionsList()->map(function ($items, $key) use ($name) {
-            foreach ($items as $item) {
-                if ($item['name'] == $name) {
-                    $item['driver'] = strtolower($key);
+        $filesystem = config('filesystems.disks');
 
-                    return $item;
-                }
-            }
+        $disk = collect($filesystem)->first(function ($item) use ($name) {
+            return $item === $name;
         });
 
-        return $connections->filter(function ($value) {
-            return !is_null($value);
-        })->first();
+        if (\is_null($disk)) {
+            throw new InvalidArgumentException('Unkown filesystem disk');
+        }
+
+        return $disk;
     }
 }
