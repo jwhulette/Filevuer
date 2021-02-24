@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Services;
 
-use Illuminate\Filesystem\FilesystemManager;
-use Jwhulette\Filevuer\Traits\SessionDriverTrait;
+use Illuminate\Support\Facades\Storage;
+use Jwhulette\Filevuer\Services\SessionService;
 use Jwhulette\Filevuer\Services\DirectoryServiceInterface;
 
 /**
@@ -13,20 +13,7 @@ use Jwhulette\Filevuer\Services\DirectoryServiceInterface;
  */
 class DirectoryService implements DirectoryServiceInterface
 {
-    use SessionDriverTrait;
-
-    protected FilesystemManager $fileSystem;
-
     protected ConnectionServiceInterface $connectionService;
-
-    /**
-     * @param FilesystemManager $fileSystem
-     */
-    public function __construct(FilesystemManager $fileSystem)
-    {
-        $this->fileSystem = $fileSystem;
-    }
-
 
     /**
      * List the directory contenets
@@ -37,9 +24,7 @@ class DirectoryService implements DirectoryServiceInterface
      */
     public function listing(?string $path = '/'): array
     {
-        $path     = $this->getFullPath($path);
-
-        $contents = $this->fileSystem->cloud()->directories($path);
+        $contents = Storage::disk(SessionService::getConnectionName())->directories($path);
 
         $contents = $this->sortForListing($contents);
 
@@ -58,7 +43,7 @@ class DirectoryService implements DirectoryServiceInterface
     public function delete(?array $path): bool
     {
         foreach ($path as $dir) {
-            $this->fileSystem->cloud()->deleteDirectory($dir);
+            Storage::disk(SessionService::getConnectionName())->deleteDirectory($dir);
         }
 
         return true;
@@ -75,7 +60,7 @@ class DirectoryService implements DirectoryServiceInterface
     {
         $path = $this->getFullPath($path);
 
-        return $this->fileSystem->cloud()->makeDirectory($path);
+        return Storage::disk(SessionService::getConnectionName())->makeDirectory($path);
     }
 
     /**
@@ -89,7 +74,7 @@ class DirectoryService implements DirectoryServiceInterface
     {
         usort($contents, function ($typeA, $typeB) {
             // Sort by type
-            $comparison = strcmp($typeA['type'], $typeB['type']);
+            $comparison = strcmp($typeA, $typeB);
 
             if (0 !== $comparison) {
                 return $comparison;

@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Jwhulette\Filevuer\Services;
 
 use Exception;
-use Illuminate\Support\Facades\Storage;
-use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Services\SessionService;
 
 class ConnectionService implements ConnectionServiceInterface
 {
@@ -17,14 +16,13 @@ class ConnectionService implements ConnectionServiceInterface
      */
     public function connectToService(?string $connection = null): bool
     {
-
         if (\is_null($connection)) {
             throw new Exception('Unkown filesystem disk');
         }
 
-        session()->put(SessionInterface::FILEVUER_CONNECTION_NAME, $connection);
+        SessionService::setConnectionName($connection);
 
-        session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
+        SessionService::setLoggedInTrue();
 
         return true;
     }
@@ -34,9 +32,6 @@ class ConnectionService implements ConnectionServiceInterface
      */
     public function logout(): void
     {
-        session()->forget([
-            SessionInterface::FILEVUER_LOGGEDIN,
-            SessionInterface::FILEVUER_CONNECTION_NAME,
-        ]);
+        SessionService::forget();
     }
 }

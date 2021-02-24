@@ -2,14 +2,36 @@
 
 namespace Jwhulette\Filevuer\Tests;
 
+use org\bovigo\vfs\vfsStream;
+use Illuminate\Support\Facades\Config;
+use org\bovigo\vfs\vfsStreamDirectory;
 use Jwhulette\Filevuer\FilevuerServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
+    protected string $testDirectory = 'tests/Assets/Filesystem';
+
+    protected vfsStreamDirectory $vfs;
+
     public function setUp(): void
     {
         parent::setUp();
+
+        $directory = [
+            'directory1' => [
+                'directoryA' => [],
+                'test.txt' => 'some text content',
+                'test2.txt' => 'some text content',
+            ],
+            'ctest.txt' => 'some text',
+            'directory2' => [],
+            'directory3' => [],
+        ];
+
+        $this->vfs = vfsStream::setup(sys_get_temp_dir(), null, $directory);
+
+        Config::set('filesystems.disks.local.root', $this->vfs->url());
     }
 
     protected function getPackageProviders($app): array
@@ -27,6 +49,10 @@ abstract class TestCase extends BaseTestCase
     protected function dummyConnections()
     {
         return [
+            'local' => [
+                'driver' => 'local',
+                'root' => 'vfs',
+            ],
             'ftp' => [
                 'driver'   => 'ftp',
                 'name'     => 'FTP1',
@@ -40,99 +66,13 @@ abstract class TestCase extends BaseTestCase
                 [
                     'driver' => 's3',
                     'name'     => 'AWSS3',
-                    'key'      => 'aul;kjaer',
-                    'secret'   => 'alkdfjiei',
+                    'key'      => 'key',
+                    'secret'   => 'serect',
                     'bucket'   => 'my-bucket',
                     'region'   => 'us-east-1',
                     'home_dir' => '/test',
                 ],
             ]
-        ];
-    }
-
-    protected function dummyListing()
-    {
-        return [
-            [
-                'type'     => 'dir',
-                'path'     => 'Directory A',
-                'dirname'  => '',
-                'basename' => 'Directory A',
-                'filename' => 'Directory A',
-            ],
-            [
-                'type'       => 'file',
-                'path'       => 'fileA.txt',
-                'visibility' => 'public',
-                'size'       => '30 bytes',
-                'dirname'    => '',
-                'basename'   => 'fileA.txt',
-                'extension'  => 'txt',
-                'filename'   => 'fileA',
-            ],
-            [
-                'type'       => 'file',
-                'path'       => 'fileB.txt',
-                'visibility' => 'public',
-                'size'       => '30 bytes',
-                'dirname'    => '',
-                'basename'   => 'fileB.txt',
-                'extension'  => 'txt',
-                'filename'   => 'fileB',
-            ],
-            [
-                'type'       => 'file',
-                'path'       => 'fileC.txt',
-                'visibility' => 'public',
-                'size'       => '0 bytes',
-                'dirname'    => '',
-                'basename'   => 'fileC.txt',
-                'extension'  => 'txt',
-                'filename'   => 'fileC',
-            ],
-        ];
-    }
-
-    protected function dummyListingPreformat()
-    {
-        return [
-            [
-                'type'     => 'dir',
-                'path'     => 'Directory A',
-                'dirname'  => '',
-                'basename' => 'Directory A',
-                'filename' => 'Directory A',
-            ],
-            [
-                'type'       => 'file',
-                'path'       => 'fileA.txt',
-                'visibility' => 'public',
-                'size'       => 30,
-                'dirname'    => '',
-                'basename'   => 'fileA.txt',
-                'extension'  => 'txt',
-                'filename'   => 'fileA',
-            ],
-            [
-                'type'       => 'file',
-                'path'       => 'fileB.txt',
-                'visibility' => 'public',
-                'size'       => 30,
-                'dirname'    => '',
-                'basename'   => 'fileB.txt',
-                'extension'  => 'txt',
-                'filename'   => 'fileB',
-            ],
-            [
-                'type'       => 'file',
-                'path'       => 'fileC.txt',
-                'visibility' => 'public',
-                'size'       => 0,
-                'dirname'    => '',
-                'basename'   => 'fileC.txt',
-                'extension'  => 'txt',
-                'filename'   => 'fileC',
-            ],
         ];
     }
 }

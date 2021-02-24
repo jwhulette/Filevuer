@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Tests\Unit;
 
-use Exception;
 use Jwhulette\Filevuer\Tests\TestCase;
-use Illuminate\Support\Facades\Storage;
-use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Services\SessionService;
 use Jwhulette\Filevuer\Services\ConnectionService;
 
 class ConnectionServiceTest extends TestCase
@@ -27,21 +25,21 @@ class ConnectionServiceTest extends TestCase
 
         $this->assertTrue($connection);
 
-        $this->assertSame(session()->get(SessionInterface::FILEVUER_CONNECTION_NAME), 'ftp');
+        $this->assertSame(SessionService::getConnectionName(), 'ftp');
 
-        $this->assertSame(session()->get(SessionInterface::FILEVUER_LOGGEDIN), true);
+        $this->assertSame(SessionService::getLoggedIn(), true);
     }
 
     public function test_logout_of_disk()
     {
-        session()->put(SessionInterface::FILEVUER_CONNECTION_NAME, 'ftp');
+        SessionService::setConnectionName('ftp');
 
-        session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
+        SessionService::setLoggedInTrue();
 
         $this->connectionService->logout();
 
-        $this->assertNull(session()->get(SessionInterface::FILEVUER_CONNECTION_NAME));
+        $this->assertNull(SessionService::getConnectionName());
 
-        $this->assertNull(session()->get(SessionInterface::FILEVUER_LOGGEDIN));
+        $this->assertNull(SessionService::getLoggedIn());
     }
 }
