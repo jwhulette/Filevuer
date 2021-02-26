@@ -7,8 +7,7 @@ namespace Jwhulette\Filevuer\Services;
 use Carbon\Carbon;
 use ZipStream\ZipStream;
 use Illuminate\Support\Collection;
-use Illuminate\Filesystem\FilesystemManager;
-use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Services\SessionService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Jwhulette\Filevuer\Services\DownloadServiceInterface;
 
@@ -17,16 +16,6 @@ use Jwhulette\Filevuer\Services\DownloadServiceInterface;
  */
 class DownloadService implements DownloadServiceInterface
 {
-    private FilesystemManager $fileSystem;
-
-    /**
-     * @param FilesystemManager $fileSystem
-     */
-    public function __construct(FilesystemManager $fileSystem)
-    {
-        $this->fileSystem = $fileSystem;
-    }
-
     /**
      * @param array $paths
      *
@@ -36,7 +25,7 @@ class DownloadService implements DownloadServiceInterface
     {
         $hash = Carbon::now()->getTimestamp();
 
-        session()->put(SessionInterface::FILEVUER_DOWNLOAD . $hash, $paths);
+        session()->put(SessionService::FILEVUER_DOWNLOAD . $hash, $paths);
 
         return (string) $hash;
     }
@@ -46,13 +35,13 @@ class DownloadService implements DownloadServiceInterface
      *
      * @return Collection
      */
-    public function getHash(string $hash): Collection
+    protected function getHash(string $hash): Collection
     {
-        $paths = session(SessionInterface::FILEVUER_DOWNLOAD . $hash);
+        $paths = session(SessionService::FILEVUER_DOWNLOAD . $hash);
 
-        session()->forget(SessionInterface::FILEVUER_DOWNLOAD . $hash);
+        session()->forget(SessionService::FILEVUER_DOWNLOAD . $hash);
 
-        return  collect($paths);
+        return collect($paths);
     }
 
     /**
@@ -76,7 +65,7 @@ class DownloadService implements DownloadServiceInterface
      *
      * @return StreamedResponse
      */
-    public function downloadZipFile(Collection $downloads): StreamedResponse
+    protected function downloadZipFile(Collection $downloads): StreamedResponse
     {
         $zipFilename = $this->getZipFilename();
 
@@ -100,10 +89,10 @@ class DownloadService implements DownloadServiceInterface
      *
      * @return void
      */
-    public function addFilesToZip(array $file, ZipStream $zipStream): void
+    protected function addFilesToZip(array $file, ZipStream $zipStream): void
     {
         if ($file['type'] == 'dir') {
-            $listing = $this->fileSystem->cloud()->allDirectories($file['path']);
+            $listing = Storage::disk(SessionService::getConnectionName())->allDirectories($file['path']);
 
             foreach ($listing as $item) {
                 $this->addFileToZip($zipStream, $item, $file['dirname']);
@@ -120,7 +109,7 @@ class DownloadService implements DownloadServiceInterface
      *
      * @return void
      */
-    public function addFileToZip(ZipStream $zipStream, array $file, ?string $rootDir = null): void
+    protected function addFileToZip(ZipStream $zipStream, array $file, ?string $rootDir = null): void
     {
         if ($file['type'] == 'dir') {
             return;
@@ -128,7 +117,7 @@ class DownloadService implements DownloadServiceInterface
 
         $filePath = substr($file['path'], strlen($rootDir) + 1);
 
-        $stream   = $this->fileSystem->cloud()->readStream($file['path']);
+        $stream   = Storage::disk(SessionService::getConnectionName())->readStream($file['path']);
 
         $zipStream->addFileFromStream($filePath, $stream);
     }
@@ -136,9 +125,9 @@ class DownloadService implements DownloadServiceInterface
     /**
      * @return string
      */
-    public function getZipFilename(): string
+    protected function getZipFilename(): string
     {
-        $connectionName = session(SessionInterface::FILEVUER_CONNECTION_NAME);
+        $connectionName = session(SessionService::FILEVUER_CONNECTION_NAME);
 
         return strtolower($connectionName) . '_' . Carbon::now()->getTimestamp() . '.zip';
     }
@@ -146,12 +135,12 @@ class DownloadService implements DownloadServiceInterface
     /**
      * @param array $downloadFile
      *
-     * @return StreamedResponse
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    public function downloadSingleFile(array $downloadFile): StreamedResponse
+    protected function downloadSingleFile(array $downloadFile): StreamedResponse
     {
         return response()->stream(function () use ($downloadFile) {
-            $stream = $this->fileSystem->cloud()->readStream($downloadFile['path']);
+            $stream = Storage::disk(SessionService::getConnectionName())->readStream($downloadFile['path']);
             fpassthru($stream);
         }, 200, [
             "Content-Type" => 'application/octet-stream;',

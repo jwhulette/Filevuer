@@ -2,49 +2,83 @@
 
 namespace Jwhulette\Filevuer\Tests\Unit;
 
-use ZipStream\ZipStream;
-use Illuminate\Http\UploadedFile;
 use Jwhulette\Filevuer\Tests\TestCase;
-use Illuminate\Filesystem\FilesystemManager;
-use Jwhulette\Filevuer\Services\SessionInterface;
-use Jwhulette\Filevuer\Services\DownloadServiceInterface;
+use Illuminate\Support\Facades\Storage;
+use Jwhulette\Filevuer\Services\SessionService;
+use Jwhulette\Filevuer\Services\DownloadService;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DownloadServiceTest extends TestCase
 {
+    protected DownloadService $downloadService;
+
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->downloadService = new DownloadService();
     }
 
-    public function testAddFilesToZip()
+    public function test_download_service_set_hash()
     {
-        $file = $this->dummyListing()[0];
+        $paths = ['my/test/path'];
 
-        $files = $this->dummyListing();
+        $actual = $this->downloadService->setHash($paths);
 
-        $filesystem = $this->getMockBuilder(FilesystemManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'listContents', 'readStream'])
-            ->getMock();
+        $this->assertIsString($actual);
+    }
 
-        $filesystem->method('cloud')->will($this->returnSelf());
+    public function test_download_service_single_file_download()
+    {
+        $paths = [[
+            'type'       => 'file',
+            'path'       => 'fileA.txt',
+            'visibility' => 'public',
+            'size'       => '30 bytes',
+            'dirname'    => '',
+            'basename'   => 'fileA.txt',
+            'extension'  => 'txt',
+            'filename'   => 'fileA',
+        ]];
 
-        $filesystem->method('listContents')->willReturn($files);
+        $hash = $this->downloadService->setHash($paths);
 
-        $filesystem->method('readStream')->willReturn('xyz');
+        $actual = $this->downloadService->getDownload($hash);
 
-        $this->app->instance(FilesystemManager::class, $filesystem);
+        $this->assertInstanceOf(StreamedResponse::class, $actual);
+    }
 
-        $zipStream = $this->createMock(ZipStream::class);
+    public function test_download_service_multiple_file_download()
+    {
+        session()->put(SessionService::FILEVUER_CONNECTION_NAME, 'test');
 
-        $this->app->instance(ZipStream::class, $filesystem);
+        $paths = [
+            [
+                'type'       => 'file',
+                'path'       => 'fileA.txt',
+                'visibility' => 'public',
+                'size'       => '30 bytes',
+                'dirname'    => '',
+                'basename'   => 'fileA.txt',
+                'extension'  => 'txt',
+                'filename'   => 'fileA',
+            ],
+            [
+                'type'       => 'file',
+                'path'       => 'fileB.txt',
+                'visibility' => 'public',
+                'size'       => '30 bytes',
+                'dirname'    => '',
+                'basename'   => 'fileB.txt',
+                'extension'  => 'txt',
+                'filename'   => 'fileB',
+            ]
+        ];
 
-        $service = app()->make(DownloadServiceInterface::class);
+        $hash = $this->downloadService->setHash($paths);
 
-        session()->put(SessionInterface::FILEVUER_CONNECTION_NAME, 'testZip');
+        $actual = $this->downloadService->getDownload($hash);
 
-        $service->addFilesToZip($file, $zipStream);
-
-        $this->assertTrue(true);
+        $this->assertInstanceOf(StreamedResponse::class, $actual);
     }
 }

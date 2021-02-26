@@ -45,7 +45,7 @@ class DownloadController extends Controller
      *
      * @param string $hash
      *
-     * @return StreamedResponse
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function download($hash): StreamedResponse
     {

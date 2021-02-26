@@ -8,22 +8,13 @@ use Exception;
 use ZipArchive;
 use RuntimeException;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Jwhulette\Filevuer\Traits\SessionDriverTrait;
 
 class UploadService implements UploadServiceInterface
 {
     use SessionDriverTrait;
-
-    protected FilesystemManager $fileSystem;
-
-    /**
-     * @param FilesystemManager $fileSystem
-     */
-    public function __construct(FilesystemManager $fileSystem)
-    {
-        $this->fileSystem = $fileSystem;
-    }
 
     /**
      * Process the uploaded files
@@ -59,14 +50,14 @@ class UploadService implements UploadServiceInterface
      *
      * @throws RuntimeException
      */
-    public function unzipArchive(string $path, UploadedFile $file): void
+    protected function unzipArchive(string $path, UploadedFile $file): void
     {
         $zipArchive  = new \ZipArchive();
 
         $resource = $zipArchive->open($file->getRealPath());
 
-        if (true === $resource) {
-            $fileCount   = $zipArchive->numFiles;
+        if ($resource === true) {
+            $fileCount = $zipArchive->numFiles;
 
             $this->createDirectories($zipArchive, $fileCount, $path);
 
@@ -76,7 +67,7 @@ class UploadService implements UploadServiceInterface
                 $filestream = $zipArchive->getStream($filename);
 
                 if (!$filestream) {
-                    unlink($file->getRealPath());
+                    File::delete($file->getRealPath());
 
                     throw new \RuntimeException('Failed to get zipped file - ' . $filename);
                 }
@@ -84,7 +75,8 @@ class UploadService implements UploadServiceInterface
                 if (pathinfo($filename, PATHINFO_EXTENSION)) {
                     $uploadPath = $this->getUploadPath($path, $filename);
 
-                    $response   = $this->fileSystem->cloud()->put($uploadPath, $filestream);
+                    $response   = Storage::disk(SessionService::getConnectionName())
+                        ->put($uploadPath, $filestream);
 
                     if (!$response) {
                         unlink($file->getRealPath());
@@ -96,9 +88,9 @@ class UploadService implements UploadServiceInterface
 
             $zipArchive->close();
 
-            unlink($file->getRealPath());
+            File::delete($file->getRealPath());
         } else {
-            unlink($file->getRealPath());
+            File::delete($file->getRealPath());
 
             throw new \RuntimeException('Failed to extract zip archive.');
         }
@@ -113,7 +105,7 @@ class UploadService implements UploadServiceInterface
      *
      * @return void
      */
-    public function createDirectories(ZipArchive $zipArchive, int $fileCount, string $path): void
+    protected function createDirectories(ZipArchive $zipArchive, int $fileCount, string $path): void
     {
         for ($i = 0; $i < $fileCount; $i++) {
             $filename   = $zipArchive->getNameIndex($i);
@@ -127,14 +119,14 @@ class UploadService implements UploadServiceInterface
      *
      * @param string $filename
      */
-    public function createDirectory(string $path, string $filename): void
+    protected function createDirectory(string $path, string $filename): void
     {
         $directory = dirname($filename);
 
         if ('.' !== $directory) {
             $directoryPath = $this->getUploadPath($path, $directory) . '/';
 
-            $this->fileSystem->cloud()->makeDirectory($directoryPath);
+            Storage::disk(SessionService::getConnectionName())->makeDirectory($directoryPath);
         }
     }
 
@@ -148,13 +140,14 @@ class UploadService implements UploadServiceInterface
      *
      * @throws Exception
      */
-    public function uploadFile(string $path, UploadedFile $file): void
+    protected function uploadFile(string $path, UploadedFile $file): void
     {
         $uploadPath = $this->getUploadPath($path, $file->getClientOriginalName());
 
-        $response   = $this->fileSystem->cloud()->put($uploadPath, file_get_contents($file->getRealPath()));
+        $response   = Storage::disk(SessionService::getConnectionName())
+            ->put($uploadPath, file_get_contents($file->getRealPath()));
 
-        unlink($file->getRealPath());
+        File::delete($file->getRealPath());
 
         if (!$response) {
             throw new Exception("Error uploading file", 1);

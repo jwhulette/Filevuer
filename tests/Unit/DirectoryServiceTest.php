@@ -23,10 +23,40 @@ class DirectoryServiceTest extends TestCase
         SessionService::setLoggedInTrue();
     }
 
-    public function test_list_directories()
+    public function test_service_list_directories()
     {
         $directories = $this->directoryService->listing();
 
-        dd($directories);
+        $listing = $directories->pluck('basename')->toArray();
+
+        $expected = [
+            "Adirectory3",
+            "Bdirectory2",
+            "Cdirectory1",
+            "folders",
+            "ctest.txt",
+        ];
+
+        $this->assertSame($expected, $listing);
+
+        $this->assertSame($directories[4]['size'], '9 bytes');
+    }
+
+    public function test_service_delete_directory()
+    {
+        $directories = $this->directoryService->listing();
+
+        $dir = $directories->pluck('path')->first();
+
+        $actual = $this->directoryService->delete($dir);
+
+        $this->assertTrue($actual);
+    }
+
+    public function test_service_create_directory()
+    {
+        $actual = $this->directoryService->create('Bdirectory2/New Directory');
+
+        $this->assertTrue($actual);
     }
 }

@@ -13,10 +13,10 @@ class UploadServiceTest extends TestCase
 {
     protected $tmpPath;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
-        
+
         $this->tmpPath = sys_get_temp_dir();
     }
 
@@ -34,11 +34,11 @@ class UploadServiceTest extends TestCase
         $this->app->instance(FilesystemManager::class, $filesystem);
 
         $service = app()->make(UploadServiceInterface::class);
-        
+
         $files = [
             UploadedFile::fake()->create('document.pdf', 20000),
         ];
-        
+
         $service->uploadFiles('/test', $files);
 
         $this->assertTrue(true);
@@ -50,7 +50,7 @@ class UploadServiceTest extends TestCase
 
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud','put'])
+            ->setMethods(['cloud', 'put'])
             ->getMock();
 
         $filesystem->method('cloud')->will($this->returnSelf());
@@ -60,11 +60,11 @@ class UploadServiceTest extends TestCase
         $this->app->instance(FilesystemManager::class, $filesystem);
 
         $service = app()->make(UploadServiceInterface::class);
-        
+
         $files = [
             UploadedFile::fake()->create('document.pdf', 20000),
         ];
-        
+
         $service->uploadFiles('/test', $files);
     }
 
@@ -72,7 +72,7 @@ class UploadServiceTest extends TestCase
     {
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud','put','makeDirectory'])
+            ->setMethods(['cloud', 'put', 'makeDirectory'])
             ->getMock();
 
         $filesystem->method('cloud')->will($this->returnSelf());
@@ -86,9 +86,9 @@ class UploadServiceTest extends TestCase
         $service = app()->make(UploadServiceInterface::class);
 
         $testZip = $this->createTestZip();
-        
+
         $service->uploadFiles('/test', [$testZip], false);
-        
+
         $this->assertTrue(true);
     }
 
@@ -96,7 +96,7 @@ class UploadServiceTest extends TestCase
     {
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud','put','makeDirectory'])
+            ->setMethods(['cloud', 'put', 'makeDirectory'])
             ->getMock();
 
         $filesystem->method('cloud')->will($this->returnSelf());
@@ -110,9 +110,9 @@ class UploadServiceTest extends TestCase
         $service = app()->make(UploadServiceInterface::class);
 
         $testZip = $this->createTestZip();
-        
+
         $service->uploadFiles('/test', [$testZip], true);
-        
+
         $this->assertTrue(true);
     }
 
@@ -122,7 +122,7 @@ class UploadServiceTest extends TestCase
 
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud','put','makeDirectory'])
+            ->setMethods(['cloud', 'put', 'makeDirectory'])
             ->getMock();
 
         $filesystem->method('cloud')->will($this->returnSelf());
@@ -136,7 +136,7 @@ class UploadServiceTest extends TestCase
         $service = app()->make(UploadServiceInterface::class);
 
         $testZip = $this->createTestZip();
-        
+
         $service->uploadFiles('/test', [$testZip], true);
     }
 
@@ -146,7 +146,7 @@ class UploadServiceTest extends TestCase
 
         $filesystem = $this->getMockBuilder(FilesystemManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['cloud','put','makeDirectory'])
+            ->setMethods(['cloud', 'put', 'makeDirectory'])
             ->getMock();
 
         $filesystem->method('cloud')->will($this->returnSelf());
@@ -166,9 +166,9 @@ class UploadServiceTest extends TestCase
 
     private function copyZip($file)
     {
-        copy(dirname(__DIR__) . '/Assets/'.$file, $this->tmpPath.$file);
-        
-        chmod($this->tmpPath.$file, 0777);
+        copy(dirname(__DIR__) . '/Assets/' . $file, $this->tmpPath . $file);
+
+        chmod($this->tmpPath . $file, 0777);
     }
 
     private function createTestZip()
@@ -176,7 +176,7 @@ class UploadServiceTest extends TestCase
         $this->copyZip('/testArchive.zip');
 
         return new UploadedFile(
-            $this->tmpPath.'/testArchive.zip',
+            $this->tmpPath . '/testArchive.zip',
             'testArchive.zip',
             'application/zip',
             3066,
@@ -187,9 +187,9 @@ class UploadServiceTest extends TestCase
     private function createCorruptTestZip()
     {
         $this->copyZip('/testCorruptArchive.zip');
-        
+
         return new UploadedFile(
-            $this->tmpPath.'/testCorruptArchive.zip',
+            $this->tmpPath . '/testCorruptArchive.zip',
             'testCorruptArchive.zip',
             'application/zip',
             3066,

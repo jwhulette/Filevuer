@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Services;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Jwhulette\Filevuer\Services\SessionService;
 use Jwhulette\Filevuer\Services\DirectoryServiceInterface;
@@ -20,33 +21,29 @@ class DirectoryService implements DirectoryServiceInterface
      *
      * @param string|null $path
      *
-     * @return array
+     * @return Collection
      */
-    public function listing(?string $path = '/'): array
+    public function listing(?string $path = '/'): Collection
     {
-        $contents = Storage::disk(SessionService::getConnectionName())->directories($path);
+        $contents = Storage::disk(SessionService::getConnectionName())->listContents($path);
 
         $contents = $this->sortForListing($contents);
 
         $contents = $this->formatFileSize($contents);
 
-        return $contents;
+        return collect($contents);
     }
 
     /**
      * Delete a all files in a folder
      *
-     * @param array|null $path
+     * @param string $dir
      *
      * @return bool
      */
-    public function delete(?array $path): bool
+    public function delete(string $dir): bool
     {
-        foreach ($path as $dir) {
-            Storage::disk(SessionService::getConnectionName())->deleteDirectory($dir);
-        }
-
-        return true;
+        return Storage::disk(SessionService::getConnectionName())->deleteDirectory($dir);
     }
 
     /**
@@ -58,8 +55,6 @@ class DirectoryService implements DirectoryServiceInterface
      */
     public function create(string $path): bool
     {
-        $path = $this->getFullPath($path);
-
         return Storage::disk(SessionService::getConnectionName())->makeDirectory($path);
     }
 
@@ -74,7 +69,7 @@ class DirectoryService implements DirectoryServiceInterface
     {
         usort($contents, function ($typeA, $typeB) {
             // Sort by type
-            $comparison = strcmp($typeA, $typeB);
+            $comparison = strcmp($typeA['type'], $typeB['type']);
 
             if (0 !== $comparison) {
                 return $comparison;
@@ -113,7 +108,7 @@ class DirectoryService implements DirectoryServiceInterface
      *
      * @return string
      */
-    public function formatBytes(int $size, int $precision = 2): string
+    protected function formatBytes(int $size, int $precision = 2): string
     {
         if ($size > 0) {
             $size = (int) $size;

@@ -10,8 +10,6 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected string $testDirectory = 'tests/Assets/Filesystem';
-
     protected vfsStreamDirectory $vfs;
 
     public function setUp(): void
@@ -19,14 +17,14 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $directory = [
-            'directory1' => [
+            'Cdirectory1' => [
                 'directoryA' => [],
-                'test.txt' => 'some text content',
-                'test2.txt' => 'some text content',
+                'Ztest.txt' => 'some text content',
+                'Atest2.txt' => 'some text content',
             ],
             'ctest.txt' => 'some text',
-            'directory2' => [],
-            'directory3' => [],
+            'Bdirectory2' => [],
+            'Adirectory3' => [],
         ];
 
         $this->vfs = vfsStream::setup(sys_get_temp_dir(), null, $directory);
