@@ -49,8 +49,6 @@ class FilevuerServiceProvider extends PackageServiceProvider
      */
     public function registeringPackage()
     {
-        $this->app['router']->aliasMiddleware('sessionDriver', SessionDriver::class);
-
         $this->app->bind(ConfigurationServiceInterface::class, ConfigurationService::class);
 
         $this->app->bind(ConnectionServiceInterface::class, ConnectionService::class);

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Jwhulette\Filevuer\Controllers\FileController;
 use Jwhulette\Filevuer\Controllers\UploadController;
@@ -20,8 +21,12 @@ use Jwhulette\Filevuer\Controllers\DirectoryController;
 |
 */
 
-Route::middleware(['web', 'sessionDriver'])
-    ->prefix('filevuer')
+$middleware = Arr::collapse(['web'], config('filevuer.middleware'));
+
+$prefix = config('filevuer.prefix') ?? 'filevuer';
+
+Route::middleware($middleware)
+    ->prefix($prefix)
     ->group(function () {
         Route::get('/', [FilevuerController::class, 'index'])->name('filevuer.index');
 
@@ -40,12 +45,6 @@ Route::middleware(['web', 'sessionDriver'])
         Route::prefix('file')
             ->name('filevuer.file')
             ->group(function () {
-                Route::get('/', [FileController::class, 'show']);
-
-                Route::post('/', [FileController::class, 'create']);
-
-                Route::put('/', [FileController::class, 'update']);
-
                 Route::delete('/', [FileController::class, 'destroy']);
             });
 
