@@ -12,38 +12,6 @@ use Jwhulette\Filevuer\Services\SessionService;
 class FileService implements FileServiceInterface
 {
     /**
-     * Get file contents from server.
-     *
-     * @param string|null $path
-     *
-     * @return string|null
-     *
-     * @throws InvalidArgumentException
-     */
-    public function contents(?string $path = ''): ?string
-    {
-        $this->checkPath($path);
-
-        return Storage::disk(SessionService::getConnectionName())->get($path);
-    }
-
-    /**
-     * Updates a file's contents.
-     *
-     * @param string|null $path
-     * @param string|null $contents
-     *
-     * @return bool
-     * @throws InvalidArgumentException
-     */
-    public function update(?string $path = '', ?string $contents = ''): bool
-    {
-        $this->checkPath($path);
-
-        return Storage::disk(SessionService::getConnectionName())->put($path, $contents);
-    }
-
-    /**
      * Deletes one or multiple files.
      *
      * @param array $path
@@ -60,18 +28,6 @@ class FileService implements FileServiceInterface
         }
 
         return true;
-    }
-
-    /**
-     * Creates an empty file.
-     *
-     * @param string $path
-     *
-     * @return bool
-     */
-    public function create(string $path): bool
-    {
-        return Storage::disk(SessionService::getConnectionName())->put($path, '');
     }
 
     /**

@@ -24,64 +24,64 @@ class FileController extends Controller
         $this->fileservice = $fileservice;
     }
 
-    /**
-     * Show the files
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show(Request $request): JsonResponse
-    {
-        $path     = $request->get('path', '');
+    // /**
+    //  * Show the files
+    //  *
+    //  * @param \Illuminate\Http\Request $request
+    //  *
+    //  * @return \Illuminate\Http\JsonResponse
+    //  */
+    // public function show(Request $request): JsonResponse
+    // {
+    //     $path     = $request->get('path', '');
 
-        $contents = $this->fileservice->contents($path);
+    //     $contents = $this->fileservice->contents($path);
 
-        $isBinary = false === mb_detect_encoding($contents);
+    //     $isBinary = false === mb_detect_encoding($contents);
 
-        if ($isBinary) {
-            $contents = base64_encode($contents);
-        }
+    //     if ($isBinary) {
+    //         $contents = base64_encode($contents);
+    //     }
 
-        return response()->json([
-            'contents' => $contents,
-            'download' => $isBinary,
-        ], 200);
-    }
+    //     return response()->json([
+    //         'contents' => $contents,
+    //         'download' => $isBinary,
+    //     ], 200);
+    // }
 
-    /**
-     * Create a new file
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function create(Request $request): JsonResponse
-    {
-        $path = $request->get('path', '');
+    // /**
+    //  * Create a new file
+    //  *
+    //  * @param \Illuminate\Http\Request $request
+    //  *
+    //  * @return \Illuminate\Http\JsonResponse
+    //  */
+    // public function create(Request $request): JsonResponse
+    // {
+    //     $path = $request->get('path', '');
 
-        return response()->json([
-            'success' => $this->fileservice->create($path),
-        ], 201);
-    }
+    //     return response()->json([
+    //         'success' => $this->fileservice->create($path),
+    //     ], 201);
+    // }
 
-    /**
-     * Update a file
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(Request $request): JsonResponse
-    {
-        $path     = $request->get('path', '');
+    // /**
+    //  * Update a file
+    //  *
+    //  * @param \Illuminate\Http\Request $request
+    //  *
+    //  * @return \Illuminate\Http\JsonResponse
+    //  */
+    // public function update(Request $request): JsonResponse
+    // {
+    //     $path     = $request->get('path', '');
 
-        $contents = $request->get('contents', '');
+    //     $contents = $request->get('contents', '');
 
-        return response()->json([
-            'success' => $this->fileservice->update($path, $contents),
-        ], 200);
-    }
+    //     return response()->json([
+    //         'success' => $this->fileservice->update($path, $contents),
+    //     ], 200);
+    // }
 
     /**
      * Delete a file
