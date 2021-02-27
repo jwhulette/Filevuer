@@ -9,10 +9,6 @@ use Jwhulette\Filevuer\Services\SessionService;
 
 class ConnectionService implements ConnectionServiceInterface
 {
-    public function getConnectionDisplayList(): string
-    {
-    }
-
     /**
      * @param string|null $connection
      *

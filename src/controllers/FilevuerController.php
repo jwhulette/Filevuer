@@ -8,12 +8,13 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
-use Jwhulette\Filevuer\Services\SessionInterface;
+use Jwhulette\Filevuer\Services\SessionService;
 use Jwhulette\Filevuer\Services\ConnectionServiceInterface;
 use Jwhulette\Filevuer\Services\ConfigurationServiceInterface;
 
-class FilevuerController extends Controller implements SessionInterface
+class FilevuerController extends Controller
 {
     protected ConfigurationServiceInterface $configurationService;
 
@@ -42,9 +43,9 @@ class FilevuerController extends Controller implements SessionInterface
         $this->development();
 
         return view('filevuer::index', [
-            'connections' => $this->configurationService->getConnectionDisplayList()->toJson(),
-            'loggedIn'    => session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false',
-            'selected'    => session()->get(SessionInterface::FILEVUER_CONNECTION_NAME, '')
+            'connections' => $this->configurationService->getConnectionDisplayList(),
+            'loggedIn'    => session()->get(SessionService::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false',
+            'selected'    => session()->get(SessionService::FILEVUER_CONNECTION_NAME, '')
         ]);
     }
 
@@ -73,12 +74,18 @@ class FilevuerController extends Controller implements SessionInterface
      */
     public function connect(Request $request): JsonResponse
     {
-        $config = $this->configurationService->getSelectedConnection($request->connection);
+        $result = ['error' => 'Unable to connect'];
 
-        $result = $this->connectionService->connectToService($config);
+        try {
+            $config = $this->configurationService->getSelectedConnection($request->connection);
 
-        if ($result) {
-            session()->put(SessionInterface::FILEVUER_LOGGEDIN, true);
+            $result = $this->connectionService->connectToService($config);
+
+            if ($result) {
+                session()->put(SessionService::FILEVUER_LOGGEDIN, true);
+            }
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
         }
 
         return response()->json($result);
@@ -104,7 +111,7 @@ class FilevuerController extends Controller implements SessionInterface
     public function poll(): JsonResponse
     {
         return response()->json([
-            'active' => session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)
+            'active' => session()->get(SessionService::FILEVUER_LOGGEDIN, false)
         ]);
     }
 }

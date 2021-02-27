@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Tests\Feature;
 
+use Illuminate\Support\Facades\Config;
 use Jwhulette\Filevuer\Tests\TestCase;
 use Jwhulette\Filevuer\Services\SessionService;
 
@@ -16,6 +17,8 @@ class DirectoryControllerTest extends TestCase
         SessionService::setConnectionName('local');
 
         SessionService::setLoggedInTrue();
+
+        Config::set('filesystems.disks.local.root', $this->vfs->url());
     }
 
     public function test_directory_index()

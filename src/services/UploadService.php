@@ -73,8 +73,8 @@ class UploadService implements UploadServiceInterface
             }
 
             // If a file, upload the file
-            if (!is_null(File::extension($filename))) {
-                $uploadPath = printf('%s/%s', $path, $filename);
+            if (File::isFile($filename)) {
+                $uploadPath = sprintf('%s/%s', $path, $filename);
 
                 $response = Storage::disk(SessionService::getConnectionName())
                     ->put($uploadPath, $filestream);
@@ -125,7 +125,7 @@ class UploadService implements UploadServiceInterface
         $directory = File::dirname($filename);
 
         if ($directory !== '.') {
-            $directoryPath =  printf('%s/%s', $path, $directory);
+            $directoryPath =  sprintf('%s/%s', $path, $directory);
 
             Storage::disk(SessionService::getConnectionName())->makeDirectory($directoryPath);
         }
@@ -142,14 +142,14 @@ class UploadService implements UploadServiceInterface
      */
     protected function uploadFile(string $path, UploadedFile $file): void
     {
-        $uploadPath = printf('%s/%s', $path, $file->getClientOriginalName());
+        $uploadPath = sprintf('%s/%s', $path, $file->getClientOriginalName());
 
         $response = Storage::disk(SessionService::getConnectionName())
             ->put($uploadPath, File::get($file->getRealPath()));
 
-        File::delete($file->getRealPath());
-
         if (!$response) {
+            File::delete($file->getRealPath());
+
             throw new Exception("Error uploading file", 1);
         }
     }

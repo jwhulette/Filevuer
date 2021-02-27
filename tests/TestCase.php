@@ -12,11 +12,13 @@ abstract class TestCase extends BaseTestCase
 {
     protected vfsStreamDirectory $vfs;
 
+    protected array $directory;
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $directory = [
+        $this->directory = [
             'Cdirectory1' => [
                 'directoryA' => [],
                 'Ztest.txt' => 'some text content',
@@ -27,9 +29,13 @@ abstract class TestCase extends BaseTestCase
             'Adirectory3' => [],
         ];
 
-        $this->vfs = vfsStream::setup(sys_get_temp_dir(), null, $directory);
+        $this->vfs = vfsStream::setup(sys_get_temp_dir(), null, $this->directory);
 
         Config::set('filesystems.disks.local.root', $this->vfs->url());
+
+        Config::set('filevuer.disks', $this->dummyFilevuerConnections());
+
+        Config::set('filesystems.disks', $this->dummyConnections());
     }
 
     protected function getPackageProviders($app): array
@@ -44,6 +50,14 @@ abstract class TestCase extends BaseTestCase
         $app['config']->set('filesystems.disks', $this->dummyConnections());
     }
 
+    protected function dummyFilevuerConnections()
+    {
+        return [
+            'local',
+            'sftp'
+        ];
+    }
+
     protected function dummyConnections()
     {
         return [
@@ -51,9 +65,8 @@ abstract class TestCase extends BaseTestCase
                 'driver' => 'local',
                 'root' => 'vfs',
             ],
-            'ftp' => [
-                'driver'   => 'ftp',
-                'name'     => 'FTP1',
+            'sftp' => [
+                'driver'   => 'sftp',
                 'host'     => 'ftp.host1.com',
                 'username' => 'ftp1',
                 'password' => 'ftp',
@@ -63,7 +76,6 @@ abstract class TestCase extends BaseTestCase
             's3' => [
                 [
                     'driver' => 's3',
-                    'name'     => 'AWSS3',
                     'key'      => 'key',
                     'secret'   => 'serect',
                     'bucket'   => 'my-bucket',

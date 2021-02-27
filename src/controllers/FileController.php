@@ -7,7 +7,6 @@ namespace Jwhulette\Filevuer\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Jwhulette\Filevuer\Traits\SessionDriverTrait;
 use Jwhulette\Filevuer\Services\FileServiceInterface;
 
 /**
@@ -15,8 +14,6 @@ use Jwhulette\Filevuer\Services\FileServiceInterface;
  */
 class FileController extends Controller
 {
-    use SessionDriverTrait;
-
     private FileServiceInterface $fileservice;
 
     /**
@@ -37,8 +34,6 @@ class FileController extends Controller
     public function show(Request $request): JsonResponse
     {
         $path     = $request->get('path', '');
-
-        $path     = $this->getFullPath($path);
 
         $contents = $this->fileservice->contents($path);
 
@@ -65,8 +60,6 @@ class FileController extends Controller
     {
         $path = $request->get('path', '');
 
-        $path = $this->getFullPath($path);
-
         return response()->json([
             'success' => $this->fileservice->create($path),
         ], 201);
@@ -82,8 +75,6 @@ class FileController extends Controller
     public function update(Request $request): JsonResponse
     {
         $path     = $request->get('path', '');
-
-        $path     = $this->getFullPath($path);
 
         $contents = $request->get('contents', '');
 

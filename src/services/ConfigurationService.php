@@ -18,22 +18,30 @@ class ConfigurationService implements ConfigurationServiceInterface
     }
 
     /**
+     * @return string
+     */
+    public function getConnectionDisplayList(): string
+    {
+        return $this->getConnectionsList()->toJson();
+    }
+
+    /**
      * @param string $name
      *
      * @return string
      */
     public function getSelectedConnection(string $name): string
     {
-        $filesystem = config('filesystems.disks');
+        $filesystem = collect(config('filesystems.disks'));
 
-        $disk = collect($filesystem)->first(function ($item) use ($name) {
-            return $item === $name;
+        $disk = $filesystem->first(function ($item, $key) use ($name) {
+            return $key === $name;
         });
 
         if (\is_null($disk)) {
             throw new InvalidArgumentException('Unkown filesystem disk');
         }
 
-        return $disk;
+        return $name;
     }
 }

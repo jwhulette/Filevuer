@@ -7,6 +7,7 @@ namespace Jwhulette\Filevuer\Services;
 use Carbon\Carbon;
 use ZipStream\ZipStream;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Jwhulette\Filevuer\Services\SessionService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Jwhulette\Filevuer\Services\DownloadServiceInterface;

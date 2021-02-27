@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Tests\Unit;
 
+use Illuminate\Support\Facades\Config;
 use Jwhulette\Filevuer\Tests\TestCase;
 use Jwhulette\Filevuer\Services\SessionService;
 use Jwhulette\Filevuer\Services\DirectoryService;
@@ -21,13 +22,15 @@ class DirectoryServiceTest extends TestCase
         SessionService::setConnectionName('local');
 
         SessionService::setLoggedInTrue();
+
+        Config::set('filesystems.disks.local.root', $this->vfs->url());
     }
 
     public function test_service_list_directories()
     {
-        $directories = $this->directoryService->listing();
+        $listings = $this->directoryService->listing();
 
-        $listing = $directories->pluck('basename')->toArray();
+        $listing = $listings->pluck('basename')->toArray();
 
         $expected = [
             "Adirectory3",
@@ -39,7 +42,7 @@ class DirectoryServiceTest extends TestCase
 
         $this->assertSame($expected, $listing);
 
-        $this->assertSame($directories[4]['size'], '9 bytes');
+        $this->assertSame($listings[4]['size'], '9 bytes');
     }
 
     public function test_service_delete_directory()

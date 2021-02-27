@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Tests\Feature;
 
-use RuntimeException;
 use Illuminate\Http\UploadedFile;
 use Jwhulette\Filevuer\Tests\TestCase;
-use Jwhulette\Filevuer\Services\UploadServiceInterface;
 
 class UploadFileControllerTest extends TestCase
 {
@@ -18,7 +16,7 @@ class UploadFileControllerTest extends TestCase
 
     public function test_upload_no_files()
     {
-        $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
+        $response = $this->post(route('filevuer.upload'), [
             'path' => '/test',
             'files' => []
         ]);
@@ -28,11 +26,7 @@ class UploadFileControllerTest extends TestCase
 
     public function test_upload_failed()
     {
-        $upload = $this->createMock(UploadServiceInterface::class);
-        $upload->method('uploadFiles');
-        $this->app->instance(UploadServiceInterface::class, $upload);
-
-        $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
+        $response = $this->post(route('filevuer.upload'), [
             'path'  => '/test',
             'files' => null
         ]);
@@ -45,13 +39,8 @@ class UploadFileControllerTest extends TestCase
         $files = [
             UploadedFile::fake()->create('document.pdf', 20000),
         ];
-        $upload = $this->createMock(UploadServiceInterface::class);
 
-        $upload->method('uploadFiles');
-
-        $this->app->instance(UploadServiceInterface::class, $upload);
-
-        $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
+        $response = $this->post(route('filevuer.upload'), [
             'path'  => '/test',
             'files' => $files
         ]);
@@ -62,17 +51,11 @@ class UploadFileControllerTest extends TestCase
     public function test_upload_faild_zip()
     {
         $files = [
-            UploadedFile::fake()->create('document.pdf', 20000),
+            UploadedFile::fake()->create('test.zip', 20000),
         ];
-        $upload = $this->createMock(UploadServiceInterface::class);
 
-        $upload->method('uploadFiles')
-            ->will($this->throwException(new RuntimeException()));
-
-        $this->app->instance(UploadServiceInterface::class, $upload);
-
-        $response = $this->withSession($this->getSessionValues())->post(route('filevuer.upload'), [
-            'path'    => '/test',
+        $response = $this->post(route('filevuer.upload'), [
+            'path'    => '/test/zip',
             'files'   => $files,
             'extract' => true,
         ]);

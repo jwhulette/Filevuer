@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Services;
 
+use Exception;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Storage;
 use Jwhulette\Filevuer\Services\SessionService;

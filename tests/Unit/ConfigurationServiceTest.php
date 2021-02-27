@@ -6,7 +6,6 @@ namespace Jwhulette\Filevuer\Tests\Unit;
 
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
 use Jwhulette\Filevuer\Tests\TestCase;
 use Jwhulette\Filevuer\Services\ConfigurationService;
 
@@ -18,11 +17,14 @@ class ConfigurationServiceTest extends TestCase
     {
         parent::setUp();
 
-        Config::set('filevuer.disks', ['sftp', 's3']);
-
-        Config::set('filesystems.disks', ['sftp', 's3', 'local', 'private']);
-
         $this->configurationService = new ConfigurationService();
+    }
+
+    public function test_get_connection_list_view()
+    {
+        $disks = $this->configurationService->getConnectionDisplayList();
+
+        $this->assertJson($disks);
     }
 
     public function test_get_avaliable_disks()

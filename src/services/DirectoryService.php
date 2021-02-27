@@ -23,7 +23,7 @@ class DirectoryService implements DirectoryServiceInterface
      *
      * @return Collection
      */
-    public function listing(?string $path = '/'): Collection
+    public function listing(?string $path = null): Collection
     {
         $contents = Storage::disk(SessionService::getConnectionName())->listContents($path);
 

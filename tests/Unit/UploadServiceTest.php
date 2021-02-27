@@ -3,13 +3,10 @@
 namespace Jwhulette\Filevuer\Tests\Unit;
 
 use Exception;
-use RuntimeException;
 use Illuminate\Http\UploadedFile;
 use Jwhulette\Filevuer\Tests\TestCase;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Filesystem\FilesystemManager;
 use Jwhulette\Filevuer\Services\UploadService;
-use Jwhulette\Filevuer\Services\UploadServiceInterface;
 
 class UploadServiceTest extends TestCase
 {
@@ -39,22 +36,8 @@ class UploadServiceTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_upload_service_upload_single_file_failed()
-    {
-
-        $this->expectException(Exception::class, 'Error uploading file');
-
-        $files = [
-            UploadedFile::fake()->create('document.pdf', 20000),
-        ];
-
-        $this->uploadService->uploadFiles('/test/path', $files);
-    }
-
     public function test_upload_service_upload_single_zip_file()
     {
-        Storage::fake('local');
-
         $testZip = $this->createTestZip();
 
         $this->uploadService->uploadFiles('/zip_files', [$testZip], false);

@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace Jwhulette\Filevuer\Tests\Feature;
 
-use ZipStream\ZipStream;
 use Illuminate\Support\Str;
 use Jwhulette\Filevuer\Tests\TestCase;
-use Illuminate\Filesystem\FilesystemManager;
-use Jwhulette\Filevuer\Services\SessionInterface;
-use Jwhulette\Filevuer\Services\DownloadServiceInterface;
+use Jwhulette\Filevuer\Services\SessionService;
 
 class DownloadControllerTest extends TestCase
 {
-    public function test_generate()
+    public function setUp(): void
     {
-        $response = $this->withSession($this->getSessionValues())
-            ->post(route('filevuer.generate'), ['path' => ['/test', '/test2']]);
+        parent::setUp();
+    }
 
-        $response->assertSessionHas(SessionInterface::FILEVUER_DOWNLOAD . $response->getContent());
+    public function test_generate_download()
+    {
+        $response = $this->post(route('filevuer.generate'), ['path' => ['/test', '/test2']]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSessionHas(SessionService::FILEVUER_DOWNLOAD . $response->getContent());
     }
 
     public function test_download_single_file()
     {
-        session()->put(SessionInterface::FILEVUER_DOWNLOAD . '123456', [[
+        session()->put(SessionService::FILEVUER_DOWNLOAD . '123456', [[
             'type'       => 'file',
             'path'       => 'fileA.txt',
             'visibility' => 'public',
@@ -35,8 +35,7 @@ class DownloadControllerTest extends TestCase
             'extension'  => 'txt',
             'filename'   => 'fileA',
         ]]);
-        $response = $this->withSession($this->getSessionValues())
-            ->get(route('filevuer.download', ['hash' => '123456']));
+        $response = $this->get(route('filevuer.download', ['hash' => '123456']));
 
         $response->assertStatus(200);
 
@@ -48,38 +47,18 @@ class DownloadControllerTest extends TestCase
         ));
     }
 
-    public function test_download_mulit_file()
+    public function test_download_mulitple_files()
     {
-        $files = $this->dummyListing();
+        $files = [
+            $this->directory['Cdirectory1']['Ztest.txt'],
+            $this->directory['Cdirectory1']['Atest2.txt']
+        ];
 
-        $filesystem = $this->getMockBuilder(FilesystemManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'listContents', 'readStream'])
-            ->getMock();
+        SessionService::setConnectionName('local');
 
-        $filesystem->method('cloud')
-            ->will($this->returnSelf());
+        session()->put(SessionService::FILEVUER_DOWNLOAD . '123456', $files);
 
-        $filesystem->method('listContents')
-            ->willReturn($files);
-
-        $filesystem->method('readStream')
-            ->willReturn('xyz');
-
-        $this->app->instance(FilesystemManager::class, $filesystem);
-
-        $zipStream = $this->createMock(ZipStream::class);
-
-        $zipStream->method('addFileFromStream');
-
-        $this->app->instance(ZipStream::class, $filesystem);
-
-        $service = app()->make(DownloadServiceInterface::class);
-
-        session()->put(SessionInterface::FILEVUER_DOWNLOAD . '123456', $files);
-
-        $response = $this->withSession($this->getSessionValues())
-            ->get(route('filevuer.download', ['hash' => '123456']));
+        $response = $this->get(route('filevuer.download', ['hash' => '123456']));
 
         $response->assertStatus(200);
 
@@ -88,6 +67,11 @@ class DownloadControllerTest extends TestCase
         $this->assertTrue(Str::contains(
             $response->headers->get('Content-Disposition'),
             'attachment; filename='
+        ));
+
+        $this->assertTrue(Str::contains(
+            $response->headers->get('Content-Disposition'),
+            '.zip'
         ));
     }
 }
