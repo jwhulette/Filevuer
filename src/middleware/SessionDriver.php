@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Jwhulette\Filevuer\Middleware;
 
 use Closure;
-use Jwhulette\Filevuer\Services\SessionInterface;
-use Jwhulette\Filevuer\Traits\SessionDriverTrait;
+use Illuminate\Http\Request;
+use Jwhulette\Filevuer\Services\SessionService;
 
 class SessionDriver
 {
-    use SessionDriverTrait;
-
     /**
      * Apply the login data from the session storage.
      *
@@ -20,13 +18,13 @@ class SessionDriver
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $loggedIn = session()->get(SessionInterface::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false';
+        $loggedIn = session()->get(SessionService::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false';
 
-        if ('true' === $loggedIn) {
-            $this->applyConfiguration();
-        }
+        // if ('true' === $loggedIn) {
+        //     $this->applyConfiguration();
+        // }
 
         return $next($request);
     }

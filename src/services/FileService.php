@@ -5,34 +5,25 @@ declare(strict_types=1);
 namespace Jwhulette\Filevuer\Services;
 
 use InvalidArgumentException;
-use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Support\Facades\Storage;
+use Jwhulette\Filevuer\Services\SessionService;
 
 class FileService implements FileServiceInterface
 {
-    protected FilesystemManager $fileSystem;
-
-    /**
-     * @param FilesystemManager $fileSystem
-     */
-    public function __construct(FilesystemManager $fileSystem)
-    {
-        $this->fileSystem = $fileSystem;
-    }
-
     /**
      * Get file contents from server.
      *
      * @param string|null $path
      *
-     * @throws InvalidArgumentException
-     *
      * @return string|null
+     *
+     * @throws InvalidArgumentException
      */
     public function contents(?string $path = ''): ?string
     {
         $this->checkPath($path);
 
-        return $this->fileSystem->cloud()->get($path);
+        return Storage::disk(SessionService::getConnectionName())->get($path);
     }
 
     /**
@@ -41,15 +32,14 @@ class FileService implements FileServiceInterface
      * @param string|null $path
      * @param string|null $contents
      *
-     * @throws InvalidArgumentException
-     *
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function update(?string $path = '', ?string $contents = ''): bool
     {
         $this->checkPath($path);
 
-        return $this->fileSystem->cloud()->put($path, $contents);
+        return Storage::disk(SessionService::getConnectionName())->put($path, $contents);
     }
 
     /**
@@ -62,7 +52,10 @@ class FileService implements FileServiceInterface
     public function delete(array $path): bool
     {
         foreach ($path as $file) {
-            $this->fileSystem->cloud()->delete($file);
+            $delete = Storage::disk(SessionService::getConnectionName())->delete($file);
+            if (!$delete) {
+                throw new Exception("Failed deleting file " . $file, 1);
+            }
         }
 
         return true;
@@ -77,7 +70,7 @@ class FileService implements FileServiceInterface
      */
     public function create(string $path): bool
     {
-        return $this->fileSystem->cloud()->put($path, '');
+        return Storage::disk(SessionService::getConnectionName())->put($path, '');
     }
 
     /**
@@ -85,9 +78,8 @@ class FileService implements FileServiceInterface
      *
      * @param string $path
      *
-     * @throws InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     protected function checkPath($path): void
     {
