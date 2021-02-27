@@ -6,5 +6,5 @@ namespace Jwhulette\Filevuer\Services;
 
 interface UploadServiceInterface
 {
-    public function uploadFiles(string $path, array $files, ?bool $extract = false): void;
+    public function uploadFiles(string $path, array $files, bool $extract = false): void;
 }

@@ -6,162 +6,82 @@ use Exception;
 use RuntimeException;
 use Illuminate\Http\UploadedFile;
 use Jwhulette\Filevuer\Tests\TestCase;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\FilesystemManager;
+use Jwhulette\Filevuer\Services\UploadService;
 use Jwhulette\Filevuer\Services\UploadServiceInterface;
 
 class UploadServiceTest extends TestCase
 {
     protected $tmpPath;
 
+    protected UploadService $uploadService;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->tmpPath = sys_get_temp_dir();
+
+        $this->uploadService = new UploadService();
     }
 
-    public function testSingleFileUpload()
+    public function test_upload_service_upload_single_file()
     {
-        $filesystem = $this->getMockBuilder(FilesystemManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'put'])
-            ->getMock();
-
-        $filesystem->method('cloud')->will($this->returnSelf());
-
-        $filesystem->method('put')->willReturn(true);
-
-        $this->app->instance(FilesystemManager::class, $filesystem);
-
-        $service = app()->make(UploadServiceInterface::class);
+        Storage::fake('local');
 
         $files = [
             UploadedFile::fake()->create('document.pdf', 20000),
         ];
 
-        $service->uploadFiles('/test', $files);
+        $this->uploadService->uploadFiles('/test', $files);
 
         $this->assertTrue(true);
     }
 
-    public function testSingleFileUploadFaild()
+    public function test_upload_service_upload_single_file_failed()
     {
+
         $this->expectException(Exception::class, 'Error uploading file');
 
-        $filesystem = $this->getMockBuilder(FilesystemManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'put'])
-            ->getMock();
-
-        $filesystem->method('cloud')->will($this->returnSelf());
-
-        $filesystem->method('put')->willReturn(false);
-
-        $this->app->instance(FilesystemManager::class, $filesystem);
-
-        $service = app()->make(UploadServiceInterface::class);
-
         $files = [
             UploadedFile::fake()->create('document.pdf', 20000),
         ];
 
-        $service->uploadFiles('/test', $files);
+        $this->uploadService->uploadFiles('/test/path', $files);
     }
 
-    public function testSingleFileUploadZip()
+    public function test_upload_service_upload_single_zip_file()
     {
-        $filesystem = $this->getMockBuilder(FilesystemManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'put', 'makeDirectory'])
-            ->getMock();
-
-        $filesystem->method('cloud')->will($this->returnSelf());
-
-        $filesystem->method('put')->willReturn(true);
-
-        $filesystem->method('makeDirectory')->willReturn(true);
-
-        $this->app->instance(FilesystemManager::class, $filesystem);
-
-        $service = app()->make(UploadServiceInterface::class);
+        Storage::fake('local');
 
         $testZip = $this->createTestZip();
 
-        $service->uploadFiles('/test', [$testZip], false);
+        $this->uploadService->uploadFiles('/zip_files', [$testZip], false);
 
         $this->assertTrue(true);
     }
 
-    public function testSingleFileUploadZipExtracted()
+    public function test_upload_service_upload_single_zip_file_extract()
     {
-        $filesystem = $this->getMockBuilder(FilesystemManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'put', 'makeDirectory'])
-            ->getMock();
-
-        $filesystem->method('cloud')->will($this->returnSelf());
-
-        $filesystem->method('put')->willReturn(true);
-
-        $filesystem->method('makeDirectory')->willReturn(true);
-
-        $this->app->instance(FilesystemManager::class, $filesystem);
-
-        $service = app()->make(UploadServiceInterface::class);
+        Storage::fake('local');
 
         $testZip = $this->createTestZip();
 
-        $service->uploadFiles('/test', [$testZip], true);
+        $this->uploadService->uploadFiles('/test', [$testZip], true);
 
         $this->assertTrue(true);
     }
 
-    public function testSingleFileUploadZipCreateRemoteFileFailed()
+    public function test_upload_service_upload_zip_file_extract_fail()
     {
-        $this->expectException(RuntimeException::class, 'Error creating file on server');
-
-        $filesystem = $this->getMockBuilder(FilesystemManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'put', 'makeDirectory'])
-            ->getMock();
-
-        $filesystem->method('cloud')->will($this->returnSelf());
-
-        $filesystem->method('put')->willReturn(false);
-
-        $filesystem->method('makeDirectory')->willReturn(true);
-
-        $this->app->instance(FilesystemManager::class, $filesystem);
-
-        $service = app()->make(UploadServiceInterface::class);
-
-        $testZip = $this->createTestZip();
-
-        $service->uploadFiles('/test', [$testZip], true);
-    }
-
-    public function testSingleFileUploadCorruptZip()
-    {
-        $this->expectException(RuntimeException::class, 'Failed to extract zip archive.');
-
-        $filesystem = $this->getMockBuilder(FilesystemManager::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['cloud', 'put', 'makeDirectory'])
-            ->getMock();
-
-        $filesystem->method('cloud')->will($this->returnSelf());
-
-        $filesystem->method('put')->willReturn(true);
-
-        $filesystem->method('makeDirectory')->willReturn(true);
-
-        $this->app->instance(FilesystemManager::class, $filesystem);
-
-        $service = app()->make(UploadServiceInterface::class);
+        $this->expectException(Exception::class);
 
         $testZip = $this->createCorruptTestZip();
 
-        $service->uploadFiles('/test', [$testZip], true);
+        $this->uploadService->uploadFiles('/test', [$testZip], true);
+
+        $this->assertTrue(true);
     }
 
     private function copyZip($file)

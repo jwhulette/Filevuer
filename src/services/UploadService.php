@@ -6,37 +6,32 @@ namespace Jwhulette\Filevuer\Services;
 
 use Exception;
 use ZipArchive;
-use RuntimeException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Jwhulette\Filevuer\Traits\SessionDriverTrait;
+use Jwhulette\Filevuer\Services\SessionService;
 
 class UploadService implements UploadServiceInterface
 {
-    use SessionDriverTrait;
-
     /**
-     * Process the uploaded files
+     * Save the uploaded files
      *
      * @param string $path
-     * @param array $files
-     * @param bool|null $extract
+     * @param array<UploadedFile> $files
+     * @param bool $extract
      *
      * @return void
-     *
      * @throws Exception
      */
-    public function uploadFiles(string $path, array $files, ?bool $extract = false): void
+    public function uploadFiles(string $path, array $files, bool $extract = false): void
     {
         foreach ($files as $file) {
-            if (!$extract) {
+            if ($extract === \false) {
                 $this->uploadFile($path, $file);
             } else {
+                // Extract zip after upload
                 if ($file->getClientOriginalExtension() == 'zip') {
                     $this->unzipArchive($path, $file);
-                } else {
-                    $this->uploadFile($path, $file);
                 }
             }
         }
@@ -44,11 +39,10 @@ class UploadService implements UploadServiceInterface
 
     /**
      * @param string $path
-     * @param UploadedFile $file
+     * @param \Illuminate\Http\UploadedFile $file
      *
      * @return void
-     *
-     * @throws RuntimeException
+     * @throws Exception
      */
     protected function unzipArchive(string $path, UploadedFile $file): void
     {
@@ -56,44 +50,50 @@ class UploadService implements UploadServiceInterface
 
         $resource = $zipArchive->open($file->getRealPath());
 
-        if ($resource === true) {
-            $fileCount = $zipArchive->numFiles;
+        if (!$resource) {
+            File::delete($file->getRealPath());
 
-            $this->createDirectories($zipArchive, $fileCount, $path);
+            throw new Exception('Failed to extract zip archive.');
+        }
 
-            for ($i = 0; $i < $fileCount; $i++) {
-                $filename   = $zipArchive->getNameIndex($i);
 
-                $filestream = $zipArchive->getStream($filename);
+        $fileCount = $zipArchive->numFiles;
 
-                if (!$filestream) {
-                    File::delete($file->getRealPath());
+        $this->createDirectories($zipArchive, $fileCount, $path);
 
-                    throw new \RuntimeException('Failed to get zipped file - ' . $filename);
-                }
+        for ($i = 0; $i < $fileCount; $i++) {
+            $filename   = $zipArchive->getNameIndex($i);
 
-                if (pathinfo($filename, PATHINFO_EXTENSION)) {
-                    $uploadPath = $this->getUploadPath($path, $filename);
+            $filestream = $zipArchive->getStream($filename);
 
-                    $response   = Storage::disk(SessionService::getConnectionName())
-                        ->put($uploadPath, $filestream);
+            if (!$filestream) {
+                File::delete($file->getRealPath());
 
-                    if (!$response) {
-                        unlink($file->getRealPath());
-
-                        throw new \RuntimeException("Error creating file on server");
-                    }
-                }
+                throw new Exception('Failed to get zipped file - ' . $filename);
             }
 
-            $zipArchive->close();
+            // If a file, upload the file
+            if (!is_null(File::extension($filename))) {
+                $uploadPath = printf('%s/%s', $path, $filename);
 
-            File::delete($file->getRealPath());
-        } else {
-            File::delete($file->getRealPath());
+                $response = Storage::disk(SessionService::getConnectionName())
+                    ->put($uploadPath, $filestream);
 
-            throw new \RuntimeException('Failed to extract zip archive.');
+                if (!$response) {
+                    File::delete($file->getRealPath());
+
+                    throw new Exception("Error creating file on server");
+                }
+            }
         }
+
+        try {
+            $zipArchive->close();
+        } catch (\Throwable $th) {
+            throw new Exception("Error creating file on server " . $th->getMessage());
+        }
+
+        File::delete($file->getRealPath());
     }
 
     /**
@@ -108,23 +108,24 @@ class UploadService implements UploadServiceInterface
     protected function createDirectories(ZipArchive $zipArchive, int $fileCount, string $path): void
     {
         for ($i = 0; $i < $fileCount; $i++) {
-            $filename   = $zipArchive->getNameIndex($i);
+            $filename = $zipArchive->getNameIndex($i);
 
             $this->createDirectory($path, $filename);
         }
     }
 
     /**
-     * Crate a directory
+     * Create a directory
      *
+     * @param string $path
      * @param string $filename
      */
     protected function createDirectory(string $path, string $filename): void
     {
-        $directory = dirname($filename);
+        $directory = File::dirname($filename);
 
-        if ('.' !== $directory) {
-            $directoryPath = $this->getUploadPath($path, $directory) . '/';
+        if ($directory !== '.') {
+            $directoryPath =  printf('%s/%s', $path, $directory);
 
             Storage::disk(SessionService::getConnectionName())->makeDirectory($directoryPath);
         }
@@ -134,38 +135,22 @@ class UploadService implements UploadServiceInterface
      * Uplad the file
      *
      * @param string $path
-     * @param UploadedFile $file
+     * @param \Illuminate\Http\UploadedFile $file
      *
      * @return void
-     *
      * @throws Exception
      */
     protected function uploadFile(string $path, UploadedFile $file): void
     {
-        $uploadPath = $this->getUploadPath($path, $file->getClientOriginalName());
+        $uploadPath = printf('%s/%s', $path, $file->getClientOriginalName());
 
-        $response   = Storage::disk(SessionService::getConnectionName())
-            ->put($uploadPath, file_get_contents($file->getRealPath()));
+        $response = Storage::disk(SessionService::getConnectionName())
+            ->put($uploadPath, File::get($file->getRealPath()));
 
         File::delete($file->getRealPath());
 
         if (!$response) {
             throw new Exception("Error uploading file", 1);
         }
-    }
-
-    /**
-     * Get the path to upload the file
-     *
-     * @param string $path
-     * @param string $filename
-     *
-     * @return string
-     */
-    public function getUploadPath(string $path, string $filename): string
-    {
-        $path =  ltrim($path, '/');
-
-        return $this->getFullPath($path . $filename);
     }
 }

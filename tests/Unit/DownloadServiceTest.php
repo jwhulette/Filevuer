@@ -3,7 +3,6 @@
 namespace Jwhulette\Filevuer\Tests\Unit;
 
 use Jwhulette\Filevuer\Tests\TestCase;
-use Illuminate\Support\Facades\Storage;
 use Jwhulette\Filevuer\Services\SessionService;
 use Jwhulette\Filevuer\Services\DownloadService;
 use Symfony\Component\HttpFoundation\StreamedResponse;

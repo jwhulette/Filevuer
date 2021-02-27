@@ -5,6 +5,9 @@ const basePath = '/filevuer';
 
 const removeSlashes = (str) => str.replace(/^\/|\/$/g, '');
 
+/**
+ * Poll to see if the user is still logged into
+ */
 export function poll() {
     return http({
         url: `${basePath}/poll`,
@@ -14,6 +17,10 @@ export function poll() {
     });
 }
 
+/**
+ * Set the selected connection
+ * @param {string} selected 
+ */
 export function setConnection(selected) {
     return http({
         url: basePath,
