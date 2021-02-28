@@ -5,7 +5,6 @@
                 <loading-overlay :visible="isLoading" />
                 <modals />
                 <browser :selected="selected" />
-                <editor :visible="editorVisible" />
             </div>
             <div v-else>
                 <connection
@@ -20,7 +19,6 @@
 <script>
 import { mapState } from 'vuex';
 import Connection from './components/Connection.vue';
-import Editor from './components/Editor.vue';
 import Browser from './components/Browser.vue';
 import Modals from './components/modals/Index.vue';
 import LoadingOverlay from './components/layout/LoadingOverlay.vue';
