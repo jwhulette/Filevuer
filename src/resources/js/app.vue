@@ -44,7 +44,7 @@ export default {
         selected: {
             default: '',
             type: String,
-        },
+        }
     },
     data() {
         return {
@@ -74,7 +74,7 @@ export default {
     },
     updated() {
         if (this.connectionName) {
-            document.title = `Filevuer: ${this.connectionName}`;
+            document.title = `Connection: ${this.connectionName}`;
         }
     },
     methods: {

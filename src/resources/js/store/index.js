@@ -4,6 +4,7 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
+    routePrefix: 'filevuer',
     files: [],
     openFile: null,
     path: '/',
@@ -11,9 +12,6 @@ const state = {
     connectionName: '',
     newFileFolder: 'file',
     selected: false,
-    editorContents: '',
-    editorVisible: false,
-    editorContentsChanged: 0, // Updated file change to trigger editor's watch method
     visibleModals: {
         confirmDelete: false,
         create: false,

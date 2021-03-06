@@ -14,12 +14,14 @@
 <body>
 
     <div id="filevuer-main">
-        <app :connections='{{ $connections }}' :logged-in='{{ $loggedIn }}' selected='{{ $selected }}'></app>
+        <app :connections='{{ $connections }}' :logged-in='{{ $loggedIn }}' selected='{{ $selected }}'>
+        </app>
     </div>
 
     <script>
         window.Filevuer = {
-            csrfToken: '{{ csrf_token() }}'
+            csrfToken: '{{ csrf_token() }}',
+            routePrefix: '{{ $prefix }}'
         }
     </script>
     <script src="{{ asset('/vendor/filevuer/js/manifest.js') }}"></script>

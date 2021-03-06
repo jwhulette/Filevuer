@@ -4,7 +4,7 @@
             id="fvDelete"
             ref="fvDelete"
             :hide-header="true"
-            size="sm"
+            size="md"
             ok-variant="danger"
         >
             <div class="row">
@@ -14,6 +14,10 @@
                         folders?
                     </div>
                 </div>
+            </div>
+
+            <div slot="modal-cancel" size="sm" @click="close()">
+                Cancel
             </div>
 
             <div slot="modal-ok" size="sm" @click.prevent="confirm()">

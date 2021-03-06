@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const http = axios;
-const basePath = '/filevuer';
+
+// TODO: Find a better way to do this
+const basePath = window.Filevuer.routePrefix;
 
 const removeSlashes = (str) => str.replace(/^\/|\/$/g, '');
 

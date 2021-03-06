@@ -12,7 +12,8 @@ const basename = (path) => {
     return path.split('/').pop();
 };
 
-const basePath = '/filevuer';
+// TODO: Find a better way to do this
+const basePath = window.Filevuer.routePrefix;
 
 export default {
     /**
@@ -22,7 +23,7 @@ export default {
     [types.POLL_CONNECTION]() {
         return api.poll().then((response) => {
             if (response.active === false) {
-                window.location.reload(true);
+                window.location.reload();
             }
         });
     },
@@ -51,49 +52,6 @@ export default {
             // eslint-disable-next-line no-unused-vars
             .catch((e) => {
                 alertify.error('Failed to fetch files');
-                commit(types.SET_LOADING, false);
-            });
-    },
-
-    [types.FETCH_CONTENTS]({ commit, state }, path) {
-        commit(types.SET_LOADING, true);
-        const contentPath = withPwd(state, path);
-
-        api.getContents(contentPath)
-            .then((response) => {
-                if (response.download === true) {
-                    const a = window.document.createElement('a');
-                    a.href = `data:application/octet-stream;base64,${response.contents}`;
-                    a.download = basename(path);
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } else {
-                    commit(types.SET_OPEN_FILE, path);
-                    commit(types.SET_EDITOR_CONTENTS, response.contents);
-                    commit(types.SET_EDITOR_VISIBILITY, true);
-                }
-
-                commit(types.SET_LOADING, false);
-            })
-            // eslint-disable-next-line no-unused-vars
-            .catch((e) => {
-                alertify.error('Failed to fetch file');
-                commit(types.SET_LOADING, false);
-            });
-    },
-
-    [types.PUT_CONTENTS]({ dispatch, commit, state }, contents) {
-        commit(types.SET_LOADING, true);
-
-        api.putContents(state.openFile, contents)
-            .then(() => {
-                alertify.success('Successfully updated file');
-                dispatch(types.REFRESH);
-            })
-            // eslint-disable-next-line no-unused-vars
-            .catch((e) => {
-                alertify.error('Failed to update file');
                 commit(types.SET_LOADING, false);
             });
     },
@@ -150,8 +108,8 @@ export default {
 
         api.create(type, newPath)
             .then(() => {
-                const newtype = type === 'file' ? 'New file' : 'New folder';
-                alertify.success(`${newtype} created`);
+                // const newtype = type === 'file' ? '' : 'New folder';
+                alertify.success(`New folder created`);
                 dispatch(types.REFRESH);
             })
             // eslint-disable-next-line no-unused-vars

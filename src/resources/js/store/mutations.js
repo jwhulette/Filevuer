@@ -18,21 +18,12 @@ export default {
         state.files = files;
     },
 
-    [types.SET_EDITOR_CONTENTS](state, contents) {
-        state.editorContents = contents;
-        state.editorContentsChanged = +Date.now();
-    },
-
-    [types.SET_EDITOR_VISIBILITY](state, visibility) {
-        state.editorVisible = visibility;
-    },
-
     [types.SET_OPEN_FILE](state, path) {
         state.openFile = path;
     },
 
     [types.SET_SELECTED](state, selected) {
-        if (typeof selected.selectedRows !== 'undefined') {
+        if (typeof selected.selectedRows !== "undefined") {
             state.selected = selected.selectedRows;
         }
     },
