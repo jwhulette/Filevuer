@@ -28,7 +28,6 @@ import store from './store';
 export default {
     components: {
         Connection,
-        Editor,
         Browser,
         Modals,
         LoadingOverlay,
@@ -40,7 +39,7 @@ export default {
         },
         connections: {
             default: null,
-            type: Object,
+            type: Array,
         },
         selected: {
             default: '',

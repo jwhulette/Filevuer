@@ -43,7 +43,7 @@ composer require jwhulette/filevuer
 Publish the assets and configuration
 
 ```PHP
-php artisan vendor:publish --tag=filevuer
+php artisan vendor:publish --provider="Jwhulette\Filevuer\FilevuerServiceProvider"
 ```
 
 Laravel 5.5+:

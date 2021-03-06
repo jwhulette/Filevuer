@@ -19,24 +19,12 @@
                     <font-awesome-icon icon="download" /> &nbsp;Download
                 </b-button>
 
-                <b-dropdown size="sm" right variant="success">
-                    <template slot="button-content">
-                        <font-awesome-icon icon="plus-square" /> &nbsp;Create
-                    </template>
-                    <b-dropdown-item
-                        variant="success"
-                        @click.prevent="toggleModal('fvCreate', 'file')"
-                    >
-                        <font-awesome-icon icon="file-alt" /> &nbsp;Create File
-                    </b-dropdown-item>
-
-                    <b-dropdown-item
-                        variant="success"
-                        @click.prevent="toggleModal('fvCreate', 'directory')"
-                    >
-                        <font-awesome-icon icon="folder" /> &nbsp;Create Folder
-                    </b-dropdown-item>
-                </b-dropdown>
+              <b-button 
+                size="sm" 
+                variant="success"
+                @click.prevent="toggleModal('fvCreate', 'directory')">
+                    <font-awesome-icon icon="folder" /> &nbsp;Create Folder
+                </b-button>
 
                 <b-button size="sm" variant="info" @click.prevent="refresh">
                     <font-awesome-icon icon="sync-alt" /> &nbsp;Refresh
@@ -58,6 +46,7 @@
 </template>
 
 <script>
+
 import { mapActions, mapState } from 'vuex';
 import * as types from '../../store/types';
 

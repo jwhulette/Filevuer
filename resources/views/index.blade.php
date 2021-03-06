@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Filevuer Home</title>
+
+    <title>{{ $selected }} Home</title>
 
     <link href="{{ asset('/vendor/filevuer/css/filevuer.css') }}" rel="stylesheet">
 </head>
@@ -18,12 +19,11 @@
 
     <script>
         window.Filevuer = {
-        csrfToken: '{{ csrf_token() }}'
-    }
+            csrfToken: '{{ csrf_token() }}'
+        }
     </script>
-
     <script src="{{ asset('/vendor/filevuer/js/manifest.js') }}"></script>
-    <script src="{{ asset('/vendor/filevuer/js/vendor.js') }}"></script>    
+    <script src="{{ asset('/vendor/filevuer/js/vendor.js') }}"></script>
     <script src="{{ asset('/vendor/filevuer/js/filevuer.js') }}"></script>
 
 </body>

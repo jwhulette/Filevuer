@@ -1,7 +1,7 @@
 <template>
-    <div class="">
-        <div class="row">
-            <div class="browser rounded col col-xl-6 offset-xl-3 bg-white">
+    <div>
+        <div class="row justify-content-md-center">
+            <div class="browser rounded col col-12 col-xl-8 col-lg-10 bg-white">
                 <breadcrumbs />
                 <toolbar />
                 <file-list />

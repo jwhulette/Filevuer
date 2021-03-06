@@ -40,29 +40,11 @@ class FilevuerController extends Controller
      */
     public function index(): View
     {
-        $this->development();
-
         return view('filevuer::index', [
             'connections' => $this->configurationService->getConnectionDisplayList(),
             'loggedIn'    => session()->get(SessionService::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false',
             'selected'    => session()->get(SessionService::FILEVUER_CONNECTION_NAME, '')
         ]);
-    }
-
-    /**
-     * When developing the applicaton
-     * copy the updated files over on page refresh
-     *
-     * @return void
-     */
-    private function development()
-    {
-        if (\App::environment('local')) {
-            \Artisan::call('vendor:publish', [
-                '--tag' => 'filevuer',
-                '--force' => 1
-            ]);
-        }
     }
 
     /**

@@ -21,5 +21,5 @@ return [
     | Enter a different route prefix if you don't want the default of filevuer
     |--------------------------------------------------------------------------
     */
-    'prefix' => null
+    'prefix' => 'filevuer'
 ];

@@ -18,4 +18,5 @@ mix.extract(['vue']);
 mix.js("resources/js/app.js", "js/filevuer.js")
     .vue()
     .sass("resources/sass/app.scss", "css/filevuer.css")
-    .version();
+    .version()
+    .sourceMaps();

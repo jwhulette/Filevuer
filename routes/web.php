@@ -21,9 +21,9 @@ use Jwhulette\Filevuer\Controllers\DirectoryController;
 |
 */
 
-$middleware = Arr::collapse(['web'], config('filevuer.middleware'));
+$middleware = \array_merge(['web'], config('filevuer.middleware'));
 
-$prefix = config('filevuer.prefix') ?? 'filevuer';
+$prefix = config('filevuer.prefix');
 
 Route::middleware($middleware)
     ->prefix($prefix)

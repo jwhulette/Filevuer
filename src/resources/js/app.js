@@ -8,7 +8,25 @@ import App from "./app.vue";
 import store from "./store";
 import "./bootstrap";
 
-import { VBModal, BFormFile, BButtonGroup, BButton } from "bootstrap-vue";
+import {
+    FormInputPlugin,
+    InputGroupPlugin,
+    ButtonPlugin,
+    ButtonGroupPlugin,
+    AlertPlugin,
+    FormPlugin,
+    FormFilePlugin,
+    ModalPlugin
+} from "bootstrap-vue";
+Vue.use(FormInputPlugin);
+Vue.use(InputGroupPlugin);
+Vue.use(ButtonPlugin);
+Vue.use(ButtonGroupPlugin);
+Vue.use(AlertPlugin);
+Vue.use(FormPlugin);
+Vue.use(FormFilePlugin);
+Vue.use(ModalPlugin);
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
@@ -29,7 +47,7 @@ import {
     faEye,
     faSearch
 } from "@fortawesome/free-solid-svg-icons";
-Vue.use(VBModal, BFormFile, BButtonGroup, BButton);
+// Vue.use(VBModal, BFormFile, BButtonGroup, BButton);
 library.add(
     faTruck,
     faCloud,

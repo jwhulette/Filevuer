@@ -1,174 +1,175 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,700,900');
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700,900");
 // Variables
 @import "variables";
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 // Boostrap-vue
-@import '~bootstrap-vue/dist/bootstrap-vue.css';
+@import "~bootstrap-vue/dist/bootstrap-vue.css";
 // Alertifyjs
-@import '~alertifyjs/build/css/alertify.css';
-// import the styles 
-@import '~vue-good-table/dist/vue-good-table.css';
+@import "~alertifyjs/build/css/alertify.css";
+// import the styles
+@import "~vue-good-table/dist/vue-good-table.css";
 
 // Site
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .large-font {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .connection-type {
-    display: inline-block;
-    width: 7rem;
+  display: inline-block;
+  padding-right: 2px;
 }
 
 .font-color {
-    color: #3368FF;
+  color: #3368ff;
 }
 
 .file-wrapper {
-    height: 95vh;
+  height: 95vh;
 }
 
 .connecting {
-    font-size: 18px;
-    text-align: center;
-    font-weight: 700;
-    padding: 20px 0;
+  font-size: 18px;
+  text-align: center;
+  font-weight: 700;
+  padding: 20px 0;
 }
 
 .browser {
-    margin-top: 1%;
-    margin-bottom: 1%;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .toolbar {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 .set-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .filter-bar {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 #filelist-table {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 /* editor */
 
 .col-editor {
-    left: 100%;
-    height: 100%;
-    width: 50%;
-    position: fixed !important;
-    top: 0;
-    visibility: hidden;
-    opacity: 0;
-    transition: 0.2s ease-out;
-    transition-property: visibility, opacity, left;
-    z-index: $zindex-modal;
+  left: 100%;
+  height: 100%;
+  width: 50%;
+  position: fixed !important;
+  top: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s ease-out;
+  transition-property: visibility, opacity, left;
+  z-index: $zindex-modal;
 }
 
 .editor-visible .col {
-    position: relative;
-    width: 50%;
+  position: relative;
+  width: 50%;
 }
 
 .editor-visible .col-browser {
-    width: 50%;
-    left: 0;
+  width: 50%;
+  left: 0;
 }
 
 .editor-visible .col-editor {
-    visibility: visible;
-    opacity: 1;
-    left: 50%;
+  visibility: visible;
+  opacity: 1;
+  left: 50%;
 }
 
 #editor {
-    position: relative;
-    width: 100%;
-    z-index: 500;
-    height: 100vh;
-    font-size: 15px;
-    line-height: 1.6;
+  position: relative;
+  width: 100%;
+  z-index: 500;
+  height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 #statusbar {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 54px;
-    width: 100%;
-    z-index: 600;
-    padding: 10px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 54px;
+  width: 100%;
+  z-index: 600;
+  padding: 10px;
 }
 
 #hide {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(-50%, 0);
-    z-index: 2000;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, 0);
+  z-index: 2000;
 }
+
 #hide > button {
-    border-color: #000000;
+  border-color: #000;
 }
 
 @media screen and (max-width: 880px) {
-    #hide {
-        transform: translate(10%, 0);
-    }
+  #hide {
+    transform: translate(10%, 0);
+  }
 }
 
 /* editor */
 
 .alertify-notifier .ajs-message {
-    color: #ffffff;
-    font-size: 16px;
-    text-align: center;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
 }
 
 .connection-name {
-    margin: .5em 0;
-    font-weight: 700;
+  margin: 0.5em 0;
+  font-weight: 700;
 }
 
 .logout-button {
-    margin: .5em 0;
+  margin: 0.5em 0;
 }
 
 .logout-button .btn {
-    position: relative;
-    right: 9px;
+  position: relative;
+  right: 9px;
 }
 
 /* Upload.vue */
 
 .zip-checkbox {
-    margin-top: 3em;
-    text-align: center;
+  margin-top: 3em;
+  text-align: center;
 }
 
 #fv-fileUpload__BV_file_control_ {
-    overflow: hidden;
-    line-height: 1.7rem;
+  overflow: hidden;
+  line-height: 1.7rem;
 }
 
 #loading-overlay {
-    position: fixed;
-    cursor: wait;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100%;
-    z-index: 10000;
-    background: rgba(255, 255, 255, 0.3);
+  position: fixed;
+  cursor: wait;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  z-index: 10000;
+  background: rgba(255, 255, 255, 0.3);
 }

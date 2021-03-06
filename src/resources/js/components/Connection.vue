@@ -2,7 +2,7 @@
     <div class="row justify-content-center browser col">
         <div class="card">
             <div class="card-header text-center large-font">
-                <b>Remote Connections</b>
+                <b>Available Connections</b>
             </div>
             <div class="card-body">
                 <div v-if="connecting" class="connecting">
@@ -18,37 +18,21 @@
                     </div>
                 </div>
                 <div class="list-group large-font">
-                    <div v-for="(items, index) in connectionList" :key="index">
-                        <span v-for="conn in items" :key="conn">
+                    <div v-for="item in connectionList" :key="item">
                             <a
                                 href="#"
                                 class="list-group-item list-group-item-action"
-                                @click.stop.prevent="selectConnection(conn)"
+                                @click.stop.prevent="selectConnection(item)"
                             >
-                                <span v-if="index == 'FTP'">
-                                    <span class="connection-type">
-                                        <font-awesome-icon
-                                            icon="truck"
-                                            size="lg"
-                                            class="font-color"
-                                        />
-                                        &nbsp; FTP: &nbsp;</span
-                                    >
-                                    {{ conn }}
-                                </span>
-                                <span v-if="index == 'S3'">
-                                    <span class="connection-type">
-                                        <font-awesome-icon
-                                            icon="cloud"
-                                            size="lg"
-                                            class="font-color"
-                                        />
-                                        &nbsp;&nbsp; S3: &nbsp;&nbsp;</span
-                                    >
-                                    {{ conn }}
-                                </span>
+                            <span class="connection-type">
+                                <font-awesome-icon
+                                    icon="cloud"
+                                    size="lg"
+                                    class="font-color"
+                                />
+                            </span>
+                            {{ item }}
                             </a>
-                        </span>
                     </div>
                 </div>
             </div>
@@ -64,7 +48,7 @@ export default {
     props: {
         connectionList: {
             default: null,
-            type: Object,
+            type: Array,
         },
     },
     data() {
