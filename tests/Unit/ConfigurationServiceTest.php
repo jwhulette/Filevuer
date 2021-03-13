@@ -24,7 +24,7 @@ class ConfigurationServiceTest extends TestCase
     {
         $disks = $this->configurationService->getConnectionDisplayList();
 
-        $this->assertJson($disks);
+        $this->assertInstanceOf(Collection::class, $disks);
     }
 
     public function test_get_avaliable_disks()

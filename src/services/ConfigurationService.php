@@ -18,11 +18,25 @@ class ConfigurationService implements ConfigurationServiceInterface
     }
 
     /**
-     * @return string
+     * @return Collection
      */
-    public function getConnectionDisplayList(): string
+    public function getConnectionDisplayList(): Collection
     {
-        return $this->getConnectionsList()->toJson();
+        $filevuerConnections = $this->getConnectionsList();
+
+        $connections = collect(config('filesystems.disks'))
+            ->map(function ($item, $key) use ($filevuerConnections) {
+                // Get the disk info that we should use
+                if ($filevuerConnections->contains($key)) {
+                    return [
+                        'name' => $item['name'] ?? $key
+                    ];
+                }
+            })->filter(function ($value) {
+                return $value !== null;
+            });
+
+        return $connections;
     }
 
     /**

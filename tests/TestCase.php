@@ -64,6 +64,7 @@ abstract class TestCase extends BaseTestCase
             'local' => [
                 'driver' => 'local',
                 'root' => 'vfs',
+                'name' => 'Accounting Documents'
             ],
             'sftp' => [
                 'driver'   => 'sftp',

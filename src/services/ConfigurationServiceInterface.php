@@ -10,7 +10,7 @@ interface ConfigurationServiceInterface
 {
     public function getConnectionsList(): Collection;
 
-    public function getConnectionDisplayList(): string;
+    public function getConnectionDisplayList(): Collection;
 
     public function getSelectedConnection(string $name): string;
 }

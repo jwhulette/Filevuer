@@ -41,7 +41,7 @@ class FilevuerController extends Controller
     public function index(): View
     {
         return view('filevuer::index', [
-            'connections' => $this->configurationService->getConnectionDisplayList(),
+            'connections' => $this->configurationService->getConnectionDisplayList()->toJson(),
             'loggedIn'    => session()->get(SessionService::FILEVUER_LOGGEDIN, false)  ? 'true' : 'false',
             'selected'    => session()->get(SessionService::FILEVUER_CONNECTION_NAME, ''),
             'prefix'      => \config('filevuer.prefix')

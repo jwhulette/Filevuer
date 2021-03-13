@@ -39,7 +39,7 @@ export default {
         },
         connections: {
             default: null,
-            type: Array,
+            type: Object,
         },
         selected: {
             default: '',
