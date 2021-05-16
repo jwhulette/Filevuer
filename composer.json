@@ -42,9 +42,9 @@
         }
     },
     "scripts": {
-        "t": "vendor/bin/phpunit --color=always",
-        "tf": "vendor/bin/phpunit --color=always --filter ",
-        "suite": [
+        "test": "vendor/bin/phpunit --color=always",
+        "testf": "vendor/bin/phpunit --color=always --filter ",
+        "tests": [
             "vendor/bin/phpstan analyse --memory-limit=2G",
             "vendor/bin/phpunit --color=always"
         ]
