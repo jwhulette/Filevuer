@@ -15,26 +15,19 @@ This is a simple FTP/S3 filebrowser Laravel package based on the work done by [O
 
     -   Zip files are streamed from the resource instead of downloading to the server compressing and then serving the file.
     -   Uploaded zip files are opened on the server and then files streamed to the resource
-    -   After upload, files are immediately deleted
+        -   After upload, files are immediately deleted from the server
 
--   The connections are defined in the config/filevuer.php file.
--   Asset files are copied to /public/vendor/filevuer.
--   The index file is copied to views/vendor/filevuer.
--   You can use restrict access to the route by placing
-
-```PHP
-Route::group(['middleware' => 'auth'], function () {
-    Jwhulette\Filevuer\Filevuer::routes();
-});
-```
-
-in your routes/web.php file
+    -   The connections are defined in the config/filevuer.php file.
+    -   Asset files are copied to /public/vendor/filevuer.
+    -   The index file is copied to views/vendor/filevuer.
+    -   You can use restrict access by adding a middlewere to the filevuer config file.
 
 -   This is my first Laravel plugin so I'm sure I have make some mistakes. Please let me know if you come across any issues.
 
 ## Installation
 
 Install using composer
+    -   NOTE: I haven't uploaded to packagist yet, so this won't work
 
 ```bash
 composer require jwhulette/filevuer
@@ -46,14 +39,6 @@ Publish the assets and configuration
 php artisan vendor:publish --provider="Jwhulette\Filevuer\FilevuerServiceProvider"
 ```
 
-Laravel 5.5+:
-
--   If you don't use auto-discovery, add the ServiceProvider to the providers array in config/app.php
-
-```PHP
-Jwhulette\Filevuer\FilevuerServiceProvider::class
-```
-
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
@@ -61,7 +46,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Testing
 
 ```bash
-composer test
+composer tests
 ```
 
 ## Contributing
